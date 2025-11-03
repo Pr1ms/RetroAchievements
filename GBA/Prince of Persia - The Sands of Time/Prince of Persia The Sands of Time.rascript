@@ -1,11 +1,10 @@
 // Prince of Persia: The Sands of Time
 // #ID = 4693
 
+
+
 // Common Utils
 function ZeroToOne(bit)  => bit > prev(bit)
-
-function IncludeCheatSheet(address) => address != 0
-//byte(adress) == byte(adress)
 
 // GBA Specific Utils
 function IWRamToRA(pointerValue) => dword(pointerValue) - 0x03000000
@@ -30,18 +29,36 @@ function PickedUpConsumables() => bitcount(gameMemoryPointer + 0xAE) + bitcount(
                                   
 function PressedGCSwitches() => bit2(gameMemoryPointer + 0xd6) + bit3(gameMemoryPointer + 0xd6) + bit4(gameMemoryPointer + 0xd6)           
                                
-function InMainMenu() => byte(0x0f25) == 0
+// NOTE: also flags the Rolling Credits after the end (not very important but still)                               
+function InMainMenu() => byte(0x0f21) == 0 || (byte(0x0f21) == 2 && byte(0x0f25) == 0)
+
+achievement(
+    title="bad news",
+    description = "please do not happen",
+    points=1,
+    trigger=InMainMenu()
+)
+
 function GameOver() => byte(0x35b2) == 26                              
 
 function PowerUpInvisible() => RoomMatches(0x00, 0x12) && word(roomMemoryPointer + 0x1c4) == word(roomMemoryPointer + 0x1c6) || 
                           (RoomMatches(0x02, 0x01) || RoomMatches(0x04, 0x0b)) && word(roomMemoryPointer + 0x10c) == word(roomMemoryPointer + 0x10e)
                           
-function PowerUpMusic() => RoomMatches(0x03, 0x15) && word(roomMemoryPointer + 0x10c) == word(roomMemoryPointer + 0x10e) ||
-                           RoomMatches(0x04, 0x13) && word(roomMemoryPointer + 0x1c4) == word(roomMemoryPointer + 0x1c6)
+function PowerUpMusic() => RoomMatches(0x03, 0x15) && word(roomMemoryPointer + 0x1c4) == word(roomMemoryPointer + 0x1c6) ||
+                           RoomMatches(0x04, 0x03) && word(roomMemoryPointer + 0x10c) == word(roomMemoryPointer + 0x10e)
 
 function LifeFountainVisited() => bit4(gameMemoryPointer + 0x9a) + bit5(gameMemoryPointer + 0x9c) + bit1(gameMemoryPointer + 0x9f) + bit5(gameMemoryPointer + 0x9f) +
-                                  bit5(gameMemoryPointer + 0xa0) + bit2(gameMemoryPointer + 0xa3) + bit3(gameMemoryPointer + 0xa4) + bit6(gameMemoryPointer + 0xa4) +
+                                  bit6(gameMemoryPointer + 0xa0) + bit2(gameMemoryPointer + 0xa3) + bit3(gameMemoryPointer + 0xa4) + bit6(gameMemoryPointer + 0xa4) +
                                   bit6(gameMemoryPointer + 0xaa)
+
+function Game1TurnedSPD() => once(byte(0xfd0) == 0x53 && byte(0xfd1) == 0x50 && byte(0xfd2) == 0x44 && prev(byte(0xfd2) != 0x44)) && 
+                             never(byte(0xfd8) != prev(byte(0xfd8))) && never(byte(0xfe0) != prev(byte(0xfe0)))
+                               
+function Game2TurnedSPD() => once(byte(0xfd8) == 0x53 && byte(0xfd9) == 0x50 && byte(0xfda) == 0x44 && prev(byte(0xfda) != 0x44)) && 
+                             never(byte(0xfd0) != prev(byte(0xfd0))) && never(byte(0xfe0) != prev(byte(0xfe0)))     
+                               
+function Game3TurnedSPD() => once(byte(0xfe0) == 0x53 && byte(0xfe1) == 0x50 && byte(0xfe2) == 0x44 && prev(byte(0xfe2) != 0x44)) && 
+                             never(byte(0xfd0) != prev(byte(0xfd0))) && never(byte(0xfd8) != prev(byte(0xfd8)))                                
 
 function CurrentAnimation() => byte(roomMemoryPointer + 0x21)                       
                                
@@ -70,7 +87,7 @@ function BeatFirstBoss()
 
 function BeatSecondBoss()
 {
-    start = once(CurrentlyPlaying() && RoomMatches(0x01, 0x19) && word(dword(0x101c)+ 0x166) == 150)
+    start = once(CurrentlyPlaying() && RoomMatches(0x01, 0x19) && word(roomMemoryPointer+ 0x166) == 150)
     cancel = never(!RoomMatches(0x01, 0x19)) && never(byte(0x0f21) == 0)
     goal = ZeroToOne(bit2(gameMemoryPointer + 0xc3))
     return start && cancel && goal
@@ -114,7 +131,7 @@ achievement(
     points=10,
     type="progression",
     description="Finish the first Sand Griffin encounter and acquire the Scroll of Air Jump",
-    trigger = BeatFirstBoss()    
+    trigger = CurrentlyPlaying() && RoomMatches(0x00, 0x19) && ZeroToOne(bit0(gameMemoryPointer + 0xc2))   
 )
 
 achievement(
@@ -130,7 +147,7 @@ achievement(
     points=10,
     type="progression",
     description="Finish the second Sand Griffin encounter and acquire the Scroll of Absorbtion",
-    trigger = BeatSecondBoss()    
+    trigger = CurrentlyPlaying() && RoomMatches(0x01, 0x19) && ZeroToOne(bit2(gameMemoryPointer + 0xc3)) 
 )
 
 achievement(
@@ -138,7 +155,7 @@ achievement(
     points=10,
     type="progression",
     description="Finish the third Sand Griffin encounter and acquire the Scroll of Walling",
-    trigger = BeatThirdBoss()    
+    trigger = CurrentlyPlaying() && RoomMatches(0x02, 0x19) && ZeroToOne(bit3(gameMemoryPointer + 0xc2))
 )
 
 achievement(
@@ -146,7 +163,7 @@ achievement(
     points=10,
     type="progression",
     description="Kill the Sand Griffin and acquire the Scroll of Rebound",
-    trigger = BeatFourthBoss()    
+    trigger = CurrentlyPlaying() && RoomMatches(0x03, 0x19) && ZeroToOne(bit4(gameMemoryPointer + 0xc2))
 )
 
 achievement(
@@ -154,7 +171,7 @@ achievement(
     points=10,
     type="progression",
     description="Finish the Vizier's first fight and acquire the Scroll of Fury",
-    trigger = BeatFifthBoss()    
+    trigger = CurrentlyPlaying() && RoomMatches(0x04, 0x19) && ZeroToOne(bit5(gameMemoryPointer + 0xc2))
 )
 
 achievement(
@@ -171,14 +188,14 @@ achievement(
     title="Not So Fast", 
     points=2, 
     description = "Acquire the Slow-Down Ring",
-    trigger = CurrentlyPlaying() && RoomMatches(0x01, 0x10) && ZeroToOne(bit1(gameMemoryPointer + 0x2a))
+    trigger = CurrentlyPlaying() && RoomMatches(0x01, 0x10) && ZeroToOne(bit1(gameMemoryPointer + 0xd2))
 )
 
 achievement(
     title="Freeze", 
     points=2, 
     description = "Acquire the Freeze Ring",
-    trigger = CurrentlyPlaying() && RoomMatches(0x02, 0x08) && ZeroToOne(bit0(gameMemoryPointer + 0x2a))
+    trigger = CurrentlyPlaying() && RoomMatches(0x02, 0x08) && ZeroToOne(bit0(gameMemoryPointer + 0xd2))
 )
 
 achievement(
@@ -330,6 +347,14 @@ achievement(
                                      RoomMatches(0x03, 0x0d) && ZeroToOne(bit5(gameMemoryPointer + 0xCB)) ||
                                      RoomMatches(0x03, 0x11) && ZeroToOne(bit6(gameMemoryPointer + 0xCB)) ||                     
                                      RoomMatches(0x04, 0x0e) && ZeroToOne(bit7(gameMemoryPointer + 0xCB)))    
+)
+
+achievement(
+    title="No Time for Bling",
+    points=25,
+    type="missable",
+    description="Finish the game without picking up the Slow-Down Ring or the Freeze Ring",
+    trigger = BeatFinalBoss() && bit0(gameMemoryPointer + 0xd2) == 0 && bit1(gameMemoryPointer + 0xd2) == 0
 )
 
 // Collectibles
@@ -495,6 +520,7 @@ achievement(
 achievement(
     title = "You'll Need Better Tricks!", 
     points = 50,
+    type="missable",
     description = "Finish the Vizier's first fight without taking damage",
     trigger = PerfectFifthBoss()
 )
@@ -512,7 +538,7 @@ achievement(
 
 // Meta-cases
 rich_presence_conditional_display(byte(0x1050)==0, "Booting up the game")
-rich_presence_conditional_display(byte(0xf21)==0, "Main menu")
+rich_presence_conditional_display(InMainMenu(), "Main menu")
 rich_presence_conditional_display(byte(0xf21)==2, "Watching a cutscene")
 
 // Game over
@@ -556,9 +582,11 @@ rich_presence_conditional_display(RoomMatches(0x05, 0x03),
 
 
 // General case
-rich_presence_display("Exploring the palace - Level {0} - {1} / 75 Sand Persians",
+rich_presence_display("Exploring the palace - Level {0} - {1} / 75 Sand Persians - {2} / 2 ​💍 - {3} / 15 📜​​",
                       rich_presence_value("Unsigned", PlayerLevel()),
-                      rich_presence_value("Unsigned", AbsorbedPersians()))
+                      rich_presence_value("Unsigned", AbsorbedPersians()),
+                      rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xd2) + bit1(gameMemoryPointer + 0xd2)),
+                      rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xc2) + bitcount(gameMemoryPointer + 0xc3)))
 
 
 //
@@ -653,3 +681,15 @@ leaderboard(
 )
 
 // Full-game speedrun ?
+leaderboard(
+    "Speedrun: any%",
+    "Finish the game as fast as you can in one go. Will reset if the player goes back to main menus. Create
+    a savefile named \"SPD\" to start a speedrun game",
+    // Starts and submits on the same frame to avoid screen pollution
+    start=(Game1TurnedSPD() || Game2TurnedSPD() || Game3TurnedSPD()) && byte(0x0f21) == 2,
+    cancel=InMainMenu(), // Player died, reset the game or left the room
+    submit=RoomMatches(0x05, 0x03) && word(roomMemoryPointer + 0x148) == 0 && byte(0x0f21) == 2, // Vizier dead, cutscene started
+    value=always_true(), 
+    format="FRAMES",
+    lower_is_better=true
+)
