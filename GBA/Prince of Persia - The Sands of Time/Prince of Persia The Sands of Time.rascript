@@ -40,13 +40,6 @@ function PressedGCSwitches() => bit2(gameMemoryPointer + 0xd6) + bit3(gameMemory
 // NOTE: also flags the Rolling Credits after the end (not very important but still)                               
 function InMainMenu() => byte(0x0f21) == 0 || (byte(0x0f21) == 2 && byte(0x0f25) == 0)
 
-achievement(
-    title="bad news",
-    description = "please do not happen",
-    points=1,
-    trigger=InMainMenu()
-)
-
 function GameOver() => byte(0x35b2) == 26                              
 
 function PowerUpInvisible() => RoomMatches(0x00, 0x12) && word(toto3 + 0x3c) == word(toto3 + 0x3e) || 
@@ -184,7 +177,7 @@ achievement(
     title="Getting Stronger", 
     points=10, 
     description = "Kill and absorb 35 Sand Persians",
-    trigger = CurrentlyPlaying() && AbsorbedPersians() >= 35 && AbsorbedPersians() > prev(AbsorbedPersians())
+    trigger = CurrentlyPlaying() && AbsorbedPersians() >= 35 && prev(AbsorbedPersians()) < 35
 )
 
 achievement(
@@ -448,7 +441,7 @@ function PerfectFifthBoss()
 function PerfectFinalBoss()
 {
     start = once(RoomMatches(0x05, 0x03) && prev(byte(gameMemoryPointer + 0x65)) != 0x03) && once(word(pointerAt(1) + 0x78) == 400)
-    cancel = never(!RoomMatches(0x05, 0x30)) && never(byte(0x0f21) == 0) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
+    cancel = never(!RoomMatches(0x05, 0x03)) && never(byte(0x0f21) == 0) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
     submit = trigger_when(word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2)    
     return start && cancel && submit
 }
@@ -511,50 +504,64 @@ rich_presence_conditional_display(byte(0xf21)==2, "Watching a cutscene")
 
 // Game over
 rich_presence_conditional_display(GameOver(), 
-                                  "Just bit the dust - Level {0} - {1} / 75 Sand Persians",
+                                  "Just bit the dust - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
-                                  rich_presence_value("Unsigned", AbsorbedPersians()))
+                                  rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)))
 
 
 // Bosses fights
 rich_presence_conditional_display(RoomMatches(0x00, 0x19) && bit1(gameMemoryPointer + 0x9d) == 0, 
-                                  "First boss encounter - Griffin {2}/150 HP - Level {0} - {1}/75 Sand Persians",
+                                  "First boss encounter - Griffin {4}/150 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x96)))
 rich_presence_conditional_display(RoomMatches(0x01, 0x19) && bit1(gameMemoryPointer + 0xa1) == 0, 
-                                  "Second boss encounter - Griffin {2}/150 HP - Level {0} - {1}/75 Sand Persians",
+                                  "Second boss encounter - Griffin {4}/150 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x96)))
 rich_presence_conditional_display(RoomMatches(0x02, 0x19) && bit1(gameMemoryPointer + 0xa5) == 0, 
-                                  "Third boss encounter - Griffin {2}/200 HP - Level {0} - {1}/75 Sand Persians",
+                                  "Third boss encounter - Griffin {4}/200 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x96)))
 rich_presence_conditional_display(RoomMatches(0x03, 0x19) && bit1(gameMemoryPointer + 0xa9) == 0, 
-                                  "Fourth boss encounter - Griffin {2}/400 HP - Level {0} - {1}/75 Sand Persians",
+                                  "Fourth boss encounter - Griffin {4}/400 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x96)))
 rich_presence_conditional_display(RoomMatches(0x04, 0x19) && bit1(gameMemoryPointer + 0xad) == 0, 
-                                  "Fifth boss encounter - Grand Vizier {2}/240 HP - Level {0} - {1}/75 Sand Persians",
+                                  "Fifth boss encounter - Vizier {4}/240 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
+                                  rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x78)))
 rich_presence_conditional_display(RoomMatches(0x05, 0x03), 
-                                  "Final boss encounter - Grand Vizier {2}/400 HP - Level {0} - {1}/75 Sand Persians",
+                                  "Final boss encounter - Vizier {4}/400 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                                   rich_presence_value("Unsigned", PlayerLevel()),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x78))  )                                                  
 
 
 // General case
-rich_presence_display("Exploring the palace  - Level {0} - {1}/75 Sand Persians",
+rich_presence_display("Exploring the palace - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                       rich_presence_value("Unsigned", PlayerLevel()),
                       rich_presence_value("Unsigned", AbsorbedPersians()),
                       rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xd2) + bit1(gameMemoryPointer + 0xd2)),
-                      rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xc2) + bitcount(gameMemoryPointer + 0xc3)),
                       rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)))
 
 
