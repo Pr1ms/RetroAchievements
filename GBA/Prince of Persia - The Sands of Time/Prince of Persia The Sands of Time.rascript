@@ -15,9 +15,6 @@ gameMemoryPointer = IWRamToRA(0x0fc0)
 controlledCharacterMemoryPointer = IWRamToRA(0x101c)
 pointerListPointer = IWRamToRA(0x1028)
 
-toto = IWRamToRA(IWRamToRA(0x1028) + 0x4)
-toto3 = IWRamToRA(IWRamToRA(0x1028) + 0xc)
-
 // Game-Specific Utils
 
 // Returns the n-th pointer of the pointerList
@@ -36,30 +33,28 @@ function PickedUpConsumables() => bitcount(gameMemoryPointer + 0xAE) + bitcount(
                                   bitcount(gameMemoryPointer + 0xB0) - bit7(gameMemoryPointer + 0xB0)
                                   
 function PressedGCSwitches() => bit2(gameMemoryPointer + 0xd6) + bit3(gameMemoryPointer + 0xd6) + bit4(gameMemoryPointer + 0xd6)           
-                               
-// NOTE: also flags the Rolling Credits after the end (not very important but still)                               
+                                                       
 function InMainMenu() => byte(0x0f21) == 0 || (byte(0x0f21) == 2 && byte(0x0f25) == 0)
 
 function GameOver() => byte(0x35b2) == 26                              
 
-function PowerUpInvisible() => RoomMatches(0x00, 0x12) && word(toto3 + 0x3c) == word(toto3 + 0x3e) || 
-                          (RoomMatches(0x02, 0x01) || RoomMatches(0x04, 0x0b)) && word(toto + 0x3c) == word(pointerAt(1) + 0x3e)
+function PowerUpInvisible() => RoomMatches(0x00, 0x12) && word(pointerAt(3) + 0x3c) == word(pointerAt(3) + 0x3e) && 
+                               prev(word(pointerAt(3) + 0x3c)) < word(pointerAt(3) + 0x3e) || 
+                               (RoomMatches(0x02, 0x01) || RoomMatches(0x04, 0x0b)) && word(pointerAt(1) + 0x3c) == word(pointerAt(1) + 0x3e) &&
+                               prev(word(pointerAt(1) + 0x3c)) < word(pointerAt(1) + 0x3e)
                           
-function PowerUpMusic() => RoomMatches(0x03, 0x15) && word(pointerAt(3) + 0x3c) == word(pointerAt(3) + 0x3e) ||
-                           RoomMatches(0x04, 0x03) && word(pointerAt(1) + 0x3c) == word(pointerAt(1) + 0x3e)
+function PowerUpMusic() => RoomMatches(0x03, 0x15) && word(pointerAt(3) + 0x3c) == word(pointerAt(3) + 0x3e) &&
+                           prev(word(pointerAt(3) + 0x3c)) < word(pointerAt(3) + 0x3e) ||
+                           RoomMatches(0x04, 0x03) && word(pointerAt(1) + 0x3c) == word(pointerAt(1) + 0x3e) &&
+                           prev(word(pointerAt(1) + 0x3c)) < word(pointerAt(1) + 0x3e)
 
 function LifeFountainVisited() => bit4(gameMemoryPointer + 0x9a) + bit5(gameMemoryPointer + 0x9c) + bit1(gameMemoryPointer + 0x9f) + bit5(gameMemoryPointer + 0x9f) +
                                   bit6(gameMemoryPointer + 0xa0) + bit2(gameMemoryPointer + 0xa3) + bit3(gameMemoryPointer + 0xa4) + bit6(gameMemoryPointer + 0xa4) +
                                   bit6(gameMemoryPointer + 0xaa)
-
-function Game1TurnedSPD() => once(byte(0xfd0) == 0x53 && byte(0xfd1) == 0x50 && byte(0xfd2) == 0x44 && prev(byte(0xfd2) != 0x44)) && 
-                             never(byte(0xfd8) != prev(byte(0xfd8))) && never(byte(0xfe0) != prev(byte(0xfe0)))
-                               
-function Game2TurnedSPD() => once(byte(0xfd8) == 0x53 && byte(0xfd9) == 0x50 && byte(0xfda) == 0x44 && prev(byte(0xfda) != 0x44)) && 
-                             never(byte(0xfd0) != prev(byte(0xfd0))) && never(byte(0xfe0) != prev(byte(0xfe0)))     
-                               
-function Game3TurnedSPD() => once(byte(0xfe0) == 0x53 && byte(0xfe1) == 0x50 && byte(0xfe2) == 0x44 && prev(byte(0xfe2) != 0x44)) && 
-                             never(byte(0xfd0) != prev(byte(0xfd0))) && never(byte(0xfd8) != prev(byte(0xfd8)))                                
+                                  
+function Game1TurnedSPD() => once(byte(0xfd0) == 0x53 && byte(0xfd1) == 0x50 && byte(0xfd2) == 0x44 && prev(byte(0xfd2) != 0x44) && never(byte(0xfd2) != 0x44)) 
+function Game2TurnedSPD() => once(byte(0xfd8) == 0x53 && byte(0xfd9) == 0x50 && byte(0xfda) == 0x44 && prev(byte(0xfda) != 0x44) && never(byte(0xfda) != 0x44))
+function Game3TurnedSPD() => once(byte(0xfe0) == 0x53 && byte(0xfe1) == 0x50 && byte(0xfe2) == 0x44 && prev(byte(0xfe2) != 0x44) && never(byte(0xfe2) != 0x44))
 
 function CurrentAnimation() => byte(controlledCharacterMemoryPointer + 0x21)                       
                                
@@ -69,10 +64,6 @@ function PlayerLevel(){
     return 1 + bit5(levelByte1) + 2 * bit6(levelByte1) + 4 * bit7(levelByte1) + 8 * bit0(levelByte2) + 16 * bit1(levelByte2)
 }
 
-// 0: Prince; 1: Farah
-function ControlledCharacter() => byte(gameMemoryPointer + 0x5c)
-
-
 //
 // Achievements
 //
@@ -80,9 +71,9 @@ function ControlledCharacter() => byte(gameMemoryPointer + 0x5c)
 // Progress & Win
 function BeatFinalBoss()
 {
-    start = once(CurrentlyPlaying() && RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 400)
+    start = once(RoomMatches(0x05, 0x03) && prev(byte(gameMemoryPointer + 0x65)) != 0x03) 
     cancel = never(!RoomMatches(0x05, 0x3)) && never(byte(0x0f21) == 0)
-    goal = word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2
+    goal = word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2
     
     return start && cancel && goal
 }
@@ -100,7 +91,7 @@ achievement(
     points=2, 
     type="progression",
     description = "Play as Farah",
-    trigger = CurrentlyPlaying() && ControlledCharacter() == 1
+    trigger = CurrentlyPlaying() && ZeroToOne(bit0(gameMemoryPointer + 0x5c))
 )
 
 achievement(
@@ -146,14 +137,14 @@ achievement(
 
 // Side-quest / optionnal
 achievement(
-    title="Not So Fast", 
+    title="Not so Fast!", 
     points=2, 
     description = "Acquire the Slow-Down Ring",
     trigger = CurrentlyPlaying() && RoomMatches(0x01, 0x10) && ZeroToOne(bit1(gameMemoryPointer + 0xd2))
 )
 
 achievement(
-    title="Freeze", 
+    title="Freeze!", 
     points=2, 
     description = "Acquire the Freeze Ring",
     trigger = CurrentlyPlaying() && RoomMatches(0x02, 0x08) && ZeroToOne(bit0(gameMemoryPointer + 0xd2))
@@ -417,7 +408,7 @@ function PerfectSecondBoss()
 function PerfectThirdBoss()
 {
     start = once(RoomMatches(0x02, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19) && once(bit1(gameMemoryPointer + 0xa5) == 0)
-    cancel = never(!RoomMatches(0x02, 0x19)) && never(byte(0x0f21) == 0) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
+    cancel = never(!RoomMatches(0x02, 0x19)) && never(InMainMenu()) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
     submit = trigger_when(ZeroToOne(bit1(gameMemoryPointer + 0xa5)))
     return start && cancel && submit
 }
@@ -425,7 +416,7 @@ function PerfectThirdBoss()
 function PerfectFourthBoss()
 {
     start = once(RoomMatches(0x03, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19) && once(bit1(gameMemoryPointer + 0xa9) == 0)
-    cancel = never(!RoomMatches(0x03, 0x19)) && never(byte(0x0f21) == 0) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
+    cancel = never(!RoomMatches(0x03, 0x19)) && never(InMainMenu()) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
     submit = trigger_when(ZeroToOne(bit1(gameMemoryPointer + 0xa9)))
     return start && cancel && submit
 }
@@ -433,16 +424,16 @@ function PerfectFourthBoss()
 function PerfectFifthBoss()
 {
     start = once(RoomMatches(0x04, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19) && once(bit5(gameMemoryPointer + 0xc2) == 0)
-    cancel = never(!RoomMatches(0x04, 0x19)) && never(byte(0x0f21) == 0) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
+    cancel = never(!RoomMatches(0x04, 0x19)) && never(InMainMenu()) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
     submit = trigger_when(ZeroToOne(bit5(gameMemoryPointer + 0xc2)))
     return start && cancel && submit
 }
 
 function PerfectFinalBoss()
 {
-    start = once(RoomMatches(0x05, 0x03) && prev(byte(gameMemoryPointer + 0x65)) != 0x03) && once(word(pointerAt(1) + 0x78) == 400)
-    cancel = never(!RoomMatches(0x05, 0x03)) && never(byte(0x0f21) == 0) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
-    submit = trigger_when(word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2)    
+    start = once(RoomMatches(0x05, 0x03) && prev(byte(gameMemoryPointer + 0x65)) != 0x03) 
+    cancel = never(!RoomMatches(0x05, 0x03)) && never(InMainMenu()) && never(byte(gameMemoryPointer + 0x82) < prev(byte(gameMemoryPointer + 0x82)))
+    submit = trigger_when(word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2)    
     return start && cancel && submit
 }
 
@@ -482,7 +473,7 @@ achievement(
     title = "You'll Need Better Tricks!", 
     points = 50,
     type="missable",
-    description = "Finish the Vizier's first fight without taking damage",
+    description = "Finish the Vizier's first fight and acquire the Scroll of Fury without taking damage",
     trigger = PerfectFifthBoss()
 )
 
@@ -571,11 +562,11 @@ rich_presence_display("Exploring the palace - Level {0} - Sand Persians {1}/75 -
 
 // Boss fights speedruns
 leaderboard(
-    "Boss Speedrun: First Sand Griffin encounter",
+    "Boss Speedrun: First Sand Griffin Encounter",
     "Finish the first Sand Griffin encounter as fast as possible",
     // When turning from stone to flesh the griffin "pushes" the player which leads to a (damageless) "hit" animation
-    start=CurrentlyPlaying() && RoomMatches(0x00, 0x19) && word(pointerAt(1) + 0x96) == 150 && 
-          bit1(gameMemoryPointer + 0x9d) == 0 && (CurrentAnimation() == 0x32 || CurrentAnimation() == 0x33), 
+    start=CurrentlyPlaying() && RoomMatches(0x00, 0x19) && bit1(gameMemoryPointer + 0x9d) == 0 && 
+    (CurrentAnimation() == 0x32 && prev(CurrentAnimation()) != 0x32 || CurrentAnimation() == 0x33 && prev(CurrentAnimation()) != 0x33), 
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x00, 0x19), // Player died, reset the game or left the room
     submit=ZeroToOne(bit1(gameMemoryPointer + 0x9d)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
@@ -584,10 +575,9 @@ leaderboard(
 )
 
 leaderboard(
-    "Boss Speedrun: Second Sand Griffin encounter",
+    "Boss Speedrun: Second Sand Griffin Encounter",
     "Finish the second Sand Griffin encounter as fast as possible",
-    start=CurrentlyPlaying() && RoomMatches(0x01, 0x19) && word(pointerAt(1) + 0x96) == 150 && 
-          bit1(gameMemoryPointer + 0xa1) == 0, 
+    start=RoomMatches(0x01, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xa1) == 0, 
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x01, 0x19), // Player died, reset the game or left the room
     submit=ZeroToOne(bit1(gameMemoryPointer + 0xa1)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
@@ -596,10 +586,9 @@ leaderboard(
 )
 
 leaderboard(
-    "Boss Speedrun: Third Sand Griffin encounter",
+    "Boss Speedrun: Third Sand Griffin Encounter",
     "Finish the third Sand Griffin encounter as fast as possible",
-    start=CurrentlyPlaying() && RoomMatches(0x02, 0x19) && word(pointerAt(1) + 0x96) == 200 && 
-          bit1(gameMemoryPointer + 0xa5) == 0, 
+    start=RoomMatches(0x02, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xa5) == 0, 
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x02, 0x19), // Player died, reset the game or left the room
     submit=ZeroToOne(bit1(gameMemoryPointer + 0xa5)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
@@ -608,10 +597,9 @@ leaderboard(
 )
 
 leaderboard(
-    "Boss Speedrun: Final Sand Griffin encounter",
+    "Boss Speedrun: Final Sand Griffin Encounter",
     "Kill the Sand Griffin as fast as possible",
-    start=CurrentlyPlaying() && RoomMatches(0x03, 0x19) && word(pointerAt(1) + 0x96) == 400 && 
-          bit1(gameMemoryPointer + 0xa9) == 0, 
+    start=RoomMatches(0x03, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xa9) == 0, 
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x03, 0x19), // Player died, reset the game or left the room
     submit=ZeroToOne(bit1(gameMemoryPointer + 0xa9)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
@@ -620,10 +608,9 @@ leaderboard(
 )
 
 leaderboard(
-    "Boss Speedrun: First Vizier encounter",
+    "Boss Speedrun: First Vizier Encounter",
     "Finish the first Vizier encounter and acquire the Scroll of Fury as fast as possible",
-    start=CurrentlyPlaying() && RoomMatches(0x04, 0x19) && word(pointerAt(1) + 0x78) == 240 && 
-          bit1(gameMemoryPointer + 0xa9) == 0, 
+    start=RoomMatches(0x04, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xad) == 0, 
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x04, 0x19), // Player died, reset the game or left the room
     submit=ZeroToOne(bit5(gameMemoryPointer + 0xc2)), // Scroll of Fury acquired (the player may still die before that)
     value=always_true(), // We count every frame of the leaderboard being on
@@ -632,11 +619,11 @@ leaderboard(
 )
 
 leaderboard(
-    "Boss Speedrun: Final Vizier encounter",
+    "Boss Speedrun: Final Vizier Encounter",
     "Kill the Vizier as fast as possible",
-    start=CurrentlyPlaying() && RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 400,
+    start=RoomMatches(0x05, 0x03) && prev(byte(gameMemoryPointer + 0x65)) != 0x03,
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x05, 0x03), // Player died, reset the game or left the room
-    submit=word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2, // Vizier dead, cutscene started
+    submit=word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, // Vizier dead, cutscene started
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
     lower_is_better=true
@@ -645,12 +632,12 @@ leaderboard(
 
 // Finish the game with minimum Sand Persians count
 leaderboard(
-    "Making it harder",
+    "Making It Harder",
     "Finish the game having absorbed as few Sand Persians as possible",
     // Starts and submits on the same frame to avoid screen pollution
-    start=RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2, 
+    start=RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, 
     cancel=GameOver() || InMainMenu() || !RoomMatches(0x05, 0x03), // Player died, reset the game or left the room
-    submit=word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2, // Vizier dead, cutscene started
+    submit=word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, // Vizier dead, cutscene started
     value=AbsorbedPersians(),
     format="VALUE",
     lower_is_better=true
@@ -658,13 +645,12 @@ leaderboard(
 
 // Full-game speedrun ?
 leaderboard(
-    "Speedrun: any%",
-    "Finish the game as fast as you can in one go. Will reset if the player goes back to main menus. Create
-    a savefile named \"SPD\" to start a speedrun game",
+    "Speedrun: Any%",
+    "Finish the game as fast as you can in one go. Will reset if the player goes back to main menus. Create a savefile named \"SPD\" to start a speedrun game.",
     // Starts and submits on the same frame to avoid screen pollution
-    start=(Game1TurnedSPD() || Game2TurnedSPD() || Game3TurnedSPD()) && byte(0x0f21) == 2,
-    cancel=InMainMenu(), // Player died, reset the game or left the room
-    submit=RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2, // Vizier dead, cutscene started
+    start=(Game1TurnedSPD() || Game2TurnedSPD() || Game3TurnedSPD()) && byte(0x0f25) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2,
+    cancel=InMainMenu(),
+    submit=RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, // Vizier dead, cutscene started
     value=always_true(), 
     format="FRAMES",
     lower_is_better=true
