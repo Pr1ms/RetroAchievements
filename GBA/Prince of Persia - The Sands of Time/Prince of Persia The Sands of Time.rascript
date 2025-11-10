@@ -646,9 +646,9 @@ leaderboard(
 // Full-game speedrun ?
 leaderboard(
     "Speedrun: Any%",
-    "Finish the game as fast as you can in one go. Will reset if the player goes back to main menus. Create a savefile named \"SPD\" to start a speedrun game.",
+    "Finish the game as fast as you can in one sitting. Will reset if the player goes back to main menus. Create a savefile named \"SPD\" to start a speedrun game.",
     // Starts and submits on the same frame to avoid screen pollution
-    start=(Game1TurnedSPD() || Game2TurnedSPD() || Game3TurnedSPD()) && byte(0x0f25) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2,
+    start=(Game1TurnedSPD() || Game2TurnedSPD() || Game3TurnedSPD()) && prev(byte(0x0f25)) == 0 && byte(0x0f21) == 2 && byte(0x0f25) == 0x7f,
     cancel=InMainMenu(),
     submit=RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, // Vizier dead, cutscene started
     value=always_true(), 
