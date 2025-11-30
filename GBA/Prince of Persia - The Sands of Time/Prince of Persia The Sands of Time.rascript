@@ -1,14 +1,14 @@
 // Prince of Persia: The Sands of Time
 // #ID = 4693
 
-
+0xH001053=1_I:0xX000fc0&16777215_0xH000064=1_I:0xX000fc0&16777215_0xH000065=16_I:0xX000fc0&16777215_0xN0000d2>d0xN0000d2
 
 // Common Utils
 function ZeroToOne(bit)  => bit > prev(bit)
 
 // GBA Specific Utils
-function IWRamToRA(pointerValue) => dword(pointerValue) - 0x03000000
-function EWRamToRA(pointerValue) => dword(pointerValue) - 0x02000000 + 0x8000
+function IWRamToRA(pointerValue) => dword(pointerValue) & 0xffffff
+function EWRamToRA(pointerValue) => dword(pointerValue) & 0xffffff + 0x8000
 
 // Pointers
 gameMemoryPointer = IWRamToRA(0x0fc0)
