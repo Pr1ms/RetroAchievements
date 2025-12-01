@@ -1,8 +1,6 @@
 // Prince of Persia: The Sands of Time
 // #ID = 4693
 
-0xH001053=1_I:0xX000fc0&16777215_0xH000064=1_I:0xX000fc0&16777215_0xH000065=16_I:0xX000fc0&16777215_0xN0000d2>d0xN0000d2
-
 // Common Utils
 function ZeroToOne(bit)  => bit > prev(bit)
 
@@ -152,35 +150,35 @@ achievement(
 
 achievement(
     title="I'd Rather Have a Cloak",
-    points=2, 
+    points=1, 
     description = "Become invisible",
     trigger = CurrentlyPlaying() && PowerUpInvisible()
 )
 
 achievement(
     title="The Power of Music",
-    points=2, 
+    points=1, 
     description = "Have music notes change your environment's behavior",
     trigger = CurrentlyPlaying() && PowerUpMusic()
 )
 
 achievement(
     title="Getting Stronger", 
-    points=10, 
+    points=5, 
     description = "Kill and absorb 35 Sand Persians",
     trigger = CurrentlyPlaying() && AbsorbedPersians() >= 35 && prev(AbsorbedPersians()) < 35
 )
 
 achievement(
     title="Maxed Out", 
-    points=25, 
+    points=10, 
     description = "Kill and absorb all 75 Sand Persians to maximize your stats",
     trigger = CurrentlyPlaying() && AbsorbedPersians() == 75 && prev(AbsorbedPersians()) == 74
 )
 
 achievement(
     title="Who Even Remembers Linking?", 
-    points=5, 
+    points=4, 
     description = "Press all three GameCube Switches",
     trigger = unless(InMainMenu()) && CurrentlyPlaying() && 
               measured(PressedGCSwitches() == 3) && prev(PressedGCSwitches()) == 2
@@ -260,7 +258,7 @@ achievement(
 
 achievement(
     title="Want a Medal?",
-    points=5,
+    points=2,
     description="Reassemble a Medal",
     trigger = CurrentlyPlaying() && (bit0(gameMemoryPointer + 0x8d) + bit1(gameMemoryPointer + 0x8d) + bit2(gameMemoryPointer + 0x8d) == 3 && 
                                      prev(bit0(gameMemoryPointer + 0x8d)) + prev(bit1(gameMemoryPointer + 0x8d)) + prev(bit2(gameMemoryPointer + 0x8d)) == 2 ||
@@ -289,7 +287,7 @@ achievement(
 
 achievement(
     title="So... This Works Like a Key?",
-    points=5,
+    points=3,
     description="Lower a Medal Gate",
     trigger = CurrentlyPlaying() && (RoomMatches(0x00, 0x09) && ZeroToOne(bit0(gameMemoryPointer + 0xCB)) ||
                                      RoomMatches(0x00, 0x10) && ZeroToOne(bit1(gameMemoryPointer + 0xCB)) ||
@@ -313,7 +311,7 @@ achievement(
 
 achievement(
     title="Knowledgeable",
-    points=5,
+    points=3,
     description = "Collect all 15 scrolls",
     trigger = CurrentlyPlaying() && byte(gameMemoryPointer + 0xc2) == 0xff && byte(gameMemoryPointer + 0xc3) == 0x7f && 
               (prev(bitcount(gameMemoryPointer + 0xc2)) == 8 && prev(bitcount(gameMemoryPointer + 0xc3)) == 6 || 
@@ -439,7 +437,7 @@ function PerfectFinalBoss()
 
 achievement(
     title = "Rock and Roll", 
-    points = 25,
+    points = 10,
     type="missable",
     description = "Finish the first Sand Griffin encounter without taking damage",
     trigger = PerfectFirstBoss()
@@ -447,7 +445,7 @@ achievement(
 
 achievement(
     title = "Ride the Lightning", 
-    points = 25,
+    points = 10,
     type="missable",
     description = "Finish the second Sand Griffin encounter without taking damage",
     trigger = PerfectSecondBoss()
@@ -455,7 +453,7 @@ achievement(
 
 achievement(
     title = "Playing with Fire", 
-    points = 50,
+    points = 10,
     type="missable",
     description = "Finish the third Sand Griffin encounter without taking damage",
     trigger = PerfectThirdBoss()
@@ -463,7 +461,7 @@ achievement(
 
 achievement(
     title = "Master of the Elements", 
-    points = 50,
+    points = 10,
     type="missable",
     description = "Kill the Sand Griffin without taking damage",
     trigger = PerfectFourthBoss()
@@ -471,7 +469,7 @@ achievement(
 
 achievement(
     title = "You'll Need Better Tricks!", 
-    points = 50,
+    points = 10,
     type="missable",
     description = "Finish the Vizier's first fight and acquire the Scroll of Fury without taking damage",
     trigger = PerfectFifthBoss()
@@ -479,7 +477,7 @@ achievement(
 
 achievement(
     title = "Completed with Flying and Matching Colors", 
-    points = 50,
+    points = 25,
     description = "Finish the Vizier's final fight without taking damage",
     trigger = PerfectFinalBoss()
 )
