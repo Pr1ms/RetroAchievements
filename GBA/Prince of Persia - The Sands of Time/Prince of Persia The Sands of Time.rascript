@@ -34,7 +34,7 @@ function PressedGCSwitches() => bit2(gameMemoryPointer + 0xd6) + bit3(gameMemory
                                                        
 function InMainMenu() => byte(0x0f21) == 0 || (byte(0x0f21) == 2 && byte(0x0f25) == 0)
 
-function GameOver() => byte(0x35b2) == 26                              
+function GameOver() => IWRamToRA(0x4) == IWRamToRA(0x1228) && IWRamToRA(0x4) != 0
 
 function PowerUpInvisible() => RoomMatches(0x00, 0x12) && word(pointerAt(3) + 0x3c) == word(pointerAt(3) + 0x3e) && 
                                prev(word(pointerAt(3) + 0x3c)) < word(pointerAt(3) + 0x3e) || 
