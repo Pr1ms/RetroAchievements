@@ -348,8 +348,9 @@ achievement(
     points=2,
     description = "Receive healing from a life fountain",
     trigger = CurrentlyPlaying() && byte(gameMemoryPointer + 0x82) > prev(byte(gameMemoryPointer + 0x82)) 
-    && never(low4(byte(gameMemoryPointer + 0xd0)) < prev(low4(byte(gameMemoryPointer + 0xd0))))
-    && never(2 * bit1(byte(gameMemoryPointer + 0xd1)) + bit0(byte(gameMemoryPointer + 0xd1)) < 2 * prev(bit1(byte(gameMemoryPointer + 0xd1))) + prev(bit0(byte(gameMemoryPointer + 0xd1))))
+    && low4(byte(gameMemoryPointer + 0xd0)) == prev(low4(byte(gameMemoryPointer + 0xd0)))
+    && bit1(byte(gameMemoryPointer + 0xd1)) == prev(bit1(byte(gameMemoryPointer + 0xd1)))
+    && bit0(byte(gameMemoryPointer + 0xd1)) == prev(bit0(byte(gameMemoryPointer + 0xd1)))
     && (RoomMatches(0x00, 0x04) || RoomMatches(0x00, 0x15) || RoomMatches(0x01, 0x09) ||
         RoomMatches(0x01, 0x0d) || RoomMatches(0x01, 0x16) || RoomMatches(0x02, 0x0a) ||
         RoomMatches(0x02, 0x13) || RoomMatches(0x02, 0x16) || RoomMatches(0x04, 0x06))           
@@ -534,8 +535,7 @@ rich_presence_conditional_display(RoomMatches(0x04, 0x19) && bit1(gameMemoryPoin
                                   rich_presence_value("Unsigned", PlayerLevel()),
                                   rich_presence_value("Unsigned", AbsorbedPersians()),
                                   rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xD2) + bit1(gameMemoryPointer + 0xD2)),
-                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
-                                  rich_presence_value("Unsigned", AbsorbedPersians()),
+                                  rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),             
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x78)))
 rich_presence_conditional_display(RoomMatches(0x05, 0x03), 
                                   "Final boss encounter - Vizier {4}/400 HP - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
