@@ -348,9 +348,9 @@ achievement(
     points=2,
     description = "Receive healing from a life fountain",
     trigger = CurrentlyPlaying() && byte(gameMemoryPointer + 0x82) > prev(byte(gameMemoryPointer + 0x82)) 
-    && low4(byte(gameMemoryPointer + 0xd0)) == prev(low4(byte(gameMemoryPointer + 0xd0)))
-    && bit1(byte(gameMemoryPointer + 0xd1)) == prev(bit1(byte(gameMemoryPointer + 0xd1)))
-    && bit0(byte(gameMemoryPointer + 0xd1)) == prev(bit0(byte(gameMemoryPointer + 0xd1)))
+    && low4(gameMemoryPointer + 0xd0) == prev(low4(gameMemoryPointer + 0xd0))
+    && bit1(gameMemoryPointer + 0xd1) ==prev(bit1(gameMemoryPointer + 0xd1))
+    && bit0(gameMemoryPointer + 0xd1) == prev(bit0(gameMemoryPointer + 0xd1))
     && (RoomMatches(0x00, 0x04) || RoomMatches(0x00, 0x15) || RoomMatches(0x01, 0x09) ||
         RoomMatches(0x01, 0x0d) || RoomMatches(0x01, 0x16) || RoomMatches(0x02, 0x0a) ||
         RoomMatches(0x02, 0x13) || RoomMatches(0x02, 0x16) || RoomMatches(0x04, 0x06))           
