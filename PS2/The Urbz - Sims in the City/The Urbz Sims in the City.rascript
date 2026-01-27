@@ -33,37 +33,45 @@ postfix =  {
     0x01: "pm",
 }
 
+function WillIAmRep(offset) => dword(dword(dword(dword(dword(dword(dword(dword(0x04c05b4) + 0x1b0) + offset) + 0x10) + 0x4) + 0x4) + 0x0) + 0x0)
 
 rich_presence_conditional_display(dword(0x4bfb38) == 0 , "Loading...")
 rich_presence_conditional_display(dword(0x4bfb38) != 0 && dword(0x4bebc8) == 0 , "In main menu")
 
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 1, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3}",                      
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 1, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
                       rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
                       rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
                       rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
                       rich_presence_value("Signed", ReputationUrb1(), "VALUE"),
-                      rich_presence_lookup("Locations", dword(0x4bebd0), locations)
+                      rich_presence_lookup("Locations", dword(0x4bebd0), locations),
+                      rich_presence_value("Signed", WillIAmRep(0x84), "VALUE")
 )
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 2, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3}",                      
+
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 2, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
                       rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
                       rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
                       rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
                       rich_presence_value("Signed", ReputationUrb2(), "VALUE"),
-                      rich_presence_lookup("Locations", dword(0x4bebd0), locations)
+                      rich_presence_lookup("Locations", dword(0x4bebd0), locations),
+                      rich_presence_value("Signed", WillIAmRep(0xEc), "VALUE")
 )
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 3, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3}",                      
+
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 3, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
                       rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
                       rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
                       rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
                       rich_presence_value("Signed", ReputationUrb3(), "VALUE"),
-                      rich_presence_lookup("Locations", dword(0x4bebd0), locations)
+                      rich_presence_lookup("Locations", dword(0x4bebd0), locations),
+                      rich_presence_value("Signed", WillIAmRep(0x100), "VALUE")
 )
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 4, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3}",                      
+
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 4, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
                       rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
                       rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
                       rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
                       rich_presence_value("Signed", ReputationUrb4(), "VALUE"),
-                      rich_presence_lookup("Locations", dword(0x4bebd0), locations)
+                      rich_presence_lookup("Locations", dword(0x4bebd0), locations),
+                      rich_presence_value("Signed", WillIAmRep(0x104), "VALUE")
 )
 
 rich_presence_display("Playing The Urbz: Sims in the City")
@@ -80,10 +88,158 @@ function firstLevelJobUnlock(offset) => ZeroToOne(bit0(dword(dword(0x4c0a0c) + o
                                   ZeroToOne(bit2(dword(dword(0x4c0a0c) + offset) + 0x191b)) ||
                                   ZeroToOne(bit1(dword(dword(0x4c0a0c) + offset) + 0x1911)) ||
                                   ZeroToOne(bit6(dword(dword(0x4c0a0c) + offset) + 0x190f))
+                                                        
+// TODO: refine this if bit0(0x1913) preves always 0!
+function villainJustBeaten(offset) => ZeroToOne(bit1(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||        
+                                      ZeroToOne(bit2(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||
+                                      ZeroToOne(bit3(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||
+                                      ZeroToOne(bit4(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||
+                                      ZeroToOne(bit5(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||
+                                      ZeroToOne(bit6(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||
+                                      ZeroToOne(bit7(dword(dword(0x4c0a0c) + offset) + 0x1913)) ||
+                                      ZeroToOne(bit0(dword(dword(0x4c0a0c) + offset) + 0x1914)) ||
+                                      ZeroToOne(bit1(dword(dword(0x4c0a0c) + offset) + 0x1914))
+                            
+// TODO: refine this if bit0(0x1913) preves always 0!
+function villainsBeaten(offset) => bit1(dword(dword(0x4c0a0c) + offset) + 0x1913) +         
+                                   bit2(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                   bit3(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                   bit4(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                   bit5(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                   bit6(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                   bit7(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                   bit0(dword(dword(0x4c0a0c) + offset) + 0x1914) +
+                                   bit1(dword(dword(0x4c0a0c) + offset) + 0x1914)
 
 function UnlockedDistricts(offset) => bitcount(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1909)
 
+function UnlockedPets(offset) => bit7(dword(dword(0x4c0a0c) + offset) + 0x1917) + 
+                                 bit0(dword(dword(0x4c0a0c) + offset) + 0x1918) + 
+                                 bit1(dword(dword(0x4c0a0c) + offset) + 0x1918)
+
 function InGame() => dword(0x4bebc8) != 0
+
+function UnlockedGreetSocials(offset) => bit1(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit6(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit7(dword(dword(0x4c0a0c) + offset) + 0x192f) +
+                                         bit3(dword(dword(0x4c0a0c) + offset) + 0x1930) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1931) +
+                                         bit2(dword(dword(0x4c0a0c) + offset) + 0x1932) + bit3(dword(dword(0x4c0a0c) + offset) + 0x1932) + bit7(dword(dword(0x4c0a0c) + offset) + 0x1932) +
+                                         bit4(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1934) +
+                                         bit5(dword(dword(0x4c0a0c) + offset) + 0x1934)
+
+function UnlockedFriendlySocials(offset) => bit2(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1930) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1930) +
+                                            bit7(dword(dword(0x4c0a0c) + offset) + 0x1930) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1931) +
+                                            bit1(dword(dword(0x4c0a0c) + offset) + 0x1932) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1932) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1933) +
+                                            bit3(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1934) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1934) +
+                                            bit6(dword(dword(0x4c0a0c) + offset) + 0x1934) + 2
+                                            
+function UnlockedMeanSocials(offset) => bit4(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1930) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1930) +
+                                        bit3(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1932) +
+                                        bit5(dword(dword(0x4c0a0c) + offset) + 0x1932) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit7(dword(dword(0x4c0a0c) + offset) + 0x1933) +                                            
+                                        bit4(dword(dword(0x4c0a0c) + offset) + 0x1934) + 2
+                                            
+function UnlockedRomanticSocials(offset) => bit3(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1930) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1930) +
+                                            bit2(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit7(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1932) +
+                                            bit1(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit3(dword(dword(0x4c0a0c) + offset) + 0x1934) + 1
+                                            
+
+achievement(title="Great Greeter",
+            description="Unlock all 13 \"Greet\" social moves",
+            points=5,
+            trigger= (dword(0x4c5304) == 4 && prev(UnlockedGreetSocials(0x288)) == 12 && measured(UnlockedGreetSocials(0x288) == 13, when=InGame()) ||
+                      dword(0x4c5304) == 3 && prev(UnlockedGreetSocials(0x2a0)) == 12 && measured(UnlockedGreetSocials(0x2a0) == 13, when=InGame()) ||
+                      dword(0x4c5304) == 2 && prev(UnlockedGreetSocials(0x2a4)) == 12 && measured(UnlockedGreetSocials(0x2a4) == 13, when=InGame()) ||
+                      dword(0x4c5304) == 1 && prev(UnlockedGreetSocials(0x2b4)) == 12 && measured(UnlockedGreetSocials(0x2b4) == 13, when=InGame()))
+            )
+            
+achievement(title="Outgoing Citizen",
+            description="Unlock all 15 \"Act Friendly\" social moves",
+            points=5,
+            trigger= (dword(0x4c5304) == 4 && prev(UnlockedFriendlySocials(0x288)) == 14 && measured(UnlockedFriendlySocials(0x288) == 15, when=InGame()) ||
+                      dword(0x4c5304) == 3 && prev(UnlockedFriendlySocials(0x2a0)) == 14 && measured(UnlockedFriendlySocials(0x2a0) == 15, when=InGame()) ||
+                      dword(0x4c5304) == 2 && prev(UnlockedFriendlySocials(0x2a4)) == 14 && measured(UnlockedFriendlySocials(0x2a4) == 15, when=InGame()) ||
+                      dword(0x4c5304) == 1 && prev(UnlockedFriendlySocials(0x2b4)) == 14 && measured(UnlockedFriendlySocials(0x2b4) == 15, when=InGame()))
+            )
+            
+achievement(title="Public Enemy",
+            description="Unlock all 12 \"Act Mean\" social moves",
+            points=5,
+            trigger= (dword(0x4c5304) == 4 && prev(UnlockedMeanSocials(0x288)) == 11 && measured(UnlockedMeanSocials(0x288) == 12, when=InGame()) ||
+                      dword(0x4c5304) == 3 && prev(UnlockedMeanSocials(0x2a0)) == 11 && measured(UnlockedMeanSocials(0x2a0) == 12, when=InGame()) ||
+                      dword(0x4c5304) == 2 && prev(UnlockedMeanSocials(0x2a4)) == 11 && measured(UnlockedMeanSocials(0x2a4) == 12, when=InGame()) ||
+                      dword(0x4c5304) == 1 && prev(UnlockedMeanSocials(0x2b4)) == 11 && measured(UnlockedMeanSocials(0x2b4) == 12, when=InGame()))
+            )            
+           
+achievement(title="Dirty Romantic",
+            description="Unlock all 10 \"Act Romantic\" social moves",
+            points=5,
+            trigger= (dword(0x4c5304) == 4 && prev(UnlockedRomanticSocials(0x288)) == 9 && measured(UnlockedRomanticSocials(0x288) == 10, when=InGame()) ||
+                      dword(0x4c5304) == 3 && prev(UnlockedRomanticSocials(0x2a0)) == 9 && measured(UnlockedRomanticSocials(0x2a0) == 10, when=InGame()) ||
+                      dword(0x4c5304) == 2 && prev(UnlockedRomanticSocials(0x2a4)) == 9 && measured(UnlockedRomanticSocials(0x2a4) == 10, when=InGame()) ||
+                      dword(0x4c5304) == 1 && prev(UnlockedRomanticSocials(0x2b4)) == 9 && measured(UnlockedRomanticSocials(0x2b4) == 10, when=InGame()))
+            )           
+                                     
+achievement(title="Caring Pet Owner",
+            description="Feed a pet",
+            points=1,
+            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18E6)) ||
+                                  dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18E6)) ||
+                                  dword(0x4c5304) == 2 && word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18E6)) ||
+                                  dword(0x4c5304) == 1 && word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18E6)))
+            )
+            
+achievement(title="Casanova",
+            description="Be part of at least 5 romances",
+            points=5,
+            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0) >= 3 ||
+                                  dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F0)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F0) >= 3 ||
+                                  dword(0x4c5304) == 2 && word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F0)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F0) >= 3 ||
+                                  dword(0x4c5304) == 1 && word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F0)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F0) >= 3)
+            )      
+            
+achievement(title="Can't Please Everyone",
+            description="Make at least three enemies",
+            points=2,
+            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4) >= 3 ||
+                                  dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F4)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F4) >= 3 ||
+                                  dword(0x4c5304) == 2 && word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F4)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F4) >= 3 ||
+                                  dword(0x4c5304) == 1 && word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F4)) &&
+                                     word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F4) >= 3)
+            )        
+            
+achievement(title="Redemption",
+            description="Make amends with an enemy and repair your relationship",
+            points=2,
+            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F6)) ||
+                                  dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F6)) ||
+                                  dword(0x4c5304) == 2 && word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F6)) ||
+                                  dword(0x4c5304) == 1 && word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F6)))
+            )               
+            
+achievement(title="One Down, Eight to Go",
+            description="Emerge victorious from a villain encounter",
+            points=3,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && villainJustBeaten(0x288) ||
+                                  dword(0x4c5304) == 3 && villainJustBeaten(0x2a0) ||
+                                  dword(0x4c5304) == 2 && villainJustBeaten(0x2a4) ||
+                                  dword(0x4c5304) == 1 && villainJustBeaten(0x2b4))
+            )
+
+achievement(title="Your Basic Disney Hero",
+            description="Emerge victorious from all villain encounters",
+            points=5,
+            type="progression",
+            trigger= (dword(0x4c5304) == 4 && measured(villainsBeaten(0x288) == 9, when=InGame()) && prev(villainsBeaten(0x288)) == 8 ||
+                      dword(0x4c5304) == 3 && measured(villainsBeaten(0x2a0) == 9, when=InGame()) && prev(villainsBeaten(0x2a0)) == 8 ||
+                      dword(0x4c5304) == 2 && measured(villainsBeaten(0x2a4) == 9, when=InGame()) && prev(villainsBeaten(0x2a4)) == 8 ||
+                      dword(0x4c5304) == 1 && measured(villainsBeaten(0x2b4) == 9, when=InGame()) && prev(villainsBeaten(0x2b4)) == 8 )
+            )
 
 achievement(title="Got to Pay for This Lifestyle", 
             description="Earn your first paycheck",
@@ -93,6 +249,15 @@ achievement(title="Got to Pay for This Lifestyle",
                                   dword(0x4c5304) == 3 && firstLevelJobUnlock(0x2a0) ||
                                   dword(0x4c5304) == 2 && firstLevelJobUnlock(0x2a4) ||
                                   dword(0x4c5304) == 1 && firstLevelJobUnlock(0x2b4)))
+
+achievement(title="Wildlife Preservation", 
+            description="Unlock all three pets",
+            points=2,
+            trigger=(dword(0x4c5304) == 4 && measured(UnlockedPets(0x288) == 3, when=InGame()) && prev(UnlockedPets(0x288)) == 2 ||
+                     dword(0x4c5304) == 3 && measured(UnlockedPets(0x2a0) == 3, when=InGame()) && prev(UnlockedPets(0x2a0)) == 2 ||
+                     dword(0x4c5304) == 2 && measured(UnlockedPets(0x2a4) == 3, when=InGame()) && prev(UnlockedPets(0x2a4)) == 2 ||
+                     dword(0x4c5304) == 1 && measured(UnlockedPets(0x2b4) == 3, when=InGame()) && prev(UnlockedPets(0x2b4)) == 2)
+)
 
 achievement(title="Tony Who?",
             description="Beat the Pro Skater Job",
@@ -179,6 +344,7 @@ achievement(title="Upstaging the Big Six",
                                   dword(0x4c5304) == 2 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x2a4) + 0x1911)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x2b4) + 0x1911)))
             )
+            
             
 
 achievement(title="Ready for the Fourth of July",
