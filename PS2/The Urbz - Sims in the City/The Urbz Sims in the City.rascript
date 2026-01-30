@@ -141,6 +141,156 @@ function UnlockedRomanticSocials(offset) => bit3(dword(dword(0x4c0a0c) + offset)
                                             bit1(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1933) + bit3(dword(dword(0x4c0a0c) + offset) + 0x1934) + 1
                                             
 
+function achievedFoundryGoals(offset) => bit0(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit3(dword(dword(0x4c0a0c) + offset) + 0x190e) + bit6(dword(dword(0x4c0a0c) + offset) + 0x190e) +
+                                         bit1(dword(dword(0x4c0a0c) + offset) + 0x1910) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1912) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1914) +
+                                         bit3(dword(dword(0x4c0a0c) + offset) + 0x1917) + bit0(dword(dword(0x4c0a0c) + offset) + 0x191a) + bit1(dword(dword(0x4c0a0c) + offset) + 0x191b)
+                 
+                 
+function achievedSkylineBeachGoals(offset) => bit5(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1909) + bit1(dword(dword(0x4c0a0c) + offset) + 0x190f) +
+                                              bit1(dword(dword(0x4c0a0c) + offset) + 0x1911) + bit7(dword(dword(0x4c0a0c) + offset) + 0x1913) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1918) +
+                                              bit7(dword(dword(0x4c0a0c) + offset) + 0x191a) + bit4(dword(dword(0x4c0a0c) + offset) + 0x191c) + bit0(dword(dword(0x4c0a0c) + offset) + 0x191d) +
+                                              bit4(dword(dword(0x4c0a0c) + offset) + 0x191f)
+
+function achievedGasolineRowGoals(offset) => bit6(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit5(dword(dword(0x4c0a0c) + offset) + 0x190e) + bit0(dword(dword(0x4c0a0c) + offset) + 0x190f) +
+                                             bit5(dword(dword(0x4c0a0c) + offset) + 0x1911) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1912) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1912) +
+                                             bit5(dword(dword(0x4c0a0c) + offset) + 0x1913) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1914) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1914) +
+                                             bit6(dword(dword(0x4c0a0c) + offset) + 0x191f)
+                                         
+function achievedCentralStationGoals(offset) => bit7(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit4(dword(dword(0x4c0a0c) + offset) + 0x190e) + bit7(dword(dword(0x4c0a0c) + offset) + 0x190e) +
+                                                bit3(dword(dword(0x4c0a0c) + offset) + 0x1912) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1913) + bit3(dword(dword(0x4c0a0c) + offset) + 0x1915) +
+                                                bit2(dword(dword(0x4c0a0c) + offset) + 0x191c) + bit2(dword(dword(0x4c0a0c) + offset) + 0x191d) + bit4(dword(dword(0x4c0a0c) + offset) + 0x191d) +
+                                                bit7(dword(dword(0x4c0a0c) + offset) + 0x191f)
+                                         
+function achievedKicktailParkGoals(offset) => bit0(dword(dword(0x4c0a0c) + offset) + 0x1909) + bit2(dword(dword(0x4c0a0c) + offset) + 0x190e) + bit2(dword(dword(0x4c0a0c) + offset) + 0x190f) +
+                                              bit4(dword(dword(0x4c0a0c) + offset) + 0x190f) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1914) + bit3(dword(dword(0x4c0a0c) + offset) + 0x1914) +
+                                              bit7(dword(dword(0x4c0a0c) + offset) + 0x1915) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1917) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1919) +
+                                              bit5(dword(dword(0x4c0a0c) + offset) + 0x191d) + bit7(dword(dword(0x4c0a0c) + offset) + 0x191d)
+                                         
+function achievedNeonEastGoals(offset) => bit1(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1910) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1910) +
+                                          bit2(dword(dword(0x4c0a0c) + offset) + 0x1912) + bit3(dword(dword(0x4c0a0c) + offset) + 0x1913) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1914) +
+                                          bit1(dword(dword(0x4c0a0c) + offset) + 0x1915) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1915) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1916) + 
+                                          bit2(dword(dword(0x4c0a0c) + offset) + 0x191b) + bit6(dword(dword(0x4c0a0c) + offset) + 0x191c)
+                                         
+function achievedCozmoStreetGoals(offset) => bit2(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit3(dword(dword(0x4c0a0c) + offset) + 0x190f) + bit5(dword(dword(0x4c0a0c) + offset) + 0x190f) +
+                                             bit6(dword(dword(0x4c0a0c) + offset) + 0x190f) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1910) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1911) +
+                                             bit5(dword(dword(0x4c0a0c) + offset) + 0x1912) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1912) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                             bit7(dword(dword(0x4c0a0c) + offset) + 0x1916)
+                                         
+function achievedDiamondHeightsGoals(offset) => bit3(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit7(dword(dword(0x4c0a0c) + offset) + 0x190f) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1910) +
+                                                bit3(dword(dword(0x4c0a0c) + offset) + 0x1910) + bit7(dword(dword(0x4c0a0c) + offset) + 0x1911) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1913) +
+                                                bit0(dword(dword(0x4c0a0c) + offset) + 0x1915) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1917) + bit0(dword(dword(0x4c0a0c) + offset) + 0x191c) +
+                                                bit4(dword(dword(0x4c0a0c) + offset) + 0x191e)
+                                         
+function achievedSouthSideBridgeGoals(offset) => bit4(dword(dword(0x4c0a0c) + offset) + 0x1908) + bit4(dword(dword(0x4c0a0c) + offset) + 0x1910) + bit7(dword(dword(0x4c0a0c) + offset) + 0x1910) +
+                                                 bit0(dword(dword(0x4c0a0c) + offset) + 0x1911) + bit6(dword(dword(0x4c0a0c) + offset) + 0x1911) + bit2(dword(dword(0x4c0a0c) + offset) + 0x1913) + 
+                                                 bit7(dword(dword(0x4c0a0c) + offset) + 0x1914) + bit1(dword(dword(0x4c0a0c) + offset) + 0x1917) + bit3(dword(dword(0x4c0a0c) + offset) + 0x191d)         
+                 
+function allGoals(offset) => UnlockedPets(offset) + achievedFoundryGoals(offset) + achievedSkylineBeachGoals(offset) + achievedGasolineRowGoals(offset) + achievedCentralStationGoals(offset) +
+                             achievedKicktailParkGoals(offset) + achievedNeonEastGoals(offset) + achievedCozmoStreetGoals(offset) + achievedDiamondHeightsGoals(offset) + 
+                             achievedSouthSideBridgeGoals(offset)
+                            
+                             
+achievement(title="King of the World",
+            description="Reach all goals in the game",
+            points=25,
+            type="win_condition",
+            trigger= (dword(0x4c5304) == 4 && prev(allGoals(0x288)) == 92 && measured(allGoals(0x288) == 93, when=InGame()) ||
+                      dword(0x4c5304) == 3 && prev(allGoals(0x2a0)) == 92 && measured(allGoals(0x2a0) == 93, when=InGame()) ||
+                      dword(0x4c5304) == 2 && prev(allGoals(0x2a4)) == 92 && measured(allGoals(0x2a4) == 93, when=InGame()) ||
+                      dword(0x4c5304) == 1 && prev(allGoals(0x2b4)) == 92 && measured(allGoals(0x2b4) == 93, when=InGame()))
+            )
+
+achievement(title="The Level with the Molten Buckets",
+            description="Reach all goals in The Foundry",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedFoundryGoals(0x288)) == 8 && achievedFoundryGoals(0x288) == 9 ||
+                      dword(0x4c5304) == 3 && prev(achievedFoundryGoals(0x2a0)) == 8 && achievedFoundryGoals(0x2a0) == 9 ||
+                      dword(0x4c5304) == 2 && prev(achievedFoundryGoals(0x2a4)) == 8 && achievedFoundryGoals(0x2a4) == 9 ||
+                      dword(0x4c5304) == 1 && prev(achievedFoundryGoals(0x2b4)) == 8 && achievedFoundryGoals(0x2b4) == 9)
+            )
+            
+achievement(title="Rooftop Sunbathing",
+            description="Reach all goals in Skyline Beach",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedSkylineBeachGoals(0x288)) == 9 && achievedSkylineBeachGoals(0x288) == 10 ||
+                      dword(0x4c5304) == 3 && prev(achievedSkylineBeachGoals(0x2a0)) == 9 && achievedSkylineBeachGoals(0x2a0) == 10 ||
+                      dword(0x4c5304) == 2 && prev(achievedSkylineBeachGoals(0x2a4)) == 9 && achievedSkylineBeachGoals(0x2a4) == 10 ||
+                      dword(0x4c5304) == 1 && prev(achievedSkylineBeachGoals(0x2b4)) == 9 && achievedSkylineBeachGoals(0x2b4) == 10)
+            )
+
+achievement(title="Biker Gang Member",
+            description="Reach all goals in Gasoline Row",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedGasolineRowGoals(0x288)) == 9 && achievedGasolineRowGoals(0x288) == 10 ||
+                      dword(0x4c5304) == 3 && prev(achievedGasolineRowGoals(0x2a0)) == 9 && achievedGasolineRowGoals(0x2a0) == 10 ||
+                      dword(0x4c5304) == 2 && prev(achievedGasolineRowGoals(0x2a4)) == 9 && achievedGasolineRowGoals(0x2a4) == 10 ||
+                      dword(0x4c5304) == 1 && prev(achievedGasolineRowGoals(0x2b4)) == 9 && achievedGasolineRowGoals(0x2b4) == 10)
+            )
+            
+achievement(title="Life Among the Mole People",
+            description="Reach all goals in Central Station",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedCentralStationGoals(0x288)) == 9 && achievedCentralStationGoals(0x288) == 10 ||
+                      dword(0x4c5304) == 3 && prev(achievedCentralStationGoals(0x2a0)) == 9 && achievedCentralStationGoals(0x2a0) == 10 ||
+                      dword(0x4c5304) == 2 && prev(achievedCentralStationGoals(0x2a4)) == 9 && achievedCentralStationGoals(0x2a4) == 10 ||
+                      dword(0x4c5304) == 1 && prev(achievedCentralStationGoals(0x2b4)) == 9 && achievedCentralStationGoals(0x2b4) == 10)
+            )
+            
+achievement(title="Skatepark Ranger",
+            description="Reach all goals in Kicktail Park",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedKicktailParkGoals(0x288)) == 10 && achievedKicktailParkGoals(0x288) == 11 ||
+                      dword(0x4c5304) == 3 && prev(achievedKicktailParkGoals(0x2a0)) == 10 && achievedKicktailParkGoals(0x2a0) == 11 ||
+                      dword(0x4c5304) == 2 && prev(achievedKicktailParkGoals(0x2a4)) == 10 && achievedKicktailParkGoals(0x2a4) == 11 ||
+                      dword(0x4c5304) == 1 && prev(achievedKicktailParkGoals(0x2b4)) == 10 && achievedKicktailParkGoals(0x2b4) == 11)
+            )
+            
+achievement(title="Getting Down in Chinatown",
+            description="Reach all goals in Neon East",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedNeonEastGoals(0x288)) == 10 && achievedNeonEastGoals(0x288) == 11 ||
+                      dword(0x4c5304) == 3 && prev(achievedNeonEastGoals(0x2a0)) == 10 && achievedNeonEastGoals(0x2a0) == 11 ||
+                      dword(0x4c5304) == 2 && prev(achievedNeonEastGoals(0x2a4)) == 10 && achievedNeonEastGoals(0x2a4) == 11 ||
+                      dword(0x4c5304) == 1 && prev(achievedNeonEastGoals(0x2b4)) == 10 && achievedNeonEastGoals(0x2b4) == 11)
+            )
+            
+achievement(title="Posh Life Enthusiast",
+            description="Reach all goals in Cozmo Street",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedCozmoStreetGoals(0x288)) == 9 && achievedCozmoStreetGoals(0x288) == 10 ||
+                      dword(0x4c5304) == 3 && prev(achievedCozmoStreetGoals(0x2a0)) == 9 && achievedCozmoStreetGoals(0x2a0) == 10 ||
+                      dword(0x4c5304) == 2 && prev(achievedCozmoStreetGoals(0x2a4)) == 9 && achievedCozmoStreetGoals(0x2a4) == 10 ||
+                      dword(0x4c5304) == 1 && prev(achievedCozmoStreetGoals(0x2b4)) == 9 && achievedCozmoStreetGoals(0x2b4) == 10)
+            )
+            
+achievement(title="A District Worth Its Weight in Gold",
+            description="Reach all goals in Diamond Heights",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedDiamondHeightsGoals(0x288)) == 9 && achievedDiamondHeightsGoals(0x288) == 10 ||
+                      dword(0x4c5304) == 3 && prev(achievedDiamondHeightsGoals(0x2a0)) == 9 && achievedDiamondHeightsGoals(0x2a0) == 10 ||
+                      dword(0x4c5304) == 2 && prev(achievedDiamondHeightsGoals(0x2a4)) == 9 && achievedDiamondHeightsGoals(0x2a4) == 10 ||
+                      dword(0x4c5304) == 1 && prev(achievedDiamondHeightsGoals(0x2b4)) == 9 && achievedDiamondHeightsGoals(0x2b4) == 10)
+            )
+            
+achievement(title="Isn't It Technically a Pier?",
+            description="Reach all goals in South Side Bridge",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedSouthSideBridgeGoals(0x288)) == 8 && achievedSouthSideBridgeGoals(0x288) == 9 ||
+                      dword(0x4c5304) == 3 && prev(achievedSouthSideBridgeGoals(0x2a0)) == 8 && achievedSouthSideBridgeGoals(0x2a0) == 9 ||
+                      dword(0x4c5304) == 2 && prev(achievedSouthSideBridgeGoals(0x2a4)) == 8 && achievedSouthSideBridgeGoals(0x2a4) == 9 ||
+                      dword(0x4c5304) == 1 && prev(achievedSouthSideBridgeGoals(0x2b4)) == 8 && achievedSouthSideBridgeGoals(0x2b4) == 9)
+            )          
+                          
+
 achievement(title="Great Greeter",
             description="Unlock all 13 \"Greet\" social moves",
             points=5,
@@ -176,7 +326,7 @@ achievement(title="Dirty Romantic",
                       dword(0x4c5304) == 2 && prev(UnlockedRomanticSocials(0x2a4)) == 9 && measured(UnlockedRomanticSocials(0x2a4) == 10, when=InGame()) ||
                       dword(0x4c5304) == 1 && prev(UnlockedRomanticSocials(0x2b4)) == 9 && measured(UnlockedRomanticSocials(0x2b4) == 10, when=InGame()))
             )           
-                                     
+
 achievement(title="Caring Pet Owner",
             description="Feed a pet",
             points=1,
@@ -335,6 +485,28 @@ achievement(title="King of Cocktails",
             )
             
 
+achievement(title="I've Always Wanted a Better View",
+            description="Without using cheats, unlock Blankwood Towers",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x288) + 0x192d)) ||
+                                  dword(0x4c5304) == 3 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2a0) + 0x192d)) ||
+                                  dword(0x4c5304) == 2 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2a4) + 0x192d)) ||
+                                  dword(0x4c5304) == 1 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2b4) + 0x192d)))
+            )
+            
+
+achievement(title="This Apartment? It Pays for Itself!",
+            description="Without using cheats, unlock Darius' Penthouse and gain access to the secret machine",
+            points=5,
+            type="progression",
+            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x192d)) ||
+                                  dword(0x4c5304) == 3 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a0) + 0x192d)) ||
+                                  dword(0x4c5304) == 2 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a4) + 0x192d)) ||
+                                  dword(0x4c5304) == 1 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2b4) + 0x192d)))
+            )            
+            
+
 achievement(title="Upstaging the Big Six",
             description="Beat the Super Model Job",
             points=3,
@@ -391,11 +563,13 @@ function HappyUrb(){
     submit = trigger_when(word(dword(0x4c05ac) + 0x14) == 0 && word(dword(0x4c05ac) + 0x1e) == 0 && prev(word(dword(0x4c05ac) + 0x14)) == 0x17 && prev(word(dword(0x4c05ac) + 0x1e) == 0x3b))
     return start && cancel && submit            
 }
-            
+       
+/**            
+// NOTE: This one has been manually edited to be cleaned up after the automatic generation. DO NOT RESYNC!
 achievement(title="Happy Urb",
             description="Without using cheats, keep each of your Urb needs above 50% from midnight to midnight",
             points=10,
             trigger= HappyUrb()
             )            
-            
+*/            
          
