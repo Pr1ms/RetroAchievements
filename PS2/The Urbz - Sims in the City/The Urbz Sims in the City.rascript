@@ -4,7 +4,7 @@
 // Common Utils
 function ZeroToOne(bit)  => bit > prev(bit)
 
-function NoCheatsEnabled() => byte(0x004c507a) == 0 && byte(0x004c507b) == 0
+function CheatsEnabled() => byte(0x004c507a) == 0 && byte(0x004c507b) == 0
 function ReputationUrb1() => word(dword(dword(dword(0x04c05b4) + 0x1b0) + 0x84) + 0x1c)
 function ReputationUrb2() => word(dword(dword(dword(0x04c05b4) + 0x1b0) + 0xEc) + 0x1c)
 function ReputationUrb3() => word(dword(dword(dword(0x04c05b4) + 0x1b0) + 0x100) + 0x1c)
@@ -17,7 +17,7 @@ locations = {
 0x2a: "Chilling at Blankwood Towers",
 0x6e: "Owning the City in South Side Bridge",
 0x74: "Owning the City in Skyline Beach",
-0x7c: "Chilling in their Darius' Penthouse",
+0x7c: "Chilling at Darius' Penthouse",
 0x82: "Owning the City in Diamond Heights",
 0x92: "Owning the City in Kicktail Park",
 0x99: "Owning the City in Neon East",
@@ -33,45 +33,50 @@ postfix =  {
     0x01: "pm",
 }
 
+
+function InGame() => dword(0x4bfb38) != 0
+
 function WillIAmRep(offset) => dword(dword(dword(dword(dword(dword(dword(dword(0x04c05b4) + 0x1b0) + offset) + 0x10) + 0x4) + 0x4) + 0x0) + 0x0)
 
+rich_presence_conditional_display(dword(0x4c5304) == 0, "In main menu")
 rich_presence_conditional_display(dword(0x4bfb38) == 0 , "Loading...")
-rich_presence_conditional_display(dword(0x4bfb38) != 0 && dword(0x4bebc8) == 0 , "In main menu")
+rich_presence_conditional_display(dword(0x4bfb38) != 0 && dword(0x4bebc8) == 0 && dword(0x4c5304) > 0, "Picking their style")
+rich_presence_conditional_display(byte(0x4c507a) > 0 || byte(0x4c507b) > 0, "You can't fake fame: Darius knows you cheated and locked you out of achievements! Don't save your game!")
 
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 1, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
-                      rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
-                      rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
-                      rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && dword(0x4c5304) == 1, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
+                      rich_presence_value("Seconds", 60 * (((word(dword(0x4c05ac) + 0x14) + 11) % 12 + 12) % 12 + 1) + word(dword(0x4c05ac) + 0x1e), "SECS"),
+                      rich_presence_lookup("Postfix", word(dword(0x4c05ac) + 0x14) / 12, postfix),
+                      rich_presence_value("Signed", dword(dword(0x4c05ac) + 0x74), "VALUE"),
                       rich_presence_value("Signed", ReputationUrb1(), "VALUE"),
                       rich_presence_lookup("Locations", dword(0x4bebd0), locations),
                       rich_presence_value("Signed", WillIAmRep(0x84), "VALUE")
 )
 
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 2, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
-                      rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
-                      rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
-                      rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
-                      rich_presence_value("Signed", ReputationUrb2(), "VALUE"),
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && dword(0x4c5304) == 2, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
+                      rich_presence_value("Seconds", 60 * (((word(dword(0x4c05ac) + 0x14) + 11) % 12 + 12) % 12 + 1) + word(dword(0x4c05ac) + 0x1e), "SECS"),
+                      rich_presence_lookup("Postfix", word(dword(0x4c05ac) + 0x14) / 12, postfix),
+                      rich_presence_value("Number", dword(dword(0x4c05ac) + 0x74), "VALUE"),
+                      rich_presence_value("Number", ReputationUrb2(), "VALUE"),
                       rich_presence_lookup("Locations", dword(0x4bebd0), locations),
-                      rich_presence_value("Signed", WillIAmRep(0xEc), "VALUE")
+                      rich_presence_value("Number", WillIAmRep(0xEc), "VALUE")
 )
 
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 3, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
-                      rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
-                      rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
-                      rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
-                      rich_presence_value("Signed", ReputationUrb3(), "VALUE"),
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && dword(0x4c5304) == 3, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
+                      rich_presence_value("Seconds", 60 * (((word(dword(0x4c05ac) + 0x14) + 11) % 12 + 12) % 12 + 1) + word(dword(0x4c05ac) + 0x1e), "SECS"),
+                      rich_presence_lookup("Postfix", word(dword(0x4c05ac) + 0x14) / 12, postfix),
+                      rich_presence_value("Number", dword(dword(0x4c05ac) + 0x74), "VALUE"),
+                      rich_presence_value("Number", ReputationUrb3(), "VALUE"),
                       rich_presence_lookup("Locations", dword(0x4bebd0), locations),
-                      rich_presence_value("Signed", WillIAmRep(0x100), "VALUE")
+                      rich_presence_value("Number", WillIAmRep(0x100), "VALUE")
 )
 
-rich_presence_conditional_display(dword(0x4bebc8) != 0 && word(0x4c5304) == 4, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
-                      rich_presence_value("Seconds", 60 * (((word(0x01ab2b84) + 11) % 12 + 12) % 12 + 1) + word(0x01ab2b8e), "SECS"),
-                      rich_presence_lookup("Postfix", word(0x01ab2b84) / 12, postfix),
-                      rich_presence_value("Signed", dword(0x01ab2be4), "VALUE"),
-                      rich_presence_value("Signed", ReputationUrb4(), "VALUE"),
+rich_presence_conditional_display(dword(0x4bebc8) != 0 && dword(0x4c5304) == 4, "{4} - Simulation time {0} {1} - Money {2} - Reputation {3} - WIA {5}",                      
+                      rich_presence_value("Seconds", 60 * (((word(dword(0x4c05ac) + 0x14) + 11) % 12 + 12) % 12 + 1) + word(dword(0x4c05ac) + 0x1e), "SECS"),
+                      rich_presence_lookup("Postfix", word(dword(0x4c05ac) + 0x14) / 12, postfix),
+                      rich_presence_value("Number", dword(dword(0x4c05ac) + 0x74), "VALUE"),
+                      rich_presence_value("Number", ReputationUrb4(), "VALUE"),
                       rich_presence_lookup("Locations", dword(0x4bebd0), locations),
-                      rich_presence_value("Signed", WillIAmRep(0x104), "VALUE")
+                      rich_presence_value("Number", WillIAmRep(0x104), "VALUE")
 )
 
 rich_presence_display("Playing The Urbz: Sims in the City")
@@ -117,7 +122,8 @@ function UnlockedPets(offset) => bit7(dword(dword(0x4c0a0c) + offset) + 0x1917) 
                                  bit0(dword(dword(0x4c0a0c) + offset) + 0x1918) + 
                                  bit1(dword(dword(0x4c0a0c) + offset) + 0x1918)
 
-function InGame() => dword(0x4bebc8) != 0
+function DidNotCheat() => disable_when(byte(0x4c507a) > 0 || byte(0x4c507b) > 0, until=dword(0x4bfb38) == 1 && dword(0x4bebc8) == 0)
+
 
 function UnlockedGreetSocials(offset) => bit1(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit6(dword(dword(0x4c0a0c) + offset) + 0x192f) + bit7(dword(dword(0x4c0a0c) + offset) + 0x192f) +
                                          bit3(dword(dword(0x4c0a0c) + offset) + 0x1930) + bit0(dword(dword(0x4c0a0c) + offset) + 0x1931) + bit5(dword(dword(0x4c0a0c) + offset) + 0x1931) +
@@ -188,23 +194,134 @@ function achievedSouthSideBridgeGoals(offset) => bit4(dword(dword(0x4c0a0c) + of
 function allGoals(offset) => UnlockedPets(offset) + achievedFoundryGoals(offset) + achievedSkylineBeachGoals(offset) + achievedGasolineRowGoals(offset) + achievedCentralStationGoals(offset) +
                              achievedKicktailParkGoals(offset) + achievedNeonEastGoals(offset) + achievedCozmoStreetGoals(offset) + achievedDiamondHeightsGoals(offset) + 
                              achievedSouthSideBridgeGoals(offset)
+                  
+
+function pickedUpPowerSocialInSlot(offset, slot) => byte(dword(dword(dword(0x4c0a0c) + offset) + 0x38 + 4 * slot)) == 3 && (prev(dword(dword(dword(0x4c0a0c) + offset)  + 0x38 + 4 * slot)) == 0 || byte(dword(dword(dword(0x4c0a0c) + offset)  + 0x38 + 4 * slot) + 1) > prev(byte(dword(dword(dword(0x4c0a0c) + offset)  + 0x38 + 4 * slot) + 1)))
+
+function pickedUpPowerSocial(offset){
+    return pickedUpPowerSocialInSlot(offset, 0) || pickedUpPowerSocialInSlot(offset, 1) || pickedUpPowerSocialInSlot(offset, 2) || pickedUpPowerSocialInSlot(offset, 3) ||
+           pickedUpPowerSocialInSlot(offset, 4) || pickedUpPowerSocialInSlot(offset, 5) || pickedUpPowerSocialInSlot(offset, 6) || pickedUpPowerSocialInSlot(offset, 7) ||
+           pickedUpPowerSocialInSlot(offset, 8) || pickedUpPowerSocialInSlot(offset, 9) || pickedUpPowerSocialInSlot(offset, 10) || pickedUpPowerSocialInSlot(offset, 11) ||
+           pickedUpPowerSocialInSlot(offset, 12) || pickedUpPowerSocialInSlot(offset, 13) || pickedUpPowerSocialInSlot(offset, 14) || pickedUpPowerSocialInSlot(offset, 15) ||
+           pickedUpPowerSocialInSlot(offset, 16) || pickedUpPowerSocialInSlot(offset, 17) || pickedUpPowerSocialInSlot(offset, 18) || pickedUpPowerSocialInSlot(offset, 19) ||
+           pickedUpPowerSocialInSlot(offset, 20) || pickedUpPowerSocialInSlot(offset, 21) || pickedUpPowerSocialInSlot(offset, 22) || pickedUpPowerSocialInSlot(offset, 23) ||
+           pickedUpPowerSocialInSlot(offset, 24) || pickedUpPowerSocialInSlot(offset, 25) || pickedUpPowerSocialInSlot(offset, 26) || pickedUpPowerSocialInSlot(offset, 27) ||
+           pickedUpPowerSocialInSlot(offset, 28) || pickedUpPowerSocialInSlot(offset, 29) || pickedUpPowerSocialInSlot(offset, 30) || pickedUpPowerSocialInSlot(offset, 31) ||
+           pickedUpPowerSocialInSlot(offset, 32) || pickedUpPowerSocialInSlot(offset, 33) || pickedUpPowerSocialInSlot(offset, 34) || pickedUpPowerSocialInSlot(offset, 35)
+ }
+ 
+function newPowerSocialPickedUpInSlot(offset, slot) => byte(dword(dword(dword(0x4c0a0c) + offset) + 0x38 + 4 * slot)) == 3 && prev(dword(dword(dword(0x4c0a0c) + offset)  + 0x38 + 4 * slot)) == 0
+function newPowerSocialPickedUp(offset){
+    return newPowerSocialPickedUpInSlot(offset, 0) || newPowerSocialPickedUpInSlot(offset, 1) || newPowerSocialPickedUpInSlot(offset, 2) || newPowerSocialPickedUpInSlot(offset, 3) ||
+           newPowerSocialPickedUpInSlot(offset, 4) || newPowerSocialPickedUpInSlot(offset, 5) || newPowerSocialPickedUpInSlot(offset, 6) || newPowerSocialPickedUpInSlot(offset, 7) ||
+           newPowerSocialPickedUpInSlot(offset, 8) || newPowerSocialPickedUpInSlot(offset, 9) || newPowerSocialPickedUpInSlot(offset, 10) || newPowerSocialPickedUpInSlot(offset, 11) ||
+           newPowerSocialPickedUpInSlot(offset, 12) || newPowerSocialPickedUpInSlot(offset, 13) || newPowerSocialPickedUpInSlot(offset, 14) || newPowerSocialPickedUpInSlot(offset, 15) ||
+           newPowerSocialPickedUpInSlot(offset, 16) || newPowerSocialPickedUpInSlot(offset, 17) || newPowerSocialPickedUpInSlot(offset, 18) || newPowerSocialPickedUpInSlot(offset, 19) ||
+           newPowerSocialPickedUpInSlot(offset, 20) || newPowerSocialPickedUpInSlot(offset, 21) || newPowerSocialPickedUpInSlot(offset, 22) || newPowerSocialPickedUpInSlot(offset, 23) ||
+           newPowerSocialPickedUpInSlot(offset, 24) || newPowerSocialPickedUpInSlot(offset, 25) || newPowerSocialPickedUpInSlot(offset, 26) || newPowerSocialPickedUpInSlot(offset, 27) ||
+           newPowerSocialPickedUpInSlot(offset, 28) || newPowerSocialPickedUpInSlot(offset, 29) || newPowerSocialPickedUpInSlot(offset, 30) || newPowerSocialPickedUpInSlot(offset, 31) ||
+           newPowerSocialPickedUpInSlot(offset, 32) || newPowerSocialPickedUpInSlot(offset, 33) || newPowerSocialPickedUpInSlot(offset, 34) || newPowerSocialPickedUpInSlot(offset, 35)
+}
+
+
+function powerSocialInSlot(offset, slot){
+   return byte(dword(dword(dword(0x4c0a0c) + offset) + 0x38 + 4 * slot)) / 3 
+}
+
+
+function powerSocialCount(offset) =>
+    powerSocialInSlot(offset, 0) + powerSocialInSlot(offset, 1) + powerSocialInSlot(offset, 2) + powerSocialInSlot(offset, 3) +
+    powerSocialInSlot(offset, 4) + powerSocialInSlot(offset, 5) + powerSocialInSlot(offset, 6) + powerSocialInSlot(offset, 7) +
+    powerSocialInSlot(offset, 8) + powerSocialInSlot(offset, 9) + powerSocialInSlot(offset, 10) + powerSocialInSlot(offset, 11) +
+    powerSocialInSlot(offset, 12) + powerSocialInSlot(offset, 13) + powerSocialInSlot(offset, 14) + powerSocialInSlot(offset, 15) +
+    powerSocialInSlot(offset, 16) + powerSocialInSlot(offset, 17) + powerSocialInSlot(offset, 18) + powerSocialInSlot(offset, 19) +
+    powerSocialInSlot(offset, 20) + powerSocialInSlot(offset, 21) + powerSocialInSlot(offset, 22) + powerSocialInSlot(offset, 23) +
+    powerSocialInSlot(offset, 24) + powerSocialInSlot(offset, 25) + powerSocialInSlot(offset, 26) + powerSocialInSlot(offset, 27) +
+    powerSocialInSlot(offset, 28) + powerSocialInSlot(offset, 29) + powerSocialInSlot(offset, 30) + powerSocialInSlot(offset, 31) +
+    powerSocialInSlot(offset, 32) + powerSocialInSlot(offset, 33) + powerSocialInSlot(offset, 34) + powerSocialInSlot(offset, 35)
+
+
+achievement(title="Don't Worry, I'm Packing Heat",
+            description="Have all 9 Power Social items at once in your inventory",
+            points=10,
+            trigger= DidNotCheat() && (measured(powerSocialCount(0x288) == 9, when=dword(0x4c5304) == 4) && prev(powerSocialCount(0x288)) == 8 ||
+                                       measured(powerSocialCount(0x2a0) == 9, when=dword(0x4c5304) == 3) && prev(powerSocialCount(0x2a0)) == 8 ||
+                                       measured(powerSocialCount(0x2a4) == 9, when=dword(0x4c5304) == 2) && prev(powerSocialCount(0x2a4)) == 8 ||
+                                       measured(powerSocialCount(0x2b4) == 9, when=dword(0x4c5304) == 1) && prev(powerSocialCount(0x2b4)) == 8)
+            )
+            
+
+achievement(title="Virtuoso",
+            description="Reach level 30 in Artistic Skill",
+            points=5,
+            trigger= DidNotCheat() && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x26)) == 870 && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x26) == 900
+            )
+            
+achievement(title="Apex Physique",
+            description="Reach level 30 in Physical Skill",
+            points=5,
+            trigger= DidNotCheat() && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2a)) == 870 && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2a) == 900
+            )
+            
+achievement(title="Overclocked Brain",
+            description="Reach level 30 in Mental Skill",
+            points=5,
+            trigger= DidNotCheat() && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2c)) == 870 && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2c) == 900
+            )            
+
+function moneyInStyleShop(offset) => dword(dword(dword(0x4c0a0c) + offset) + 0x14)
+
+achievement(title="Got to Look the Part",
+            description="Spend 1,000 Simoleons in a single visit to the style shop",
+            points=5,
+            trigger= DidNotCheat() && dword(0x4bebc8) == 0 && dword(0x4bfb38) == 1 && (
+                dword(0x4c5304) == 4 && trigger_when(dword(dword(0x04c05ac) + 0x74) - moneyInStyleShop(0x288) >= 1000) && trigger_when(moneyInStyleShop(0x288) < prev(moneyInStyleShop(0x288))) ||
+                dword(0x4c5304) == 3 && trigger_when(dword(dword(0x04c05ac) + 0x74) - moneyInStyleShop(0x2a0) >= 1000) && trigger_when(moneyInStyleShop(0x2a0) < prev(moneyInStyleShop(0x2a0))) ||
+                dword(0x4c5304) == 2 && trigger_when(dword(dword(0x04c05ac) + 0x74) - moneyInStyleShop(0x2a4) >= 1000) && trigger_when(moneyInStyleShop(0x2a4) < prev(moneyInStyleShop(0x2a4))) ||
+                dword(0x4c5304) == 1 && trigger_when(dword(dword(0x04c05ac) + 0x74) - moneyInStyleShop(0x2b4) >= 1000) && trigger_when(moneyInStyleShop(0x2b4) < prev(moneyInStyleShop(0x2b4))))                
+            )
+                     
+            
+achievement(title="Completing the Housewarming Gifts",
+            description="Spend 1,000 Simoleons in a single visit to the items shop",
+            points=5,
+            trigger= DidNotCheat() && (dword(dword(0x4c4dec) + 0x254) == 0 && dword(dword(0x4c4dec) + 0x260) == 0xfe47c11a &&                      
+                     trigger_when((dword(dword(0x4c05ac) + 0x74) - dword(dword(dword(0x4c4de8) + 0x12c) + 0x78c)) >= 1000) && 
+                     trigger_when(dword(dword(dword(0x4c4de8) + 0x12c) + 0x78c) < prev(dword(dword(dword(0x4c4de8) + 0x12c) + 0x78c)
+            ))))
+            
+            
+
+achievement(title="Garbage Collector",
+            description="Find a Power Social item while dumpster diving",            
+            points=2,
+            trigger= DidNotCheat() && dword(dword(0x4c4dec) + 0x254) >= 1 && dword(dword(0x4c4dec) + 0x260) == 0x4e6f715 && 
+                                      (dword(0x4c5304) == 4 && pickedUpPowerSocial(0x288) || dword(0x4c5304) == 3 && pickedUpPowerSocial(0x2a0) ||
+                                       dword(0x4c5304) == 2 && pickedUpPowerSocial(0x2a4) || dword(0x4c5304) == 1 && pickedUpPowerSocial(0x2b4))
+            )            
+
+achievement(title="Can I Have a Matching Case?",
+            description="Pick custom skin and ringtone for your XAM",
+            points=1,
+            trigger= DidNotCheat() && (dword(0x4d8a8c) != 0 && dword(0x4d8ad4) != 0x457536c3) && (prev(dword(0x4d8a8c) == 0) || prev(dword(0x4d8ad4)) == 0x457536c3)
+            )
                             
                              
 achievement(title="King of the World",
             description="Reach all goals in the game",
             points=25,
             type="win_condition",
-            trigger= (dword(0x4c5304) == 4 && prev(allGoals(0x288)) == 92 && measured(allGoals(0x288) == 93, when=InGame()) ||
-                      dword(0x4c5304) == 3 && prev(allGoals(0x2a0)) == 92 && measured(allGoals(0x2a0) == 93, when=InGame()) ||
-                      dword(0x4c5304) == 2 && prev(allGoals(0x2a4)) == 92 && measured(allGoals(0x2a4) == 93, when=InGame()) ||
-                      dword(0x4c5304) == 1 && prev(allGoals(0x2b4)) == 92 && measured(allGoals(0x2b4) == 93, when=InGame()))
+            trigger= DidNotCheat() && (prev(allGoals(0x288)) == 92 && measured(allGoals(0x288) == 93, when=dword(0x4c5304) == 4) ||
+                       prev(allGoals(0x2a0)) == 92 && measured(allGoals(0x2a0) == 93, when=dword(0x4c5304) == 3) ||
+                       prev(allGoals(0x2a4)) == 92 && measured(allGoals(0x2a4) == 93, when=dword(0x4c5304) == 2) ||
+                       prev(allGoals(0x2b4)) == 92 && measured(allGoals(0x2b4) == 93, when=dword(0x4c5304) == 1))
             )
 
 achievement(title="The Level with the Molten Buckets",
             description="Reach all goals in The Foundry",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedFoundryGoals(0x288)) == 8 && achievedFoundryGoals(0x288) == 9 ||
+            trigger= DidNotCheat() && (dword(0x4c5304) == 4 && prev(achievedFoundryGoals(0x288)) == 8 && achievedFoundryGoals(0x288) == 9 ||
                       dword(0x4c5304) == 3 && prev(achievedFoundryGoals(0x2a0)) == 8 && achievedFoundryGoals(0x2a0) == 9 ||
                       dword(0x4c5304) == 2 && prev(achievedFoundryGoals(0x2a4)) == 8 && achievedFoundryGoals(0x2a4) == 9 ||
                       dword(0x4c5304) == 1 && prev(achievedFoundryGoals(0x2b4)) == 8 && achievedFoundryGoals(0x2b4) == 9)
@@ -214,7 +331,7 @@ achievement(title="Rooftop Sunbathing",
             description="Reach all goals in Skyline Beach",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedSkylineBeachGoals(0x288)) == 9 && achievedSkylineBeachGoals(0x288) == 10 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedSkylineBeachGoals(0x288)) == 9 && achievedSkylineBeachGoals(0x288) == 10 ||
                       dword(0x4c5304) == 3 && prev(achievedSkylineBeachGoals(0x2a0)) == 9 && achievedSkylineBeachGoals(0x2a0) == 10 ||
                       dword(0x4c5304) == 2 && prev(achievedSkylineBeachGoals(0x2a4)) == 9 && achievedSkylineBeachGoals(0x2a4) == 10 ||
                       dword(0x4c5304) == 1 && prev(achievedSkylineBeachGoals(0x2b4)) == 9 && achievedSkylineBeachGoals(0x2b4) == 10)
@@ -224,7 +341,7 @@ achievement(title="Biker Gang Member",
             description="Reach all goals in Gasoline Row",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedGasolineRowGoals(0x288)) == 9 && achievedGasolineRowGoals(0x288) == 10 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedGasolineRowGoals(0x288)) == 9 && achievedGasolineRowGoals(0x288) == 10 ||
                       dword(0x4c5304) == 3 && prev(achievedGasolineRowGoals(0x2a0)) == 9 && achievedGasolineRowGoals(0x2a0) == 10 ||
                       dword(0x4c5304) == 2 && prev(achievedGasolineRowGoals(0x2a4)) == 9 && achievedGasolineRowGoals(0x2a4) == 10 ||
                       dword(0x4c5304) == 1 && prev(achievedGasolineRowGoals(0x2b4)) == 9 && achievedGasolineRowGoals(0x2b4) == 10)
@@ -234,7 +351,7 @@ achievement(title="Life Among the Mole People",
             description="Reach all goals in Central Station",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedCentralStationGoals(0x288)) == 9 && achievedCentralStationGoals(0x288) == 10 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedCentralStationGoals(0x288)) == 9 && achievedCentralStationGoals(0x288) == 10 ||
                       dword(0x4c5304) == 3 && prev(achievedCentralStationGoals(0x2a0)) == 9 && achievedCentralStationGoals(0x2a0) == 10 ||
                       dword(0x4c5304) == 2 && prev(achievedCentralStationGoals(0x2a4)) == 9 && achievedCentralStationGoals(0x2a4) == 10 ||
                       dword(0x4c5304) == 1 && prev(achievedCentralStationGoals(0x2b4)) == 9 && achievedCentralStationGoals(0x2b4) == 10)
@@ -244,7 +361,7 @@ achievement(title="Skatepark Ranger",
             description="Reach all goals in Kicktail Park",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedKicktailParkGoals(0x288)) == 10 && achievedKicktailParkGoals(0x288) == 11 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedKicktailParkGoals(0x288)) == 10 && achievedKicktailParkGoals(0x288) == 11 ||
                       dword(0x4c5304) == 3 && prev(achievedKicktailParkGoals(0x2a0)) == 10 && achievedKicktailParkGoals(0x2a0) == 11 ||
                       dword(0x4c5304) == 2 && prev(achievedKicktailParkGoals(0x2a4)) == 10 && achievedKicktailParkGoals(0x2a4) == 11 ||
                       dword(0x4c5304) == 1 && prev(achievedKicktailParkGoals(0x2b4)) == 10 && achievedKicktailParkGoals(0x2b4) == 11)
@@ -254,7 +371,7 @@ achievement(title="Getting Down in Chinatown",
             description="Reach all goals in Neon East",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedNeonEastGoals(0x288)) == 10 && achievedNeonEastGoals(0x288) == 11 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedNeonEastGoals(0x288)) == 10 && achievedNeonEastGoals(0x288) == 11 ||
                       dword(0x4c5304) == 3 && prev(achievedNeonEastGoals(0x2a0)) == 10 && achievedNeonEastGoals(0x2a0) == 11 ||
                       dword(0x4c5304) == 2 && prev(achievedNeonEastGoals(0x2a4)) == 10 && achievedNeonEastGoals(0x2a4) == 11 ||
                       dword(0x4c5304) == 1 && prev(achievedNeonEastGoals(0x2b4)) == 10 && achievedNeonEastGoals(0x2b4) == 11)
@@ -264,7 +381,7 @@ achievement(title="Posh Life Enthusiast",
             description="Reach all goals in Cozmo Street",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedCozmoStreetGoals(0x288)) == 9 && achievedCozmoStreetGoals(0x288) == 10 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedCozmoStreetGoals(0x288)) == 9 && achievedCozmoStreetGoals(0x288) == 10 ||
                       dword(0x4c5304) == 3 && prev(achievedCozmoStreetGoals(0x2a0)) == 9 && achievedCozmoStreetGoals(0x2a0) == 10 ||
                       dword(0x4c5304) == 2 && prev(achievedCozmoStreetGoals(0x2a4)) == 9 && achievedCozmoStreetGoals(0x2a4) == 10 ||
                       dword(0x4c5304) == 1 && prev(achievedCozmoStreetGoals(0x2b4)) == 9 && achievedCozmoStreetGoals(0x2b4) == 10)
@@ -274,7 +391,7 @@ achievement(title="A District Worth Its Weight in Gold",
             description="Reach all goals in Diamond Heights",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedDiamondHeightsGoals(0x288)) == 9 && achievedDiamondHeightsGoals(0x288) == 10 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedDiamondHeightsGoals(0x288)) == 9 && achievedDiamondHeightsGoals(0x288) == 10 ||
                       dword(0x4c5304) == 3 && prev(achievedDiamondHeightsGoals(0x2a0)) == 9 && achievedDiamondHeightsGoals(0x2a0) == 10 ||
                       dword(0x4c5304) == 2 && prev(achievedDiamondHeightsGoals(0x2a4)) == 9 && achievedDiamondHeightsGoals(0x2a4) == 10 ||
                       dword(0x4c5304) == 1 && prev(achievedDiamondHeightsGoals(0x2b4)) == 9 && achievedDiamondHeightsGoals(0x2b4) == 10)
@@ -284,7 +401,7 @@ achievement(title="Isn't It Technically a Pier?",
             description="Reach all goals in South Side Bridge",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && prev(achievedSouthSideBridgeGoals(0x288)) == 8 && achievedSouthSideBridgeGoals(0x288) == 9 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedSouthSideBridgeGoals(0x288)) == 8 && achievedSouthSideBridgeGoals(0x288) == 9 ||
                       dword(0x4c5304) == 3 && prev(achievedSouthSideBridgeGoals(0x2a0)) == 8 && achievedSouthSideBridgeGoals(0x2a0) == 9 ||
                       dword(0x4c5304) == 2 && prev(achievedSouthSideBridgeGoals(0x2a4)) == 8 && achievedSouthSideBridgeGoals(0x2a4) == 9 ||
                       dword(0x4c5304) == 1 && prev(achievedSouthSideBridgeGoals(0x2b4)) == 8 && achievedSouthSideBridgeGoals(0x2b4) == 9)
@@ -294,43 +411,43 @@ achievement(title="Isn't It Technically a Pier?",
 achievement(title="Great Greeter",
             description="Unlock all 13 \"Greet\" social moves",
             points=5,
-            trigger= (dword(0x4c5304) == 4 && prev(UnlockedGreetSocials(0x288)) == 12 && measured(UnlockedGreetSocials(0x288) == 13, when=InGame()) ||
-                      dword(0x4c5304) == 3 && prev(UnlockedGreetSocials(0x2a0)) == 12 && measured(UnlockedGreetSocials(0x2a0) == 13, when=InGame()) ||
-                      dword(0x4c5304) == 2 && prev(UnlockedGreetSocials(0x2a4)) == 12 && measured(UnlockedGreetSocials(0x2a4) == 13, when=InGame()) ||
-                      dword(0x4c5304) == 1 && prev(UnlockedGreetSocials(0x2b4)) == 12 && measured(UnlockedGreetSocials(0x2b4) == 13, when=InGame()))
+            trigger= DidNotCheat() && (prev(UnlockedGreetSocials(0x288)) == 12 && measured(UnlockedGreetSocials(0x288) == 13, when=dword(0x4c5304) == 4) ||
+                      prev(UnlockedGreetSocials(0x2a0)) == 12 && measured(UnlockedGreetSocials(0x2a0) == 13, when=dword(0x4c5304) == 3) ||
+                      prev(UnlockedGreetSocials(0x2a4)) == 12 && measured(UnlockedGreetSocials(0x2a4) == 13, when=dword(0x4c5304) == 2) ||
+                      prev(UnlockedGreetSocials(0x2b4)) == 12 && measured(UnlockedGreetSocials(0x2b4) == 13, when=dword(0x4c5304) == 1))
             )
             
 achievement(title="Outgoing Citizen",
             description="Unlock all 15 \"Act Friendly\" social moves",
             points=5,
-            trigger= (dword(0x4c5304) == 4 && prev(UnlockedFriendlySocials(0x288)) == 14 && measured(UnlockedFriendlySocials(0x288) == 15, when=InGame()) ||
-                      dword(0x4c5304) == 3 && prev(UnlockedFriendlySocials(0x2a0)) == 14 && measured(UnlockedFriendlySocials(0x2a0) == 15, when=InGame()) ||
-                      dword(0x4c5304) == 2 && prev(UnlockedFriendlySocials(0x2a4)) == 14 && measured(UnlockedFriendlySocials(0x2a4) == 15, when=InGame()) ||
-                      dword(0x4c5304) == 1 && prev(UnlockedFriendlySocials(0x2b4)) == 14 && measured(UnlockedFriendlySocials(0x2b4) == 15, when=InGame()))
+            trigger= DidNotCheat() && (prev(UnlockedFriendlySocials(0x288)) == 14 && measured(UnlockedFriendlySocials(0x288) == 15, when=dword(0x4c5304) == 4) ||
+                      prev(UnlockedFriendlySocials(0x2a0)) == 14 && measured(UnlockedFriendlySocials(0x2a0) == 15, when=dword(0x4c5304) == 3) ||
+                      prev(UnlockedFriendlySocials(0x2a4)) == 14 && measured(UnlockedFriendlySocials(0x2a4) == 15, when=dword(0x4c5304) == 2) ||
+                      prev(UnlockedFriendlySocials(0x2b4)) == 14 && measured(UnlockedFriendlySocials(0x2b4) == 15, when=dword(0x4c5304) == 1))
             )
             
 achievement(title="Public Enemy",
             description="Unlock all 12 \"Act Mean\" social moves",
             points=5,
-            trigger= (dword(0x4c5304) == 4 && prev(UnlockedMeanSocials(0x288)) == 11 && measured(UnlockedMeanSocials(0x288) == 12, when=InGame()) ||
-                      dword(0x4c5304) == 3 && prev(UnlockedMeanSocials(0x2a0)) == 11 && measured(UnlockedMeanSocials(0x2a0) == 12, when=InGame()) ||
-                      dword(0x4c5304) == 2 && prev(UnlockedMeanSocials(0x2a4)) == 11 && measured(UnlockedMeanSocials(0x2a4) == 12, when=InGame()) ||
-                      dword(0x4c5304) == 1 && prev(UnlockedMeanSocials(0x2b4)) == 11 && measured(UnlockedMeanSocials(0x2b4) == 12, when=InGame()))
+            trigger= DidNotCheat() && (prev(UnlockedMeanSocials(0x288)) == 11 && measured(UnlockedMeanSocials(0x288) == 12, when=dword(0x4c5304) == 4) ||
+                      prev(UnlockedMeanSocials(0x2a0)) == 11 && measured(UnlockedMeanSocials(0x2a0) == 12, when=dword(0x4c5304) == 3) ||
+                      prev(UnlockedMeanSocials(0x2a4)) == 11 && measured(UnlockedMeanSocials(0x2a4) == 12, when=dword(0x4c5304) == 2) ||
+                      prev(UnlockedMeanSocials(0x2b4)) == 11 && measured(UnlockedMeanSocials(0x2b4) == 12, when=dword(0x4c5304) == 1))
             )            
            
 achievement(title="Dirty Romantic",
             description="Unlock all 10 \"Act Romantic\" social moves",
             points=5,
-            trigger= (dword(0x4c5304) == 4 && prev(UnlockedRomanticSocials(0x288)) == 9 && measured(UnlockedRomanticSocials(0x288) == 10, when=InGame()) ||
-                      dword(0x4c5304) == 3 && prev(UnlockedRomanticSocials(0x2a0)) == 9 && measured(UnlockedRomanticSocials(0x2a0) == 10, when=InGame()) ||
-                      dword(0x4c5304) == 2 && prev(UnlockedRomanticSocials(0x2a4)) == 9 && measured(UnlockedRomanticSocials(0x2a4) == 10, when=InGame()) ||
-                      dword(0x4c5304) == 1 && prev(UnlockedRomanticSocials(0x2b4)) == 9 && measured(UnlockedRomanticSocials(0x2b4) == 10, when=InGame()))
+            trigger= DidNotCheat() && (prev(UnlockedRomanticSocials(0x288)) == 9 && measured(UnlockedRomanticSocials(0x288) == 10, when=dword(0x4c5304) == 4) ||
+                      prev(UnlockedRomanticSocials(0x2a0)) == 9 && measured(UnlockedRomanticSocials(0x2a0) == 10, when=dword(0x4c5304) == 3) ||
+                      prev(UnlockedRomanticSocials(0x2a4)) == 9 && measured(UnlockedRomanticSocials(0x2a4) == 10, when=dword(0x4c5304) == 2) ||
+                      prev(UnlockedRomanticSocials(0x2b4)) == 9 && measured(UnlockedRomanticSocials(0x2b4) == 10, when=dword(0x4c5304) == 1))
             )           
 
 achievement(title="Caring Pet Owner",
             description="Feed a pet",
             points=1,
-            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18E6)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18E6)) ||
                                   dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18E6)) ||
                                   dword(0x4c5304) == 2 && word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18E6)) ||
                                   dword(0x4c5304) == 1 && word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18E6) > prev(word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18E6)))
@@ -339,7 +456,7 @@ achievement(title="Caring Pet Owner",
 achievement(title="Casanova",
             description="Be part of at least 5 romances",
             points=5,
-            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0)) &&
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0)) &&
                                      word(dword(dword(0x4c0a0c) + 0x288) + 0x18F0) >= 3 ||
                                   dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F0) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F0)) &&
                                      word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F0) >= 3 ||
@@ -352,7 +469,7 @@ achievement(title="Casanova",
 achievement(title="Can't Please Everyone",
             description="Make at least three enemies",
             points=2,
-            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4)) &&
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4)) &&
                                      word(dword(dword(0x4c0a0c) + 0x288) + 0x18F4) >= 3 ||
                                   dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F4) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F4)) &&
                                      word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F4) >= 3 ||
@@ -365,7 +482,7 @@ achievement(title="Can't Please Everyone",
 achievement(title="Redemption",
             description="Make amends with an enemy and repair your relationship",
             points=2,
-            trigger= InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F6)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && word(dword(dword(0x4c0a0c) + 0x288) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x288) + 0x18F6)) ||
                                   dword(0x4c5304) == 3 && word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x2a0) + 0x18F6)) ||
                                   dword(0x4c5304) == 2 && word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x2a4) + 0x18F6)) ||
                                   dword(0x4c5304) == 1 && word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F6) > prev(word(dword(dword(0x4c0a0c) + 0x2b4) + 0x18F6)))
@@ -375,7 +492,7 @@ achievement(title="One Down, Eight to Go",
             description="Emerge victorious from a villain encounter",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && villainJustBeaten(0x288) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && villainJustBeaten(0x288) ||
                                   dword(0x4c5304) == 3 && villainJustBeaten(0x2a0) ||
                                   dword(0x4c5304) == 2 && villainJustBeaten(0x2a4) ||
                                   dword(0x4c5304) == 1 && villainJustBeaten(0x2b4))
@@ -385,17 +502,17 @@ achievement(title="Your Basic Disney Hero",
             description="Emerge victorious from all villain encounters",
             points=5,
             type="progression",
-            trigger= (dword(0x4c5304) == 4 && measured(villainsBeaten(0x288) == 9, when=InGame()) && prev(villainsBeaten(0x288)) == 8 ||
-                      dword(0x4c5304) == 3 && measured(villainsBeaten(0x2a0) == 9, when=InGame()) && prev(villainsBeaten(0x2a0)) == 8 ||
-                      dword(0x4c5304) == 2 && measured(villainsBeaten(0x2a4) == 9, when=InGame()) && prev(villainsBeaten(0x2a4)) == 8 ||
-                      dword(0x4c5304) == 1 && measured(villainsBeaten(0x2b4) == 9, when=InGame()) && prev(villainsBeaten(0x2b4)) == 8 )
+            trigger= DidNotCheat() && (measured(villainsBeaten(0x288) == 9, when=dword(0x4c5304) == 4) && prev(villainsBeaten(0x288)) == 8 ||
+                      measured(villainsBeaten(0x2a0) == 9, when=dword(0x4c5304) == 3) && prev(villainsBeaten(0x2a0)) == 8 ||
+                      measured(villainsBeaten(0x2a4) == 9, when=dword(0x4c5304) == 2) && prev(villainsBeaten(0x2a4)) == 8 ||
+                      measured(villainsBeaten(0x2b4) == 9, when=dword(0x4c5304) == 1) && prev(villainsBeaten(0x2b4)) == 8 )
             )
 
 achievement(title="Got to Pay for This Lifestyle", 
             description="Earn your first paycheck",
             points=1,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && firstLevelJobUnlock(0x288) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && firstLevelJobUnlock(0x288) ||
                                   dword(0x4c5304) == 3 && firstLevelJobUnlock(0x2a0) ||
                                   dword(0x4c5304) == 2 && firstLevelJobUnlock(0x2a4) ||
                                   dword(0x4c5304) == 1 && firstLevelJobUnlock(0x2b4)))
@@ -403,17 +520,17 @@ achievement(title="Got to Pay for This Lifestyle",
 achievement(title="Wildlife Preservation", 
             description="Unlock all three pets",
             points=2,
-            trigger=(dword(0x4c5304) == 4 && measured(UnlockedPets(0x288) == 3, when=InGame()) && prev(UnlockedPets(0x288)) == 2 ||
-                     dword(0x4c5304) == 3 && measured(UnlockedPets(0x2a0) == 3, when=InGame()) && prev(UnlockedPets(0x2a0)) == 2 ||
-                     dword(0x4c5304) == 2 && measured(UnlockedPets(0x2a4) == 3, when=InGame()) && prev(UnlockedPets(0x2a4)) == 2 ||
-                     dword(0x4c5304) == 1 && measured(UnlockedPets(0x2b4) == 3, when=InGame()) && prev(UnlockedPets(0x2b4)) == 2)
+            trigger= DidNotCheat() && (measured(UnlockedPets(0x288) == 3, when=dword(0x4c5304) == 4) && prev(UnlockedPets(0x288)) == 2 ||
+                     measured(UnlockedPets(0x2a0) == 3, when=dword(0x4c5304) == 3) && prev(UnlockedPets(0x2a0)) == 2 ||
+                     measured(UnlockedPets(0x2a4) == 3, when=dword(0x4c5304) == 2) && prev(UnlockedPets(0x2a4)) == 2 ||
+                     measured(UnlockedPets(0x2b4) == 3, when=dword(0x4c5304) == 1) && prev(UnlockedPets(0x2b4)) == 2)
 )
 
 achievement(title="Tony Who?",
             description="Beat the Pro Skater Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit4(dword(dword(0x4c0a0c) + 0x288) + 0x190f)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit4(dword(dword(0x4c0a0c) + 0x288) + 0x190f)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit4(dword(dword(0x4c0a0c) + 0x2a0) + 0x190f)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit4(dword(dword(0x4c0a0c) + 0x2a4) + 0x190f)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit4(dword(dword(0x4c0a0c) + 0x2b4) + 0x190f)))
@@ -424,7 +541,7 @@ achievement(title="Zoo Tycoon",
             description="Beat the Ferret Master Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x288) + 0x190f)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x288) + 0x190f)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x2a0) + 0x190f)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x2a4) + 0x190f)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x2b4) + 0x190f)))
@@ -435,7 +552,7 @@ achievement(title="I Used the Same Oil for Both",
             description="Beat the Chop Shop Master Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit5(dword(dword(0x4c0a0c) + 0x288) + 0x190e)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit5(dword(dword(0x4c0a0c) + 0x288) + 0x190e)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit5(dword(dword(0x4c0a0c) + 0x2a0) + 0x190e)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit5(dword(dword(0x4c0a0c) + 0x2a4) + 0x190e)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit5(dword(dword(0x4c0a0c) + 0x2b4) + 0x190e)))
@@ -446,7 +563,7 @@ achievement(title="Knockoff Cartier",
             description="Beat the Master Piercer Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x1912)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x1912)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a0) + 0x1912)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a4) + 0x1912)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2b4) + 0x1912)))
@@ -456,7 +573,7 @@ achievement(title="Better than Auguste Rodin",
             description="Beat the Master Sculptor Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x288) + 0x1910)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x288) + 0x1910)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x2a0) + 0x1910)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x2a4) + 0x1910)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit1(dword(dword(0x4c0a0c) + 0x2b4) + 0x1910)))
@@ -467,7 +584,7 @@ achievement(title="Impressing Gordon Ramsay",
             description="Beat the Master Chef Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit6(dword(dword(0x4c0a0c) + 0x288) + 0x1910)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit6(dword(dword(0x4c0a0c) + 0x288) + 0x1910)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit6(dword(dword(0x4c0a0c) + 0x2a0) + 0x1910)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit6(dword(dword(0x4c0a0c) + 0x2a4) + 0x1910)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit6(dword(dword(0x4c0a0c) + 0x2b4) + 0x1910)))
@@ -478,7 +595,7 @@ achievement(title="King of Cocktails",
             description="Beat the Mixmaster Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x288) + 0x1911)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x288) + 0x1911)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2a0) + 0x1911)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2a4) + 0x1911)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2b4) + 0x1911)))
@@ -486,10 +603,10 @@ achievement(title="King of Cocktails",
             
 
 achievement(title="I've Always Wanted a Better View",
-            description="Without using cheats, unlock Blankwood Towers",
+            description="Unlock Blankwood Towers",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x288) + 0x192d)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x288) + 0x192d)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2a0) + 0x192d)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2a4) + 0x192d)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit2(dword(dword(0x4c0a0c) + 0x2b4) + 0x192d)))
@@ -497,10 +614,10 @@ achievement(title="I've Always Wanted a Better View",
             
 
 achievement(title="This Apartment? It Pays for Itself!",
-            description="Without using cheats, unlock Darius' Penthouse and gain access to the secret machine",
+            description="Unlock Darius' Penthouse and gain access to the secret machine",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x192d)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x192d)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a0) + 0x192d)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a4) + 0x192d)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2b4) + 0x192d)))
@@ -511,7 +628,7 @@ achievement(title="Upstaging the Big Six",
             description="Beat the Super Model Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x288) + 0x1911)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x288) + 0x1911)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x2a0) + 0x1911)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x2a4) + 0x1911)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit7(dword(dword(0x4c0a0c) + 0x2b4) + 0x1911)))
@@ -523,7 +640,7 @@ achievement(title="Ready for the Fourth of July",
             description="Beat the Master Pyro Job",
             points=3,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x191d)) ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x288) + 0x191d)) ||
                                   dword(0x4c5304) == 3 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a0) + 0x191d)) ||
                                   dword(0x4c5304) == 2 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2a4) + 0x191d)) ||
                                   dword(0x4c5304) == 1 && ZeroToOne(bit3(dword(dword(0x4c0a0c) + 0x2b4) + 0x191d)))
@@ -531,10 +648,10 @@ achievement(title="Ready for the Fourth of July",
       
 
 achievement(title="Branching Out",
-            description="Without using cheats, unlock four additional districts",
+            description="Unlock four additional districts",
             points=5,
             type="progression",
-            trigger= InGame() && (dword(0x4c5304) == 4 && UnlockedDistricts(0x288) == 5 && prev(UnlockedDistricts(0x288)) == 4 ||
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && UnlockedDistricts(0x288) == 5 && prev(UnlockedDistricts(0x288)) == 4 ||
                                   dword(0x4c5304) == 3 && UnlockedDistricts(0x2a0) == 5 && prev(UnlockedDistricts(0x2a0)) == 4 ||
                                   dword(0x4c5304) == 2 && UnlockedDistricts(0x2a4) == 5 && prev(UnlockedDistricts(0x2a4)) == 4 ||
                                   dword(0x4c5304) == 1 && UnlockedDistricts(0x2b4) == 5 && prev(UnlockedDistricts(0x2b4)) == 4)
@@ -542,10 +659,10 @@ achievement(title="Branching Out",
             
 
 achievement(title="City Mapper",
-            description="Without using cheats, unlock all districts",
+            description="Unlock all districts",
             points=10,
             type="progression",
-            trigger= InGame() && bit4(0x004c507a) == 0 && (dword(0x4c5304) == 4 && UnlockedDistricts(0x288) == 9 && prev(UnlockedDistricts(0x288)) == 8 ||
+            trigger= DidNotCheat() && InGame() && bit4(0x004c507a) == 0 && (dword(0x4c5304) == 4 && UnlockedDistricts(0x288) == 9 && prev(UnlockedDistricts(0x288)) == 8 ||
                                   dword(0x4c5304) == 3 && UnlockedDistricts(0x2a0) == 9 && prev(UnlockedDistricts(0x2a0)) == 8 ||
                                   dword(0x4c5304) == 2 && UnlockedDistricts(0x2a4) == 9 && prev(UnlockedDistricts(0x2a4)) == 8 ||
                                   dword(0x4c5304) == 1 && UnlockedDistricts(0x2b4) == 9 && prev(UnlockedDistricts(0x2b4)) == 8)
@@ -567,9 +684,11 @@ function HappyUrb(){
 /**            
 // NOTE: This one has been manually edited to be cleaned up after the automatic generation. DO NOT RESYNC!
 achievement(title="Happy Urb",
-            description="Without using cheats, keep each of your Urb needs above 50% from midnight to midnight",
+            description="Keep each of your Urb needs above 50% from midnight to midnight",
             points=10,
             trigger= HappyUrb()
             )            
 */            
          
+         
+// TODO: make a leaderboard for least simulation days to game completion
