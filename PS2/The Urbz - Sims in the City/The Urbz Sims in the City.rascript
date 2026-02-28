@@ -576,6 +576,7 @@ achievement(title="Got to Pay for This Lifestyle",
 
 achievement(title="Wildlife Preservation", 
             description="Unlock all three pets",
+            type="progression",
             points=3,
             trigger= DidNotCheat() && InGame()  && (measured(UnlockedPets(0x8) == 3, when=dword(0x4c5304) == 4) && prev(UnlockedPets(0x8)) == 2 ||
                      measured(UnlockedPets(0x20) == 3, when=dword(0x4c5304) == 3) && prev(UnlockedPets(0x20)) == 2 ||
@@ -724,7 +725,6 @@ achievement(title="City Mapper",
 achievement(title="Money on My Mind",
             description="Make 25,000 simoleons",
             points=5,
-            type="progression",
             trigger= DidNotCheat() && InGame()  && dword(dword(0x4c05ac) + 0x74) >= 25000 && prev(dword(dword(0x4c05ac) + 0x74)) < 25000
             )                 
             
