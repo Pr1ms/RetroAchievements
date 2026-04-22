@@ -264,10 +264,10 @@ achievement(title="I'll Keep My Stuff, Thanks!",
             points=2,
             trigger= DidNotCheat() && InGame() && 
                      once(dword(dword(0x4c514c) + 0xec) != 0xffffffff) && // Checkpoint: there is a popup on screen
-                     never(tally(6, dword(dword(0x4c514c) + 0xec) == 0xffffffff)) &&// Reset: if we are 0xffffffff again for at least 2 frames
-                     (dword(dword(0x4c05ac) + 0x74) == prev(dword(dword(0x4c05ac) + 0x74)) - 300 || // Trigger condition: money is down 300 simoleons (1st flat)
-                      dword(dword(0x4c05ac) + 0x74) == prev(dword(dword(0x4c05ac) + 0x74)) - 1000 || // Trigger condition: money is down 1000 simoleons (2nd flat)
-                      dword(dword(0x4c05ac) + 0x74) == prev(dword(dword(0x4c05ac) + 0x74)) - 2400) // Trigger condition: money is down 1000 simoleons (3rd flat)
+                     never(tally(6, dword(dword(0x4c514c) + 0xec) == 0xffffffff)) &&// Reset: if we are 0xffffffff again for at least 6 frames
+                     (dword(dword(0x4c05ac) + 0x74) == prev(dword(dword(0x4c05ac) + 0x74)) - 300 || // Trigger condition: money is down 300 Simoleons (1st flat)
+                      dword(dword(0x4c05ac) + 0x74) == prev(dword(dword(0x4c05ac) + 0x74)) - 1000 || // Trigger condition: money is down 1000 Simoleons (2nd flat)
+                      dword(dword(0x4c05ac) + 0x74) == prev(dword(dword(0x4c05ac) + 0x74)) - 2400) // Trigger condition: money is down 1000 Simoleons (3rd flat)
             )
 */
 
@@ -292,32 +292,32 @@ achievement(title="Virtuoso",
             description="Reach level 30 in Artistic Skill",
             type="progression",
             points=5,
-            trigger= DidNotCheat() && InGame() && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x26)) == 870 && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x26) == 900
+            trigger= DidNotCheat() && InGame() && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x26) == 900 && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x26)) == 870
             )
             
 achievement(title="Apex Physique",
             description="Reach level 30 in Physical Skill",
             type="progression",
             points=5,
-            trigger= DidNotCheat() && InGame() && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2a)) == 870 && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2a) == 900
+            trigger= DidNotCheat() && InGame() && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2a) == 900 && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2a)) == 870
             )
             
 achievement(title="Overclocked Brain",
             description="Reach level 30 in Mental Skill",
             type="progression",
             points=5,
-            trigger= DidNotCheat() && InGame() && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2c)) == 870 && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2c) == 900
+            trigger= DidNotCheat() && InGame() && word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2c) == 900 && prev(word(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0x2c)) == 870 
             )            
 
 achievement(title="Level 33: Boss",
-            description="Reach a reputation of 340 and unlock all fame could bring you in this life",
+            description="Get everything unlockable by fame by reaching a reputation of 340",
             type="progression",
             points=5,
                       
-            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(ReputationUrb4()) != 0 && prev(ReputationUrb4()) < 340 && ReputationUrb4() >= 340 ||
-                      dword(0x4c5304) == 3 && prev(ReputationUrb4()) != 0 && prev(ReputationUrb3()) < 340 && ReputationUrb3() >= 340 ||
-                      dword(0x4c5304) == 2 && prev(ReputationUrb2()) != 0 && prev(ReputationUrb2()) < 340 && ReputationUrb2() >= 340 ||
-                      dword(0x4c5304) == 1 && prev(ReputationUrb1()) != 0 && prev(ReputationUrb1()) < 340 && ReputationUrb1() >= 340)
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && ReputationUrb4() >= 340 && prev(ReputationUrb4()) != 0 && prev(ReputationUrb4()) < 340 ||
+                      dword(0x4c5304) == 3 && ReputationUrb3() >= 340 && prev(ReputationUrb3()) != 0 && prev(ReputationUrb3()) < 340 ||
+                      dword(0x4c5304) == 2 && ReputationUrb2() >= 340 && prev(ReputationUrb2()) != 0 && prev(ReputationUrb2()) < 340 ||
+                      dword(0x4c5304) == 1 && ReputationUrb1() >= 340 && prev(ReputationUrb1()) != 0 && prev(ReputationUrb1()) < 340)
             )  
 
 function moneyInStyleShop(offset) => dword(dword(dword(dword(0x4c05b4) + 0x1c0) + offset) + 0x14)
@@ -354,9 +354,19 @@ achievement(title="Garbage Collector",
                                       (dword(0x4c5304) == 4 && pickedUpPowerSocial(0x8) || dword(0x4c5304) == 3 && pickedUpPowerSocial(0x20) ||
                                        dword(0x4c5304) == 2 && pickedUpPowerSocial(0x24) || dword(0x4c5304) == 1 && pickedUpPowerSocial(0x34))
             )            
+            
+            
+achievement(title="Snack Freeloader",
+            description="Get a free meal from a vending machine",            
+            points=2,
+            trigger= DidNotCheat() && InGame()  && dword(dword(0x4c4dec) + 0x254) >= 1 && (dword(dword(0x4c4dec) + 0x1a4) == 0x447acb5e || dword(dword(0x4c4dec) + 0x1a4) == 0xc59cd0c7) && 
+                                      disable_when(dword(dword(0x04c05ac) + 0x74) < prev(dword(dword(0x04c05ac) + 0x74)), until=dword(dword(0x4c4dec) + 0x254) == 0 || dword(dword(0x4c4dec) + 0x254) == prev(dword(dword(0x4c4dec) + 0x254)) - 1) &&
+                                      float(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0xc4) > prev(float(dword(dword(dword(0x4c50a8) + 0x8) + 0x4) + 0xc4))
+                                      
+            )               
 
 achievement(title="Can I Have a Matching Case?",
-            description="Pick custom skin and ringtone for your XAM",
+            description="Pick a custom skin and ringtone for your XAM",
             points=1,
             trigger= DidNotCheat() && InGame()  && (dword(0x4d8a8c) != 0 && dword(0x4d8ad4) != 0x457536c3) && 
                 (prev(dword(0x4d8a8c)) == 0 && prev(dword(0x4d8ad4)) != 0x457536c3 || 
@@ -365,17 +375,17 @@ achievement(title="Can I Have a Matching Case?",
                             
                              
 achievement(title="King of the World",
-            description="Reach all goals in the game",
+            description="Complete all goals in the game",
             points=25,
             type="win_condition",
-            trigger= DidNotCheat() && InGame()  && (prev(allGoals(0x8)) == 92 && measured(allGoals(0x8) == 93, when=dword(0x4c5304) == 4) ||
-                       prev(allGoals(0x20)) == 92 && measured(allGoals(0x20) == 93, when=dword(0x4c5304) == 3) ||
-                       prev(allGoals(0x24)) == 92 && measured(allGoals(0x24) == 93, when=dword(0x4c5304) == 2) ||
-                       prev(allGoals(0x34)) == 92 && measured(allGoals(0x34) == 93, when=dword(0x4c5304) == 1))
+            trigger= DidNotCheat() && InGame()  && (measured(allGoals(0x8) == 93, when=dword(0x4c5304) == 4) && prev(allGoals(0x8)) == 92 ||
+                       measured(allGoals(0x20) == 93, when=dword(0x4c5304) == 3) && prev(allGoals(0x20)) == 92 ||
+                       measured(allGoals(0x24) == 93, when=dword(0x4c5304) == 2) && prev(allGoals(0x24)) == 92 ||
+                       measured(allGoals(0x34) == 93, when=dword(0x4c5304) == 1) && prev(allGoals(0x34)) == 92)
             )
 
 achievement(title="The Level with the Molten Buckets",
-            description="Reach all goals in The Foundry",
+            description="Complete all goals in The Foundry",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame()  && (dword(0x4c5304) == 4 && prev(achievedFoundryGoals(0x8)) == 8 && achievedFoundryGoals(0x8) == 9 ||
@@ -385,7 +395,7 @@ achievement(title="The Level with the Molten Buckets",
             )
             
 achievement(title="Rooftop Sunbathing",
-            description="Reach all goals in Skyline Beach",
+            description="Complete all goals in Skyline Beach",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedSkylineBeachGoals(0x8)) == 9 && achievedSkylineBeachGoals(0x8) == 10 ||
@@ -395,7 +405,7 @@ achievement(title="Rooftop Sunbathing",
             )
 
 achievement(title="Biker Gang Member",
-            description="Reach all goals in Gasoline Row",
+            description="Complete all goals in Gasoline Row",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedGasolineRowGoals(0x8)) == 9 && achievedGasolineRowGoals(0x8) == 10 ||
@@ -405,7 +415,7 @@ achievement(title="Biker Gang Member",
             )
             
 achievement(title="Life Among the Mole People",
-            description="Reach all goals in Central Station",
+            description="Complete all goals in Central Station",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedCentralStationGoals(0x8)) == 9 && achievedCentralStationGoals(0x8) == 10 ||
@@ -415,7 +425,7 @@ achievement(title="Life Among the Mole People",
             )
             
 achievement(title="Skatepark Ranger",
-            description="Reach all goals in Kicktail Park",
+            description="Complete all goals in Kicktail Park",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedKicktailParkGoals(0x8)) == 10 && achievedKicktailParkGoals(0x8) == 11 ||
@@ -425,7 +435,7 @@ achievement(title="Skatepark Ranger",
             )
             
 achievement(title="Getting Down in Chinatown",
-            description="Reach all goals in Neon East",
+            description="Complete all goals in Neon East",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedNeonEastGoals(0x8)) == 10 && achievedNeonEastGoals(0x8) == 11 ||
@@ -435,7 +445,7 @@ achievement(title="Getting Down in Chinatown",
             )
             
 achievement(title="Posh Life Enthusiast",
-            description="Reach all goals in Cozmo Street",
+            description="Complete all goals in Cozmo Street",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedCozmoStreetGoals(0x8)) == 9 && achievedCozmoStreetGoals(0x8) == 10 ||
@@ -445,7 +455,7 @@ achievement(title="Posh Life Enthusiast",
             )
             
 achievement(title="A District Worth Its Weight in Gold",
-            description="Reach all goals in Diamond Heights",
+            description="Complete all goals in Diamond Heights",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedDiamondHeightsGoals(0x8)) == 9 && achievedDiamondHeightsGoals(0x8) == 10 ||
@@ -455,7 +465,7 @@ achievement(title="A District Worth Its Weight in Gold",
             )
             
 achievement(title="Isn't It Technically a Pier?",
-            description="Reach all goals in South Side Bridge",
+            description="Complete all goals in South Side Bridge",
             points=10,
             type="progression",
             trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(achievedSouthSideBridgeGoals(0x8)) == 8 && achievedSouthSideBridgeGoals(0x8) == 9 ||
@@ -704,10 +714,10 @@ achievement(title="Branching Out",
             description="Unlock four additional districts",
             points=5,
             type="progression",
-            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && UnlockedDistricts(0x8) == 5 && prev(UnlockedDistricts(0x8)) == 4 ||
-                                  dword(0x4c5304) == 3 && UnlockedDistricts(0x20) == 5 && prev(UnlockedDistricts(0x20)) == 4 ||
-                                  dword(0x4c5304) == 2 && UnlockedDistricts(0x24) == 5 && prev(UnlockedDistricts(0x24)) == 4 ||
-                                  dword(0x4c5304) == 1 && UnlockedDistricts(0x34) == 5 && prev(UnlockedDistricts(0x34)) == 4)
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(UnlockedDistricts(0x8)) == 4 && UnlockedDistricts(0x8) == 5 ||
+                                  dword(0x4c5304) == 3 && prev(UnlockedDistricts(0x20)) == 4 && UnlockedDistricts(0x20) == 5 ||
+                                  dword(0x4c5304) == 2 && prev(UnlockedDistricts(0x24)) == 4 && UnlockedDistricts(0x24) == 5 ||
+                                  dword(0x4c5304) == 1 && prev(UnlockedDistricts(0x34)) == 4 && UnlockedDistricts(0x34) == 5)
             )   
             
 
@@ -715,17 +725,17 @@ achievement(title="City Mapper",
             description="Unlock all districts",
             points=10,
             type="progression",
-            trigger= DidNotCheat() && InGame() && bit4(0x004c507a) == 0 && (dword(0x4c5304) == 4 && UnlockedDistricts(0x8) == 9 && prev(UnlockedDistricts(0x8)) == 8 ||
-                                  dword(0x4c5304) == 3 && UnlockedDistricts(0x20) == 9 && prev(UnlockedDistricts(0x20)) == 8 ||
-                                  dword(0x4c5304) == 2 && UnlockedDistricts(0x24) == 9 && prev(UnlockedDistricts(0x24)) == 8 ||
-                                  dword(0x4c5304) == 1 && UnlockedDistricts(0x34) == 9 && prev(UnlockedDistricts(0x34)) == 8)
+            trigger= DidNotCheat() && InGame() && (dword(0x4c5304) == 4 && prev(UnlockedDistricts(0x8)) == 8 && UnlockedDistricts(0x8) == 9 ||
+                                  dword(0x4c5304) == 3 && prev(UnlockedDistricts(0x20)) == 8 && UnlockedDistricts(0x20) == 9 ||
+                                  dword(0x4c5304) == 2 && prev(UnlockedDistricts(0x24)) == 8 && UnlockedDistricts(0x24) == 9 ||
+                                  dword(0x4c5304) == 1 && prev(UnlockedDistricts(0x34)) == 8 && UnlockedDistricts(0x34) == 9)
             )        
             
             
 achievement(title="Money on My Mind",
-            description="Make 25,000 simoleons",
+            description="Make 25,000 Simoleons",
             points=5,
-            trigger= DidNotCheat() && InGame()  && dword(dword(0x4c05ac) + 0x74) >= 25000 && prev(dword(dword(0x4c05ac) + 0x74)) < 25000
+            trigger= DidNotCheat() && InGame()  && dword(dword(0x4c05ac) + 0x74) >= 25000 && prev(dword(dword(0x4c05ac) + 0x74)) >= 20000 && prev(dword(dword(0x4c05ac) + 0x74)) < 25000
             )                 
             
 function HappyUrb(){
@@ -742,9 +752,9 @@ function HappyUrb(){
 }
                  
 achievement(title="Happy Urb",
-            description="Without switching controlled Urbz, keep each of your Urb needs above 50% from midnight to midnight",
+            description="Starting from midnight of any day and without switching controlled Urbz, keep each of your Urb's needs above 50% over an entire 24 hour span",
             points=10,
-            trigger= HappyUrb() && DidNotCheat()
+            trigger= DidNotCheat() && HappyUrb()
             )            
            
          
