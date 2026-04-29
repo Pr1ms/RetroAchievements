@@ -18,12 +18,16 @@ function inGame() => 1 == 1
 rich_presence_conditional_display(byte(0x2e6773) > 0, "Instead of Bustin' Out you got busted cheating! The sentence is achievement denial until you quit your game. Don't save!")
 
 
-rich_presence_display(" - {0} {1} - §{2} ",                                     
+function firstRelationshipDebug() => followPointer(followPointer(followPointer(followPointer(followPointer(followPointer(followPointer(0x0037d948, 0x384), 0x84), 0xc), 0x24), 0x0), 0x0), 0x0)
+
+rich_presence_conditional_display(dword_be(0x002e679c) != 0, "Playing The Sims: Bustin' Out - {0} {1} - §{2} [{3}]",                                     
                       rich_presence_value("Seconds", 60 * (((word_be(followPointer(0x0037d944, 0x420)) + 11) % 12 + 12) % 12 + 1) + word_be(followPointer(0x0037d944, 0x42a)), "SECS"),
                       rich_presence_lookup("Postfix", word_be(followPointer(0x0037d944, 0x420)) / 12, postfix),
-                      rich_presence_value("Number", dword_be(followPointer(0x0037d944, 0x480)), "VALUE"))
+                      rich_presence_value("Number", dword_be(followPointer(0x0037d944, 0x480)), "VALUE"),
+                      rich_presence_value("Number", dword_be(firstRelationshipDebug()), "VALUE")
+                      )
 
-// rich_presence_display("Playing The Sims: Bustin' Out")
+rich_presence_display("Playing The Sims: Bustin' Out")
 
 
 
@@ -52,6 +56,24 @@ achievement("Dude I Love You but This Trailer’s Got to Go!",
             description="Complete all goals at Dudley’s Trailer",
             points=10,
             trigger=didNotCheat() && inGame() && prev(goalsAtDudleys()) == 14 && goalsAtDudleys() == 15
+)
+
+function goalsAtGoths() => bit2(followPointer(0x0037d948, 0x2E9)) + bit3(followPointer(0x0037d948, 0x2EB)) + bit2(followPointer(0x0037d948, 0x2EE)) + bit1(followPointer(0x0037d948, 0x2F0)) + 
+                           bit5(followPointer(0x0037d948, 0x2F0)) + bit2(followPointer(0x0037d948, 0x2F2)) + bit5(followPointer(0x0037d948, 0x2F2)) + bit5(followPointer(0x0037d948, 0x2F4)) + 
+                           bit6(followPointer(0x0037d948, 0x2FC))
+achievement("Who You Gonna Call?", 
+            description="Complete all goals at Goth Manor", 
+            points=10, 
+            trigger=didNotCheat() && inGame() && prev(goalsAtGoths()) == 8 && goalsAtGoths() == 9
+)
+
+function goalsAtClubRubb() => bit3(followPointer(0x0037d948, 0x2E9)) + bit2(followPointer(0x0037d948, 0x2EC)) + bit3(followPointer(0x0037d948, 0x2EC)) + bit0(followPointer(0x0037d948, 0x2ED)) + 
+                              bit2(followPointer(0x0037d948, 0x2ED)) + bit1(followPointer(0x0037d948, 0x2EE)) + bit5(followPointer(0x0037d948, 0x2F1)) + bit6(followPointer(0x0037d948, 0x2F1)) + 
+                              bit6(followPointer(0x0037d948, 0x2F2)) + bit7(followPointer(0x0037d948, 0x2F2)) + bit4(followPointer(0x0037d948, 0x2F4)) + bit5(followPointer(0x0037d948, 0x2F6))
+achievement("Bust a Move on the Dance Floor", 
+            description="Complete all goals at Club Rubb", 
+            points=10, 
+            trigger=didNotCheat() && inGame() && prev(goalsAtClubRubb()) == 8 && goalsAtClubRubb() == 9
 )
 
 function anyPromotion() => prev(word_be(followPointer(0x0037d948, 0x17A))) >= 1 && 1 + prev(word_be(followPointer(0x0037d948, 0x17A))) == word_be(followPointer(0x0037d948, 0x17A)) ||
@@ -279,24 +301,24 @@ achievement("Developing Life Skills",
 achievement("Basement Dweller", 
             description="Max out all six skills before choosing your first job at Mom's House",
             points=10,
-            trigger=didNotCheat() && inGame() && bit6(followPointer(0x0037d948, 0x2EC)) == 0 && 
-                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x24)) == 1000) &&
-                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x26)) == 1000) &&
-                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x28)) == 1000) &&
-                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x2E)) == 1000) &&
-                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x32)) == 1000) &&
-                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x34)) == 1000) &&                    
-                    (prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x24))) >= 950 &&
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x24))) < 1000 ||
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x26))) >= 950 &&
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x26))) < 1000 ||
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x28))) >= 950 &&
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x28))) < 1000 ||
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x2E))) >= 950 &&
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x2E))) < 1000 ||
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x32))) >= 950 &&
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x32))) < 1000 ||
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x34))) >= 950 &&
-                     prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x34))) < 1000)                    
+            trigger=didNotCheat() && inGame() && bit6(followPointer(0x0037d948, 0x2EC)) == 0 &&                                
+                    prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x24))) +
+                    prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x26))) +
+                    prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x28))) +
+                    prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x2E))) +
+                    prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x32))) +
+                    prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x34))) < 6000 &&
+                    trigger_when(prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x24))) +
+                                prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x26))) +
+                                 prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x28))) +
+                                prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x2E))) +
+                                prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x32))) +
+                                prev(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x34))) >= 5950) &&
+                    trigger_when(word_be(followPointer(followPointer(0x2e679c, 0x188), 0x24)) +
+                                word_be(followPointer(followPointer(0x2e679c, 0x188), 0x26)) +
+                                word_be(followPointer(followPointer(0x2e679c, 0x188), 0x28)) +
+                                word_be(followPointer(followPointer(0x2e679c, 0x188), 0x2E)) +
+                                word_be(followPointer(followPointer(0x2e679c, 0x188), 0x32)) +
+                                word_be(followPointer(followPointer(0x2e679c, 0x188), 0x34)) == 6000)
 )
 
