@@ -7,6 +7,94 @@ postfix =  {
     0x01: "pm",
 }
 
+/**
+0x11 = Movie Star
+0x12 = Mad Scientist
+0x13 = Gangster
+0x14 = Fashion Victim
+0x15 = Paramilitary
+0x16 = Counter Culture
+0x17 = Jock
+0x18 = Rock Star (unused in the game)
+0x19 = Slacker (unused in the game)
+0x1A = Artist (unused in the game)
+0x1B = Computer Geek (unused in the game)
+0x1C = Swindler (unused in the game)
+*/
+
+job = {
+    0: "Mall Clown",
+    1: "Kiddie Show Sidekick",
+    2: "Stunt Double",
+    3: "Horror Movie Extra",
+    4: "Soap Opera Star",
+    5: "Game Show Host",
+    6: "Sitcom Star",
+    7: "Sex Symbol",
+    8: "Director",
+    9: "Movie Mogul",
+   10: "Lab Cleaner",
+   11: "Potion Tester", 
+   12: "Pyro",
+   13: "Virus Breeder",
+   14: "Chemist",
+   15: "Vivisectionist",
+   16: "Gene Splicer",
+   17: "Robotitician",
+   18: "Space-Time Tinkerer",
+   19: "Death Ray Inventor",
+   20: "Vandal",
+   21: "Shoplifter",
+   22: "Burglar",
+   23: "Car Thief",
+   24: "Mugger",
+   25: "Body Guard",
+   26: "Arsonist",
+   27: "Extortionist",
+   28: "Hit Man",
+   29: "Mob Boss",
+   30: "Hand Model",
+   31: "Lingerie Model",
+   32: "Body Waxer",
+   33: "Fingernail Painter",
+   34: "Wig Designer",
+   35: "Hair Stylist",
+   36: "Makeup Artist",
+   37: "Runway Model",
+   38: "Centerfold",
+   39: "Super Model",
+   40: "Latrine Cleaner",
+   41: "Boot Polisher",
+   42: "Drill Instructor",
+   43: "Paratrooper",
+   44: "Chopper Pilot",
+   45: "Covert Ops",
+   46: "Panhandler",
+   47: "Code Breaker",
+   48: "Intelligence Director",
+   49: "War Minister",
+   50: "Panhandler",
+   51: "Leaflet Distributor",
+   52: "Basket Weaver",
+   53: "Flower Child",
+   54: "Massage Therapist",
+   55: "Yoga Instructor",
+   56: "Transcendentalist",
+   57: "Love Guru",
+   58: "Psychic Activist",
+   59: "Full Time Freak",
+   60: "Mascot",
+   61: "Ball Collector",
+   62: "Rookie",
+   63: "Starter",
+   64: "All-Star",
+   65: "MVP",
+   66: "Superstar",
+   67: "Head Coach",
+   68: "Hall of Famer",
+   69: "Living Legend"
+}
+
 function followPointer(pointer, offset) => (dword_be(pointer) & 0x1FFFFFFF) + offset
 
 // TODO(Prims): complete the following logics
@@ -20,11 +108,12 @@ rich_presence_conditional_display(byte(0x2e6773) > 0, "Instead of Bustin' Out yo
 
 function firstRelationshipDebug() => followPointer(followPointer(followPointer(followPointer(followPointer(followPointer(followPointer(0x0037d948, 0x384), 0x84), 0xc), 0x24), 0x0), 0x0), 0x0)
 
-rich_presence_conditional_display(dword_be(0x002e679c) != 0, "Playing The Sims: Bustin' Out - {0} {1} - §{2} [{3}]",                                     
+rich_presence_conditional_display(dword_be(0x002e679c) != 0, "{4} - {0} {1} - §{2} [{3}]",                                     
                       rich_presence_value("Seconds", 60 * (((word_be(followPointer(0x0037d944, 0x420)) + 11) % 12 + 12) % 12 + 1) + word_be(followPointer(0x0037d944, 0x42a)), "SECS"),
                       rich_presence_lookup("Postfix", word_be(followPointer(0x0037d944, 0x420)) / 12, postfix),
                       rich_presence_value("Number", dword_be(followPointer(0x0037d944, 0x480)), "VALUE"),
-                      rich_presence_value("Number", dword_be(firstRelationshipDebug()), "VALUE")
+                      rich_presence_value("Number", dword_be(firstRelationshipDebug()), "VALUE"),
+                      rich_presence_lookup("Job", (word_be(followPointer(followPointer(0x002e679c, 0x188), 0x80)) - 0x11) * 10 + word_be(followPointer(followPointer(0x002e679c, 0x188), 0x82)), job, fallback="Bustin' Out")
                       )
 
 rich_presence_display("Playing The Sims: Bustin' Out")
@@ -75,6 +164,17 @@ achievement("Bust a Move on the Dance Floor",
             points=10, 
             trigger=didNotCheat() && inGame() && prev(goalsAtClubRubb()) == 8 && goalsAtClubRubb() == 9
 )
+
+
+function goalsAtTinselBluff() => bit5(followPointer(0x0037d948, 0x2E8)) + bit7(followPointer(0x0037d948, 0x2E8)) + bit4(followPointer(0x0037d948, 0x2EE)) + bit6(followPointer(0x0037d948, 0x2EE)) + 
+                                 bit0(followPointer(0x0037d948, 0x2EF)) + bit1(followPointer(0x0037d948, 0x2EF)) + bit3(followPointer(0x0037d948, 0x2F0)) + bit1(followPointer(0x0037d948, 0x2F1)) + 
+                                 bit2(followPointer(0x0037d948, 0x2F1)) + bit4(followPointer(0x0037d948, 0x2F5)) + bit5(followPointer(0x0037d948, 0x2F5)) + bit4(followPointer(0x0037d948, 0x2F7)) + 
+                                 bit5(followPointer(0x0037d948, 0x2F9))
+achievement("A Place Atop of the World", 
+            description="Complete all goals at Tinsel Bluffs", 
+            points=10, 
+            trigger=didNotCheat() && inGame() && prev(goalsAtTinselBluff()) == 12 && goalsAtTinselBluff() == 13
+)            
 
 function anyPromotion() => prev(word_be(followPointer(0x0037d948, 0x17A))) >= 1 && 1 + prev(word_be(followPointer(0x0037d948, 0x17A))) == word_be(followPointer(0x0037d948, 0x17A)) ||
                            prev(word_be(followPointer(0x0037d948, 0x17C))) >= 1 && 1 + prev(word_be(followPointer(0x0037d948, 0x17C))) == word_be(followPointer(0x0037d948, 0x17C)) ||
