@@ -177,7 +177,7 @@ achievement("Cold Heart",
                     prev(byte(0x00ed)) == 0x00 && byte(0x00ed) == 0x01
 )
 
-achievement("Roman...tic?", 
+achievement("Truly Roman-tic", 
             description="Find a heart container in the Roman Palace", 
             points=4, 
             trigger=inGame() && 
