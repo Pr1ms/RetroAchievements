@@ -1,0 +1,43 @@
+Lookup:LevelName
+0x0=New Junk City
+0x1=What the Heck?
+0x2=Rusty the Snowman
+0x3=Evil the Cat
+0x4=Bungee 1
+0x5=Bungee 2
+0x6=Bungee 3
+0x7=For Pete's sake
+0x8=Buttville part 2
+0x9=Buttville part 1
+0x0a=Level 5 
+0x0b=Level 5 Boss
+0x0c=Level 5 part 2
+0x0d= Down the Tubes
+0x0e=Tube Race
+0x0f=Asteroids 1
+0x10=Asteroids 2
+0x11=Asteroids 3
+0x12=Asteroids 4
+0x13=Asteroids 5
+0x14=Asteroids 6
+0x15=Who turned out the lights?
+0x16=Who turned out the lights?
+0x17=Who turned out the lights?
+0x18=Who turned out the lights?
+0x19=Who turned out the lights?
+0x1a=Psycrow
+
+Lookup:Lives
+0x30=0 Lives
+0x31=1 Lives
+0x32=2 Lives
+0x33=3 Lives
+0x34=4 Lives
+0x35=5 Lives
+0x36=6 Lives
+0x37=7 Lives
+0x38=8 Lives
+0x39=9 Lives
+
+Display:
+Playing in @LevelName(0x00512a), @Lives(0x005162)
