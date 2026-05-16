@@ -17,7 +17,7 @@ rich_presence_display("Playing Zenji")
 achievement("Zen Little Puzzle Game",
             description="Beat a 4 x 3 Level", 
             type="progression",
-            points=5, 
+            points=1, 
             trigger=inGame() && (byte(0x01B0) == 0x00 || byte(0x01B0) == 0x01) &&
                     prev(byte(0x001D)) == 0x04 && byte(0x001D) == 0x05
 )
@@ -25,7 +25,7 @@ achievement("Zen Little Puzzle Game",
 achievement("Fire in the Maze", 
             description="Beat a 5 x 4 Level", 
             type="progression",
-            points=10, 
+            points=5, 
             trigger=inGame() && (byte(0x01B0) == 0x02 || byte(0x01B0) == 0x31) &&
                     prev(byte(0x001D)) == 0x04 && byte(0x001D) == 0x05
 )
@@ -48,7 +48,7 @@ achievement("Mental Pressure",
 
 achievement("It's Okay, I Can Wait", 
             description="Beat a Level by having the last not connected Tile disappear on its own", 
-            points=10, 
+            points=5, 
             trigger=inGame() && once(prev(byte(0x01B8)) > 0x00 && byte(0x01B8) == 0x00) &&
                     never(byte(0x001D) == 0x02) &&
                     prev(byte(0x001D)) == 0x04 && byte(0x001D) == 0x05    
@@ -56,7 +56,7 @@ achievement("It's Okay, I Can Wait",
 
 achievement("Luck and a Keen Eye", 
             description="Beat a Level by doing a single Tile rotation", 
-            points=10, 
+            points=5, 
             trigger=inGame() && 
                     disable_when(repeated(2, prev(byte(0x001D)) == 0x01 && byte(0x001D) == 0x02)) &&
                     (always_false() || never(byte(0x001D) == 0x00 || byte(0x001D) == 0x07)) &&
@@ -69,7 +69,7 @@ achievement("Don't You Disappear on Me",
             trigger=inGame() && byte(0x01B8) > 0 && prev(byte(0x00E9)) != byte(0x01BD) && byte(0x00E9) == byte(0x01BD)
 )
 
-achievement("Getting some Mileage", 
+achievement("Getting Some Mileage", 
             description="Score 5,000 points", 
             points=5, 
             trigger=inGame() && 
@@ -97,7 +97,7 @@ achievement("I Could Go on Forever",
 leaderboard("Highscore",
             description="Get the highest score you can in a single run",            
             format="SCORE",
-            start=prev(byte(0x001D)) == 0x0A && byte(0x001D) == 0x0B,
+            start=prev(byte(0x001D)) == 0x0A && byte(0x001D) == 0x0B && score() > 0,
             cancel=always_false(),
             submit=always_true(),
             value=score()
@@ -105,7 +105,7 @@ leaderboard("Highscore",
 
 leaderboard("Levels Beaten",
             description="Beat as many puzzles as you can in a single run",            
-            start=prev(byte(0x001D)) == 0x0A && byte(0x001D) == 0x0B,
+            start=prev(byte(0x001D)) == 0x0A && byte(0x001D) == 0x0B && byte(0x01B0) > 0,
             cancel=always_false(),
             submit=always_true(),
             value=byte(0x01B0)
