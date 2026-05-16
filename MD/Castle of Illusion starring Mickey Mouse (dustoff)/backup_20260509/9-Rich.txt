@@ -1,0 +1,20 @@
+Lookup:Location
+0=the Enchanted Forest
+1=Toyland
+2=the Storm
+3=the Library
+4=the Castle
+5=the Castle
+
+Lookup:Difficulty
+0=on Normal
+1=on Hard
+2=in Practice Mode
+
+Format:Lives
+FormatType=VALUE
+
+Display:
+?0xH00f40b=1?Watching the demo
+?0xH00f300<=10?In the titles
+Mickey is in @Location(0x 00ff44) with @Lives(0xH00f324) lives @Difficulty(0xH00ff0c)
