@@ -233,7 +233,7 @@ leaderboard(
 leaderboard(
     id = 142114, title = "Fortress of Illusion Speedrun",
     description = "In Practice Difficulty, beat the game as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && byte(0x00FF0C) == 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && byte(0x00FF0C) == 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && prev(word(0x00FF44) == 0x02) && word(0x00FF44) == 0x03 && 
              ((prev(word(0x00F300)) == 38 && word(0x00F300) == 32) ||
@@ -245,7 +245,7 @@ leaderboard(
 leaderboard(
     id = 142115, title = "Castle of Illusion Speedrun",
     description = "In Normal/Hard Difficulty, beat the game as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && byte(0x00FF0C) != 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && byte(0x00FF0C) != 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && inGame() && prev(word(0x00F300)) == 0x2C && word(0x00F300) == 0x2E,
     value  = measured(tally(0, byte(0x00F41C) == 0)),
@@ -255,7 +255,7 @@ leaderboard(
 leaderboard(
     id = 142116, title = "The Enchanted Forest Speedrun",
     description = "In Normal/Hard Difficulty, complete The Enchanted Forest as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 0 && byte(0x00FF0C) != 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 0 && byte(0x00FF0C) != 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && word(0x00FF44) == 0x00 && byte(0x00F44E) == 1 && prev(byte(0x00F44E)) == 0,
     value  = measured(tally(0, byte(0x00F41C) == 0)),
@@ -265,7 +265,7 @@ leaderboard(
 leaderboard(
     id = 142117, title = "ToyLand Speedrun",
     description = "In Normal/Hard Difficulty, complete ToyLand as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 1 && byte(0x00FF0C) != 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 1 && byte(0x00FF0C) != 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && word(0x00FF44) == 0x01 && byte(0x00F44E) == 1 && prev(byte(0x00F44E)) == 0,
     value  = measured(tally(0, byte(0x00F41C) == 0)),
@@ -275,7 +275,7 @@ leaderboard(
 leaderboard(
     id = 142118, title = "The Storm Speedrun",
     description = "In Normal/Hard Difficulty, complete The Storm as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 2 && byte(0x00FF0C) != 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 2 && byte(0x00FF0C) != 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && word(0x00FF44) == 0x02 && byte(0x00F44E) == 1 && prev(byte(0x00F44E)) == 0,
     value  = measured(tally(0, byte(0x00F41C) == 0)),
@@ -285,7 +285,7 @@ leaderboard(
 leaderboard(
     id = 142119, title = "The Library Speedrun",
     description = "In Normal/Hard Difficulty, complete The Library as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 3 && byte(0x00FF0C) != 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 3 && byte(0x00FF0C) != 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && word(0x00FF44) == 0x03 && word(0x00FF46) == 0x09 && byte(0x00F44E) == 1 && prev(byte(0x00F44E)) == 0,
     value  = measured(tally(0, byte(0x00F41C) == 0)),
@@ -295,7 +295,7 @@ leaderboard(
 leaderboard(
     id = 142120, title = "The Castle Speedrun",
     description = "In Normal/Hard Difficulty, complete The Castle as fast as possible",
-    start  = prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 4 && byte(0x00FF0C) != 2,
+    start  = inGame() && prev(word(0x00F300)) == 12 && word(0x00F300) == 14 && word(0x00FF44) == 4 && byte(0x00FF0C) != 2,
     cancel = word(0x00F300) == 2,
     submit = inGame() && word(0x00FF44) == 0x04 && word(0x00FF46) == 0x03 && byte(0x00F44E) == 1 && prev(byte(0x00F44E)) == 0,
     value  = measured(tally(0, byte(0x00F41C) == 0)),
