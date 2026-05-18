@@ -17,7 +17,9 @@ LevelxMap = {
     23: "fighting against the Storm-Men in the Storm",
     30: "in the Library",
     31: "in the Library",
+    32: "in the Library",
     34: "in the Library",
+    35: "in the Library",
     38: "in the Library",
     37: "in the Library",
     39: "fighting against the Licorice Dragon in the Library",
@@ -189,9 +191,10 @@ achievement(
 
 achievement(
     title = "Decaffeinated", points = 5,
+    type="missable",
     description = "Jump Inside A Coffee Cup",
     id = 4341, badge = "04969", published = "04/01/2014 22:08:38", modified = "26/09/2019 07:54:01",
-    trigger = inGame() && word(0x00FF44) == 3 && prev(word(0x00FF46)) == 1 && word(0x00FF46) == 7
+    trigger = inGame() && word(0x00FF44) == 3 && (prev(word(0x00FF46)) == 1 && word(0x00FF46) == 7 || prev(word(0x00FF46)) == 1 && word(0x00FF46) == 5)
 )
 
 leaderboard(
