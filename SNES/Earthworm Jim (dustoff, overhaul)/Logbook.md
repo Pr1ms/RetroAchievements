@@ -26,7 +26,7 @@ Actions taken:
 | Issue | Action |
 |-|-|
 |Triple check of the map ID, two of which based on magic values | Removed the two magic checks |
-| Unlock based on displayed sprites and without a delta | Replaced with a check on the camera being unlocked (which is the actual thing which forces us to throw the cow away in the first place) |
+| Unlock based on displayed sprites and without a delta | Unlock based on the "boss" HP since the fridge is treated as a boss in this sequence |
 
 ### The Bigger They Are / The Harder They Fall / Work with What You Got / Don't Try This at Home! / Scratch Beneath the Surface (27739, 27740, 27741, 27742, 27747)
 | Issue | Action |
