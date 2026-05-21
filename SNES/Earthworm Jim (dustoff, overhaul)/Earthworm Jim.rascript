@@ -2,28 +2,79 @@
 // #ID = 889
 
 /** TODO(Prims):
-   [ ] Full RAM Redig
    [ ] Make savestates for reproducting open tickets to check if my edits actually solve them
+   [ ] Full RAM Redig
+   [ ] Rewrite achievements to standards and upon reliable RAM addresses
    [ ] Add Demo protection (for Pete's Sake displays a primed achievement)
    [ ] Check/add cheat protection where relevant
-   [ ] Rewrite achievements to standards and upon reliable RAM addresses
    [ ] Improve RP to sort titles, demo, etc. and add a default RP
 */
+
+
+level = {
+    0x0000: "bouncing on old tires in New Junk City",
+    0x0001: "feeling hot in What the Heck?",
+    0x0002: "fighting Rusty the Snowman",
+    0x0003: "fighting Evil the Cat",
+    0x0004: "bungee jumping in Snot a Problem: Round 1",
+    0x0005: "bungee jumping in Snot a Problem: Round 2",
+    0x0006: "bungee jumping in Snot a Problem: Round 3",
+    0x0007: "Peter Puppy",
+    0x0008: "Slug for Butt",
+    0x0009: "Helicopter",
+    0x000A: "exploring Level 5",
+    0x000B: "fighting Chicken Wing while skydiving in Level 5",
+    0x000C: "trying to get back to his suit in Level 5",
+    0x000D: "wandering Down the Tubes",
+    0x000E: "racing for his life in the Tube Race",
+    0x000F: "racing Psycrow in Andy Asteroids?",
+    0x0010: "racing Psycrow in Andy Asteroids?",
+    0x0011: "racing Psycrow in Andy Asteroids?",
+    0x0012: "racing Psycrow in Andy Asteroids?",
+    0x0013: "racing Psycrow in Andy Asteroids?",
+    0x0014: "Asteroids 6",
+    0x0015: "not Alone in the Dark",
+    0x0016: "not Alone in the Dark",
+    0x0017: "not Alone in the Dark",
+    0x0018: "not Alone in the Dark",
+    0x0019: "not Alone in the Dark",
+    0x001A: "fighting Psycrow!"
+}
+
+difficulty = {
+    0x00: "Practice",
+    0x01: "Normal",
+    0x02: "Hard"
+}
+
+
+function inGame() => high4(0x6620) == 3 && byte(0x6B8E) == 0
+
+// TODO: find a mainMenu/in game flag
+rich_presence_conditional_display(high4(0x6620) == 0, "In Main Menu")
+rich_presence_conditional_display(byte(0x6B8E) == 1, "In Demo Mode")
+
+rich_presence_conditional_display(inGame(), "Jim is {0} ({1}) - HP: {2}% - Lives: {3}",
+                                  rich_presence_lookup("Level", word(0x512A), level),
+                                  rich_presence_lookup("Difficulty", word(0x5146), difficulty),
+                                  rich_presence_value("VALUE", low4(0x6627) * 100 + low4(0x6628) * 10 + low4(0x6629)),
+                                  rich_presence_value("VALUE",low4(0x5162))
+)
+
+rich_presence_display("Playing Earthworm Jim")
 
 achievement(
     title = "Not-So-Ground Beef", points = 5, type="progression",
     description = "Launch the cow in New Junk City",
-    id = 27712, badge = "28222", published = "18/08/2015 19:17:04", modified = "26/08/2021 20:51:20",
-    trigger = byte(0x00512A) == 0 && byte(0x005770) == 138 && byte(0x005148) == 217 && byte(0x005149) == 57
+    id = 27712, badge = "28222",
+    trigger = inGame() && word(0x00512A) == 0x0000 && prev(word(0x006894)) == 0xFFFF && word(0x006894) == 0x0000
 )
 
 achievement(
     title = "The Rotten Apple", points = 10, type="progression",
     description = "Complete New Junk City",
     id = 27713, badge = "28190", published = "18/08/2015 19:17:09", modified = "31/08/2021 22:01:35",
-    trigger = byte(0x00512A) == 0 && byte(0x00519B) == 51 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) &&
-              once(byte(0x005164) == 255) && never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) &&
-              byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
+    trigger = inGame() && word(0x512A) == 0x00 && prev(word(0x00519E)) == 0x1707 && word(0x00519E) == 0x18BF
 )
 
 achievement(
@@ -276,29 +327,29 @@ achievement(
 achievement(
     title = "The Bigger They Are", points = 1,
     description = "Watch Jim show off his strength",
-    id = 27739, badge = "28233", published = "18/08/2015 19:18:44", modified = "30/04/2021 03:05:35",
-    trigger = byte(0x00519E) == 5 && byte(0x00519F) == 26
+    id = 27739, badge = "28233", 
+    trigger = inGame() && prev(word(0x00519E)) == 0x19F3 && word(0x00519E) == 0x1A05 // From flexing to flexing too much
 )
 
 achievement(
     title = "The Harder They Fall", points = 1,
     description = "Watch Jim show off a little too much",
-    id = 27740, badge = "28185", published = "18/08/2015 19:18:47", modified = "26/08/2021 23:26:39",
-    trigger = byte(0x00519E) == 127 && byte(0x00519F) == 26
+    id = 27740, badge = "28185", 
+    trigger = inGame() && prev(word(0x00519E)) == 0x19F3 && word(0x00519E) == 0x1A7F // From flexing to falling pants 
 )
 
 achievement(
     title = "Work with What You Got", points = 1,
     description = "Watch Jim skip some rope",
-    id = 27741, badge = "28186", published = "18/08/2015 19:18:51", modified = "30/04/2021 03:05:48",
-    trigger = byte(0x00519E) == 55 && byte(0x00519F) == 27
+    id = 27741, badge = "28186",
+    trigger = inGame() && prev(word(0x00519E)) == 0x1707 && word(0x00519E) == 0x1B37 // From idle to skipping
 )
 
 achievement(
     title = "Don't Try This at Home!", points = 1,
     description = "Watch Jim ignore proper gun safety",
-    id = 27742, badge = "28234", published = "18/08/2015 19:18:54", modified = "30/04/2021 03:05:53",
-    trigger = byte(0x00519E) == 191 && byte(0x00519F) == 24
+    id = 27742, badge = "28234",
+    trigger = inGame() && prev(word(0x00519E)) == 0x1707 && word(0x00519E) == 0x18BF // From idle to exploding their face
 )
 
 achievement(
@@ -330,8 +381,8 @@ achievement(
 achievement(
     title = "Scratch Beneath the Surface", points = 1,
     description = "Hang off of a ledge and take care of an itch",
-    id = 27747, badge = "28193", published = "18/08/2015 19:19:11", modified = "30/04/2021 03:04:36",
-    trigger = byte(0x00519E) == 157 && byte(0x00519F) == 39
+    id = 27747, badge = "28193",
+    trigger = inGame() &&  prev(word(0x00519E)) == 0x1707 && word(0x00519E) == 0x279D // From idle to scratching their butt
 )
 
 achievement(
