@@ -83,17 +83,22 @@ Two hidden leaderboards have been added to track them to help with potential fut
 
 ### Worms in Glass Houses (27735)
 - was not a big fan of the current logic using the pod HP since it is not in a guaranteed spot; still, no tickets for years and recent unlocks so I kept it that way
-- removed the checkpoint for entering the pod in the first place since it would prevent a retry from a continue and did not really serve a purpose
 
-### Thoughtful Pet Owner, Dog-Eat-Worm World (27736, 27745)
+### Thoughtful Pet Owner (27736)
 - changed the logic that was based on the win animation in the considered map (no delta) to one based on the level ID transition
 - not a fan of the logic based on the "state" of the Dog entity since usually entities position in memory is not guaranteed but I couldn't see how to avoid this with regards to what the achievements ask of the player and it seems stable in this instance (which makes sense since the dog is loaded with the level) => it's been kept
 - removed the two magic values which were not stable and are likely what led to tickets
-- for Dog-Eat-Worm World: added a note in the description that level selection/skipping is allowed to fit the logic
+
+### Dog-Eat-Worm World (27745)
+- unfortunately I had to keep the logic that was based on the win animation on the considered map since it IS what needs to happen at the same time the dog is transformed
+- added a delta check to this animation
+- not a fan of the logic based on the "state" of the Dog entity since usually entities position in memory is not guaranteed but I couldn't see how to avoid this with regards to what the achievements ask of the player and it seems stable in this instance (which makes sense since the dog is loaded with the level) => it's been kept
+- removed the two magic values which were not stable and are likely what led to tickets
+- added a note in the description that level selection/skipping is allowed to fit the logic
 
 ### Heading for Trouble (27737)
 - removed the hit target of 1 on the trigger condition
-- removed the checkpoint on the magic value supposed to represent the cow being launched (like, what was that doing here ?!)
+- removed the checkpoint on the magic value supposed to represent the cow being launched (twice the magic it appears) and replaced it by a checkpoint on the player starting position (reset upon taking the damage)
 - added a delta check
 
 ### Invincible Invertebrate, The Nick Trick (27738, 27743)

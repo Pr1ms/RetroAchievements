@@ -57,7 +57,7 @@ function notCommonForbiddenCodes() => disable_when(word(0x50B8) == 0xFFFF) &&  /
                                    disable_when(word(0x50C0) != 0 && prev(low4(0x006620)) < low4(0x006620)) && // Ammo Refill Cheat
                                    disable_when(word(0x50C0) != 0 && prev(word(0x0069A0)) < word(0x0069A0)) && // Plasma Power-Up Cheat
                                    disable_when(word(0x5142) == 0xFFFF) &&  // Debug View: Freezeability
-                                   disable_when(word(0x5144) == 0xFFFF) && // Debug View: Cheat Mode                                                
+                                   disable_when(word(0x5144) == 0xFFFF) && // Debug View: Cheat Mode 
                                    (always_false() || never(high4(0x6620) == 0))
 
 // For map selection, there are several possibilities
@@ -69,25 +69,30 @@ function notCommonForbiddenCodes() => disable_when(word(0x50B8) == 0xFFFF) &&  /
 // Since some traces of cheats only last a few freames we cannot track it in RP. Instead we will use hidden leaderboards to prevent wrongful tickets in the future
 
 function notAnyCheat() => notCommonForbiddenCodes() && word(0x50C0) != 0xFFFF
+function health() => low4(0x6627) * 100 + low4(0x6628) * 10 + low4(0x6629) 
 
 // TODO: find a mainMenu/in game flag
 rich_presence_conditional_display(high4(0x6620) == 0, "In Main Menu")
 rich_presence_conditional_display(byte(0x6B8E) == 1, "In Demo Mode")
+ 
+rich_presence_conditional_display(inGame() && word(0x512A) == 0x0008 && word(0x6890) == 0x10FA && word(0x6892) == 0x0153 && word(0x6894) == 0xFFFF,
+                                  "Jim just won the game on {0}",
+                                  rich_presence_lookup("Difficulty", word(0x5146), difficulty)
+)
   
 rich_presence_conditional_display(inGame() && (word(0x50B8) == 0xFFFF || word(0x5142) == 0xFFFF || word(0x5144) == 0xFFFF || word(0x50C0) == 0xFFFF), "Jim is {0} ({1}) - HP: {2}% - Lives: {3} - Using Cheats",
                                   rich_presence_lookup("Level", word(0x512A), level),
                                   rich_presence_lookup("Difficulty", word(0x5146), difficulty),
-                                  rich_presence_value("VALUE", low4(0x6627) * 100 + low4(0x6628) * 10 + low4(0x6629)),
+                                  rich_presence_value("VALUE", health()),
                                   rich_presence_value("VALUE",low4(0x5162))
 )
 
 rich_presence_conditional_display(inGame(), "Jim is {0} ({1}) - HP: {2}% - Lives: {3}",
                                   rich_presence_lookup("Level", word(0x512A), level),
                                   rich_presence_lookup("Difficulty", word(0x5146), difficulty),
-                                  rich_presence_value("VALUE", low4(0x6627) * 100 + low4(0x6628) * 10 + low4(0x6629)),
+                                  rich_presence_value("VALUE", health()),
                                   rich_presence_value("VALUE",low4(0x5162))
 )
-
 
 rich_presence_display("Playing Earthworm Jim")
 
@@ -95,77 +100,66 @@ achievement(
     title = "Not-So-Ground Beef", points = 5, type="progression",
     description = "Launch the cow in New Junk City",
     id = 27712, badge = "28222",
-    trigger = notAnyCheat() && inGame() && word(0x00512A) == 0x0000 && 
-              word(0x6890) == 0x0370 && word(0x6892) == 0x0215 &&
-              prev(word(0x6894)) == 0xFFFF && word(0x6894) == 0x0000
+    trigger = notAnyCheat() && inGame() && word(0x512A) == 0x0000 && 
+              word(0x6890) == 0x0370 && word(0x6892) == 0x0215 && // Camera scripted position for the event (before that the fridge is invincible)
+              prev(word(0x6894)) == 0xFFFF && word(0x6894) == 0x0000 // Lifting the camera lock
 )
 
 achievement(
     title = "The Rotten Apple", points = 10, type="progression",
     description = "Complete New Junk City",
     id = 27713, badge = "28190", 
-    trigger = inGame() && word(0x512A) == 0x00 && prev(word(0x00519E)) == 0x1707 && word(0x00519E) == 0x18BF
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x0000 && word(0x512A) == 0x000F // from New Junk City to the correct Andy Asteroids? level
 )
 
+// Winning a race amounts to not going to the Psycrow fight after it
 achievement(
     title = "Galactic Rodeo", points = 10, 
     type="missable",
     description = "Win an Andy Asteroids? race",
     id = 27714, badge = "28196", 
-    trigger = byte(0x00512A) == 15 && byte(0x00519B) == 55
-)
+    trigger = notAnyCheat() && inGame() && (
+              prev(word(0x512A)) == 0x000F && word(0x512A) == 0x0001 ||
+              prev(word(0x512A)) == 0x0010 && word(0x512A) == 0x000D ||
+              prev(word(0x512A)) == 0x0011 && word(0x512A) == 0x0004 ||
+              prev(word(0x512A)) == 0x0012 && word(0x512A) == 0x000A ||
+              prev(word(0x512A)) == 0x0013 && word(0x512A) == 0x0007 ||
+              prev(word(0x512A)) == 0x0014 && word(0x512A) == 0x0009)
+)              
 
 achievement(
     title = "Fire and Jimstone", points = 10, type="progression",
     description = "Complete What the Heck?",
     id = 27715, badge = "28197", 
-    trigger = byte(0x00512A) == 3 && byte(0x00519B) == 51 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) &&
-              once(byte(0x00512A) == 0) && once(byte(0x00512A) == 15) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7) &&
-              never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x0003 && word(0x512A) == 0x0010 // from Evil Cat to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "Slippery When Wet", points = 10, type="progression",
     description = "Complete Down the Tubes",
     id = 27716, badge = "28183", 
-    trigger = byte(0x00512A) == 13 && byte(0x00519B) == 50 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) &&
-              once(byte(0x00512A) == 0) && once(byte(0x00512A) == 3) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7) &&
-              never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x000D && word(0x512A) == 0x000E // from Down the Tubes to Tube Race
 )
 
 achievement(
     title = "Bowl-ing Alley", points = 10, type="progression",
     description = "Complete Tube Race",
     id = 27717, badge = "28198", 
-    trigger = byte(0x00512A) == 14 && byte(0x00519B) == 50 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) &&
-              once(byte(0x00512A) == 0) && once(byte(0x00512A) == 3) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7) &&
-              never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x000E && word(0x512A) == 0x0011 // from Tube Race to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "Every Once in a Bile", points = 10, type="progression",
     description = "Complete Snot a Problem",
     id = 27718, badge = "28191", 
-    trigger = byte(0x00512A) == 6 && once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) &&
-              once(byte(0x0068C2) == 10) && prev(byte(0x0068C2)) == 1 && byte(0x0068C2) == 0 &&
-              (low4(0x006627) + low4(0x006628) + low4(0x006629)) != 0 && byte(0x005144) != 255 &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7) &&
-              never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x0006 && word(0x512A) == 0x0012 // from Snot a Problem: Round 3 to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "I Smell a Lab Rat", points = 10, type="progression",
     description = "Complete Level 5",
     id = 27719, badge = "28192", 
-    trigger = byte(0x00512A) == 11 && byte(0x0051F2) == 0 && prev(byte(0x005224)) == 10 && byte(0x005144) != 255 &&
-              once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) && once(byte(0x00512A) == 3) &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7) && never(byte(0x005164) == 255) &&
-              ((byte(0x005224) == 12) ||
-               (byte(0x005224) == 3))
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x000B && word(0x512A) == 0x0013 // from Chicken Wing to the correct Andy Asteroids? level
 )
 
 achievement(
@@ -173,187 +167,125 @@ achievement(
     description = "Complete Who Turned Out the Lights?",
     type = "missable",
     id = 27720, badge = "28194", 
-    trigger = byte(0x00512A) == 25 && byte(0x00519B) == 13 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) &&
-              once(byte(0x00512A) == 0) && once(byte(0x00512A) == 3) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) == 128) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7) &&
-              never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x00019 && word(0x512A) == 0x000A // from the last map of Who Turn Out the Lights to the main Level 5 map
 )
 
 achievement(
     title = "Beware of Dog", points = 10, type="progression",
     description = "Complete For Pete's Sake",
     id = 27721, badge = "28195", 
-    trigger = byte(0x00512A) == 7 && byte(0x00519B) == 51 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) &&
-              once(byte(0x00512A) == 0) && once(byte(0x00512A) == 3) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7) &&
-              never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x0007 && word(0x512A) == 0x0014 // from For Pete's Sake to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "The (Rear) End", points = 25, type="win_condition",
     description = "Complete Buttville and beat the game",
     id = 27722, badge = "28223", 
-    trigger = byte(0x00512A) == 8 && byte(0x005170) == 137 && byte(0x00517A) == 32 && byte(0x005144) != 255 &&
-              once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) && once(byte(0x00512A) == 3) &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7) && never(byte(0x005164) == 255)
+    trigger = notAnyCheat() && inGame() && word(0x512A) == 0x0008 && 
+              word(0x6890) == 0x10FA && word(0x6892) == 0x0153 && // Camera scripted position for the Queen explosion event
+              prev(word(0x6894)) == 0x0000 && word(0x6894) == 0xFFFF // The camera locks-on
 )
 
 achievement(
     title = "Re-tire-ment Plan", points = 10,
     description = "Defeat Billy the Bin on Difficult mode",
     id = 27723, badge = "28224",
-    trigger = notAnyCheat() && inGame() && word(0x00512A) == 0x0000 && word(0x5146) == 0x0002 &&
-              word(0x6890) == 0x11D0 && word(0x6892) == 0x0098 &&
-              prev(word(0x6894)) == 0xFFFF && word(0x6894) == 0x0000
+    trigger = notAnyCheat() && inGame() && word(0x00512A) == 0x0000 && word(0x5146) == 0x0002 &&  
+              word(0x6890) == 0x11D0 && word(0x6892) == 0x0098 && // Camera scripted position for the fight
+              prev(word(0x6894)) == 0xFFFF && word(0x6894) == 0x0000 // Lifting the camera lock
 )
 
 achievement(
     title = "Junk Food", points = 10,
     description = "Defeat Chuck on Difficult mode",
     id = 27724, badge = "28225", 
-    trigger = byte(0x00512A) == 0 && byte(0x005146) == 2 && byte(0x00519B) == 51 && byte(0x005144) != 51 &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && once(byte(0x005164) == 255) &&
-              byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
+    trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
+              prev(word(0x512A)) == 0x0000 && word(0x512A) == 0x000F // from New Junk City to the correct Andy Asteroids? level
 )
 
+// "Defeating" Psy-Crow amounts to surviving the fight to see the next map
 achievement(
     title = "As the Crow Flies", points = 10,
     description = "Defeat Psy-Crow",
     id = 27725, badge = "28179", 
-    trigger = (byte(0x00512A) == 26 && prev(byte(0x0051F2)) > 0 && byte(0x0051F2) == 0) &&
-              once(byte(0x00512A) == 15 && never(byte(0x0050D0) == 128 || byte(0x0050C0) == 7)) && byte(0x005144) != 255 &&
-              byte(0x0050B6) != 1 &&
-              disable_when(byte(0x00512A) == 26 &&
-                  (low4(0x006627) + low4(0x006628) + low4(0x006629)) < prev(low4(0x006629)) &&
-                  (low4(0x006627) + low4(0x006628) + low4(0x006629)) == 0,
-                  until=byte(0x00512A) == 26 && byte(0x00572A) == 234
-              )
+    trigger = notAnyCheat() && inGame() && prev(word(0x512A)) == 0x001A && (
+              word(0x512A) == 0x0001 || word(0x512A) == 0x000D ||
+              word(0x512A) == 0x0004 || word(0x512A) == 0x000A ||
+              word(0x512A) == 0x0007 || word(0x512A) == 0x0009)    
 )
 
 achievement(
     title = "A Snowball's Chance", points = 10,
     description = "Defeat Rusty the Snowman on Difficult mode",
     id = 27726, badge = "28226", 
-    trigger = byte(0x00512A) == 2 && byte(0x005146) == 2 && byte(0x0052F2) == 0 && once(byte(0x00698A) == 29) &&
-              once(byte(0x00512A) == 0) && once(byte(0x0052F2) == 150) && byte(0x0052F8) == 64 && byte(0x005144) != 255 &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7)
+    trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
+              prev(word(0x512A)) == 0x0002 && word(0x512A) == 0x0001 // from Rusty the Snowman's map to the general What The Heck map
 )
 
 achievement(
     title = "Pussyfooting", points = 10,
     description = "Defeat Evil the Cat on Difficult mode",
     id = 27727, badge = "28181", 
-    trigger = byte(0x00512A) == 3 && byte(0x005146) == 2 && byte(0x0068D0) == 9 && byte(0x005144) != 255 &&
-              once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) && once(byte(0x00512A) == 1) &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7)
+    trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
+              prev(word(0x512A)) == 0x0003 && word(0x512A) == 0x0010 // from Evil Cat to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "Fish out of Water", points = 10,
     description = "Defeat Bob on Difficult mode... without taking damage?!",
     id = 27728, badge = "28180", 
-    trigger = byte(0x00512A) == 14 && byte(0x005146) == 2 && byte(0x00519B) == 50 && byte(0x005144) != 255 &&
-              once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
+    trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
+              prev(word(0x512A)) == 0x000E && word(0x512A) == 0x0011 // from Tube Race to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "Phlegm Cell Research", points = 10,
     description = "Defeat Major Mucus on Difficult mode",
     id = 27729, badge = "28199", 
-    trigger = byte(0x00512A) == 6 && once(byte(0x0068C2) == 10) && prev(byte(0x0068C2)) == 1 && byte(0x0068C2) == 0 &&
-              byte(0x005146) == 2 && (low4(0x006627) + low4(0x006628) + low4(0x006629)) != 0 && byte(0x005144) != 255 &&
-              never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 && once(byte(0x00512A) == 0) &&
-              once(byte(0x00698A) == 29) && never(byte(0x0050C0) == 7)
+    trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
+              prev(word(0x512A)) == 0x0006 && word(0x512A) == 0x0012 // from Snot a Problem: Round 3 to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "Flightless Birdbrain", points = 10,
     description = "Defeat Chicken Wing on Difficult mode",
     id = 27730, badge = "28227", 
-    trigger = byte(0x00512A) == 11 && byte(0x0051F2) == 0 && prev(byte(0x005224)) == 10 && byte(0x005146) == 2 &&
-              byte(0x005144) != 255 && once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7) &&
-              ((byte(0x005224) == 12) ||
-               (byte(0x005224) == 3))
+    trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
+              prev(word(0x512A)) == 0x000B && word(0x512A) == 0x0013 // from Chicken Wing to the correct Andy Asteroids? level
 )
 
 achievement(
     title = "Buttville Slugger", points = 25,
     description = "Defeat J. Alfred Maggot on Difficult mode",
     id = 27731, badge = "28228", 
-    trigger = byte(0x00512A) == 8 && byte(0x005144) != 255 && once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x005146) == 2 && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7) && once(byte(0x00512A) == 8 && byte(0x005174) >= 23 && byte(0x005224) == 4) &&
-              word(0x006B62) == 65535
+    trigger = notAnyCheat() && inGame() && word(0x00512A) == 0x0008 && word(0x5146) == 0x0002 &&  
+              word(0x6890) == 0x1759 && word(0x6892) == 0x0172 && // Camera scripted position for the fight
+              prev(word(0x6894)) == 0xFFFF && word(0x6894) == 0x0000 // Lifting the camera lock
 )
 
 achievement(
     title = "The Grooviest Victory!", points = 50,
     description = "Defeat Queen Pulsating, Bloated, Festering, Sweaty, Pus-Filled, Malformed Slug-for-a-Butt on Difficult mode... whew!",
     id = 27732, badge = "28229", 
-    trigger = byte(0x00512A) == 8 && byte(0x005146) == 2 && byte(0x005170) == 137 && byte(0x00517A) == 32 &&
-              byte(0x005144) != 255 && once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) &&
-              never(byte(0x0050B8) == 255) && never(byte(0x0050D0) != 0) && byte(0x0050B6) != 1 &&
-              never(byte(0x0050C0) == 7)
-)
-
-achievement(
-    title = "Down in the Dumps", points = 5,
-    description = "Use a Warp Toilet",
-    id = 27733, badge = "28230", 
-    trigger = byte(0x00512A) == 0 && byte(0x000190) == 132 && byte(0x0001F1) == 0 && byte(0x005101) == 9 &&
-              byte(0x005144) != 255 && never(byte(0x0050B8) == 255)
+    trigger = notAnyCheat() && inGame() && word(0x512A) == 0x0008 && word(0x5146) == 0x0002 &&  
+              word(0x6890) == 0x10FA && word(0x6892) == 0x0153 && // Camera scripted position for the Queen explosion event
+              prev(word(0x6894)) == 0x0000 && word(0x6894) == 0xFFFF // The camera locks-on
 )
 
 achievement(
     title = "Kicking Some Asteroid", points = 10,
     description = "Win the first Andy Asteroids? race while collecting at least 60 fuel pods - specific level codes or the debug level skip code are allowed",
     id = 27734, badge = "28189", 
-    trigger = byte(0x00512A) == 15 && byte(0x00519B) == 55 && byte(0x006B4E) >= 60
-)
-
-achievement(
-    title = "Worms in Glass Houses", points = 25,
-    description = "Complete Tube Race without hitting any walls - specific level codes or the debug level skip code are allowed",
-    id = 27735, badge = "28184", 
-    trigger = never(byte(0x00512A) != 14) && once(dword(0x005174) == 35324320) && never(byte(0x006752) == 0) &&
-              prev(word(0x006886)) == 65535 && word(0x005174) > 3120 && word(0x005174) < 3290 && word(0x005176) > 1152 &&
-              word(0x005176) < 1280 && never(byte(0x005144) > 0) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) == 128) &&
-              ((unless(prev(word(0x005AEA)) != 65535) && never(byte(0x005AD4) > 0) && word(0x005AEA) == 0) ||
-               (unless(prev(word(0x005A6A)) != 65535) && never(byte(0x005A54) > 0) && word(0x005A6A) == 0))
-)
-
-achievement(
-    title = "Thoughtful Pet Owner", points = 25,
-    description = "Complete For Pete's Sake without making Peter Puppy angry - specific level codes or the debug level skip code are allowed",
-    id = 27736, badge = "28231", 
-    trigger = byte(0x00512A) == 7 && trigger_when(byte(0x00519B) == 51) && once(byte(0x00572A) == 46) &&
-              once(byte(0x00572C) == 30) && byte(0x005144) != 255 && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) == 128) && never(byte(0x0069D2) == 11) && unless(byte(0x00512A) != 7) &&
-              never(byte(0x0050C0) == 7)
-)
-
-achievement(
-    title = "Heading for Trouble", points = 25,
-    description = "Complete the \"Use Your Head!\" section of Buttville without taking damage - specific level codes or the debug level skip code are allowed",
-    id = 27737, badge = "28232", 
-    trigger = once(byte(0x00512A) == 9) && once(byte(0x005770) == 138) && trigger_when(byte(0x00512A) == 8) &&
-              byte(0x005144) != 255 && never(byte(0x0050B8) == 255) && never(byte(0x0050D0) == 128) &&
-              never(byte(0x00519B) == 33) && never(byte(0x0050C0) == 7)
+    trigger = notCommonForbiddenCodes() && inGame() && word(0x006B4E) >= 60 &&
+              prev(word(0x512A)) == 0x000F && word(0x512A) == 0x0001
 )
 
 achievement(
     title = "Invincible Invertebrate", points = 25,
     description = "Earn 9 lives",
     id = 27738, badge = "28188", 
-    trigger = once(byte(0x00698A) == 29) && once(byte(0x00512A) == 0) && byte(0x00512A) != 0 && low4(0x005162) == 9 &&
-              byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
+    trigger = notAnyCheat() && inGame() && 
+             prev(low4(0x005162)) == 8 && low4(0x005162) == 9
 )
 
 achievement(
@@ -392,26 +324,7 @@ achievement(
     title = "The Nick Trick", points = 1,
     description = "Pause the game and press Y, A, B, B, A, Y, A, B - this will block ALL other achievements!",
     id = 27743, badge = "28187", published = "18/08/2015 19:18:57", modified = "31/08/2021 22:01:42",
-    trigger = byte(0x000060) == 107 && byte(0x000097) == 3
-)
-
-achievement(
-    title = "When Heck Freezes Over", points = 25,
-    description = "Complete What the Heck? without fighting Rusty the Snowman",
-    id = 27744, badge = "28235", published = "18/08/2015 19:19:00", modified = "31/08/2021 23:34:05",
-    trigger = once(byte(0x00512A) == 1) && byte(0x00512A) == 3 && never(byte(0x00512A) == 2) &&
-              once(byte(0x00572A) == 46) && once(byte(0x00572C) == 30) && byte(0x005144) != 255 &&
-              once(byte(0x00512A) == 0) && never(byte(0x0050B8) == 255) && never(byte(0x0050D0) == 128) &&
-              byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
-)
-
-achievement(
-    title = "Dog-Eat-Worm World", points = 25,
-    description = "Complete For Pete's Sake while Peter Puppy is angry",
-    id = 27745, badge = "28236", published = "18/08/2015 19:19:04", modified = "31/08/2021 23:34:05",
-    trigger = byte(0x00519B) == 51 && byte(0x0069D2) >= 11 && byte(0x0069D2) <= 12 && byte(0x005144) != 255 &&
-              once(byte(0x00572A) == 46) && once(byte(0x00572C) == 30) && never(byte(0x0050B8) == 255) &&
-              never(byte(0x0050D0) == 128) && unless(byte(0x00512A) != 7) && never(byte(0x0050C0) == 7)
+    trigger = inGame() && byte(0x50c0) == 0xFFFF && byte(0x0097) > 0
 )
 
 achievement(
@@ -423,8 +336,61 @@ achievement(
 )
 
 achievement(
-    title = "DEMOTED AS UNWELCOME CONCEPT - The Ol' Can o' Worms", points = 10,
-    description = "Use a continue",
-    id = 27746, badge = "28237", published = "18/08/2015 19:19:07", modified = "26/12/2025 02:13:35",
-    trigger = byte(0x006B8E) == 0 && low4(0x005162) == 2 && byte(0x00516C) < prev(byte(0x00516C))
+    title = "Down in the Dumps", points = 5,
+    description = "Use a Warp Toilet",
+    id = 27733, badge = "28230", 
+    trigger = notAnyCheat() && inGame() && word(0x00512A) == 0x0000 &&  
+              prev(word(0x5174)) < 0x70 && prev(word(0x5176)) > 0x250 && prev(word(0x5176)) < 0x270 && // Bounding box for the origin
+              word(0x5174) == 0x13EB && word(0x5176) == 0x03F2// Scripted destination
+)
+
+// HARDER ONES (may have to keep a checkpoint here ?!)
+achievement(
+    title = "Worms in Glass Houses", points = 25,
+    description = "Complete Tube Race without hitting any walls - specific level codes or the debug level skip code are allowed",
+    id = 27735, badge = "28184", 
+    trigger = notCommonForbiddenCodes() && inGame() && once(word(0x00512A) == 0x000E &&              
+              word(0x5174) == 0x01A0 && word(0x5176) == 0x021B) && // scripted starting point
+              never(word(0x005AD4) == 0x12)  && never(word(0x005A54) == 0x12) &&
+              ((once(word(0x005AEA) == 0xFFFF) && disable_when(word(0x005AD4) > 0)) ||
+               (once(word(0x005A6A) == 0xFFFF) && disable_when(word(0x005A54) > 0))) &&
+               trigger_when(word(0x5174) >= 0x0C50) && trigger_when(word(0x5174) <= 0x0CA0) && trigger_when(prev(word(0x5176)) < 0x04B0 && word(0x5176) >= 0x04B0) // arrival conservative bounding box (which cannot be reached from the bottom)
+)
+
+// NOTE: the current way was to tell players to reset the game if they were hit, the following will reset when going to main menu, which is the very same
+achievement(
+    title = "Thoughtful Pet Owner", points = 25,
+    description = "Complete For Pete's Sake without making Peter Puppy angry - specific level codes or the debug level skip code are allowed",
+    id = 27736, badge = "28231", 
+    trigger = notCommonForbiddenCodes() && inGame() && once(word(0x00512A) == 0x0007) && never(repeated(2, word(0x00512A) != 0x0007)) && // checkpoint on starting the level
+              disable_when(byte(0x0069D2) == 11) &&
+              trigger_when(prev(word(0x512A)) == 0x0007 && word(0x512A) == 0x0014) // from For Pete's Sake to the correct Andy Asteroids? level    
+)
+
+achievement(
+    title = "Heading for Trouble", points = 25,
+    description = "Complete the \"Use Your Head!\" section of Buttville without taking damage - specific level codes or the debug level skip code are allowed",
+    id = 27737, badge = "28232", 
+    trigger = notCommonForbiddenCodes() && inGame() && once(word(0x00512A) == 0x0009 && word(0x5174) == 0x0120 && word(0x5176) == 0x017F) && 
+              never(prev(low4(0x6627)) != low4(0x6627) || prev(low4(0x6628)) != low4(0x6628) || prev(low4(0x6629)) != low4(0x6629)) && never(word(0x00512A) != 0x0008 && word(0x00512A) != 0x0009) &&
+              trigger_when(prev(word(0x00512A)) == 0x0009 && word(0x00512A) == 0x0008)
+)
+
+achievement(
+    title = "When Heck Freezes Over", points = 25,
+    description = "Complete What the Heck? without fighting Rusty the Snowman",
+    id = 27744, badge = "28235", 
+    trigger = once(byte(0x00512A) == 1) && byte(0x00512A) == 3 && never(byte(0x00512A) == 2) &&
+              once(byte(0x00572A) == 46) && once(byte(0x00572C) == 30) && byte(0x005144) != 255 &&
+              once(byte(0x00512A) == 0) && never(byte(0x0050B8) == 255) && never(byte(0x0050D0) == 128) &&
+              byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
+)
+
+achievement(
+    title = "Dog-Eat-Worm World", points = 25,
+    description = "Complete For Pete's Sake while Peter Puppy is angry",
+    id = 27745, badge = "28236", 
+    trigger = notCommonForbiddenCodes() && inGame() && word(0x512A) == 0x0007 &&
+              trigger_when(byte(0x0069D2) == 11 || byte(0x0069D2) == 12) && 
+              trigger_when(prev(byte(0x519B)) != 0x33 && byte(0x519B) == 0x33) // New delta check
 )
