@@ -19,6 +19,13 @@ Anyway, to circumvent these limitations I had to get creative:
 
 ## General modifications
 
+### Banner
+
+Added a game banner to the game page.
+
+### Achievements ordering
+The ordering of achievement has been changed to make more sense (challenges and missables are now sorted with their relevant level).
+
 ### Common edits to achievements
 
 A in-game check has been added. It checks that:
@@ -31,6 +38,8 @@ Also it was based on checkpoints (one for starting the playthrough, one for play
 
 Now it is pause based to avoid stored hits and the pause resets on main menu (but will be reapplied immediately by persisting cheats). It feels saner and will prevent level selection/skipping where needed just as efficiently. Also, The Nick Trick cheat is now doing a pause a well.
 
+Note that the few achievement that allowed level select or skipping now only allow level select through the debug view, which makes the cheat protection much more manageable. This means for this specific point some achievement had both their logic and description changed. It's been approved by QA since it still offers players a way to easily attempt those challenges.
+
 ### Rich Presence
 Rich presence was only dynamic and displaying level and lives (lives were parsed through a lookup).
 
@@ -41,14 +50,14 @@ Actions taken:
 - Added difficulty setting, current HP and cheat usage to the display
 
 ### Hidden leaderboards
-Most cheats are detectable at the moment they are used but don't leave a trace in memory after that.
+Cheats are detectable at the moment they are used but most of them don't leave a trace in memory after that.
 Two hidden leaderboards have been added to track them to help with potential future tickets:
-- a cheat that does not involve level selection or skipping has been used (i.e. all achievements are paused)
-- a cheat that involved level selection or skipping has been used (i.e. most achievements are paused but some challenges are not)
+- a cheat has been used
+- a level has been loaded through the debug view mechanism (which is allowed for a handful of achievements)
 
 ## Specific edits
 ### Not-So-Ground Beef (27712)
-- changed the logic that was based on displayed text to rather trigger based on the camera unlock after the sequence
+- changed the logic that was based on displayed text to rather trigger based on the scripted camera unlock after the sequence
 
 ### The Rotten Apple, Fire and Jimstone, Slippery When Wet, Bowl-ing Alley, Beware of Dog, Junk Food, Fish out of Water (27713, 27715, 27716, 27717, 27721, 27724, 27728) 
 - changed the logic that was based on the win animation in the considered map (no delta) to one based on the level ID transition
@@ -62,6 +71,7 @@ Two hidden leaderboards have been added to track them to help with potential fut
 ### Every Once in a Bile, I Smell a Lab Rat, As the Crow Flies, A Snowball's Chance, Pussyfooting, Phlegm Cell Research, Flightless Birdbrain (27718, 27719, 27725, 27726, 27727, 27729, 27730) 
 - was based on boss HP, which is not in a guaranteed spot (hence not a reliable source of information)
 - is now using the level ID transition
+- also "As the Crow Flies" got a missable tag since winning all races means the player never gets an attempt
 
 ### Left in the Dark (27720)
 - added a missable tag since it can be skipped if you don't know to look for it and does not allow level selection for a retry
@@ -69,10 +79,10 @@ Two hidden leaderboards have been added to track them to help with potential fut
 
 ### The (Rear) End, The Grooviest Victory!  (27722, 27732)
 - was based on several undocumented magic values
-- is now based on the camera traveling and locking to the boss final demise
+- is now based on the scripted camera traveling to the boss final demise
 
 ### Re-tire-ment Plan, Buttville Slugger (27723, 27731)
-- replace the check on a magic value (no delta) to rather trigger based on the camera unlock after the sequence
+- replaced the check on a magic value (no delta) to rather trigger based on the scripted camera unlock after the sequence
 
 ### Down in the Dumps (27733)
 - removed the logic based on several not-all-documented magic values
@@ -83,31 +93,37 @@ Two hidden leaderboards have been added to track them to help with potential fut
 
 ### Worms in Glass Houses (27735)
 - was not a big fan of the current logic using the pod HP since it is not in a guaranteed spot; still, no tickets for years and recent unlocks so I kept it that way
+- changed the finer logic tailoring for easier future maintenance
 
 ### Thoughtful Pet Owner (27736)
 - changed the logic that was based on the win animation in the considered map (no delta) to one based on the level ID transition
 - not a fan of the logic based on the "state" of the Dog entity since usually entities position in memory is not guaranteed but I couldn't see how to avoid this with regards to what the achievements ask of the player and it seems stable in this instance (which makes sense since the dog is loaded with the level) => it's been kept
-- removed the two magic values which were not stable and are likely what led to tickets
+- removed the two magic values which were not stable and are likely what led to tickets, they've been replaced with a checkpoint on the level starting position
 
 ### Dog-Eat-Worm World (27745)
 - unfortunately I had to keep the logic that was based on the win animation on the considered map since it IS what needs to happen at the same time the dog is transformed
 - added a delta check to this animation
 - not a fan of the logic based on the "state" of the Dog entity since usually entities position in memory is not guaranteed but I couldn't see how to avoid this with regards to what the achievements ask of the player and it seems stable in this instance (which makes sense since the dog is loaded with the level) => it's been kept
 - removed the two magic values which were not stable and are likely what led to tickets
-- added a note in the description that level selection/skipping is allowed to fit the logic
+- added a note in the description that level selection is allowed to fit what had always been alowed by the logic
 
 ### Heading for Trouble (27737)
 - removed the hit target of 1 on the trigger condition
-- removed the checkpoint on the magic value supposed to represent the cow being launched (twice the magic it appears) and replaced it by a checkpoint on the player starting position (reset upon taking the damage)
+- removed the checkpoint on the magic value supposed to represent the cow being launched (what was it doing here?!) and replaced it by a checkpoint on the player starting position (reset upon taking the damage)
 - added a delta check
 
-### Invincible Invertebrate, The Nick Trick (27738, 27743)
+### Invincible Invertebrate (27738)
 - introduced a delta check
+
+### The Nick Trick (27743)
+- introduced a delta check
+- based the logic on the actual cheat input rather than a magic value (which did not prove to be very reliable during my tests)
+- changed the description to a broader warning about using cheats
 
 ### When Heck Freezes Over (27744)
 - added a missable tag
 - reworded the achievement to fit the actual logics: the player does not need to complete the level but merely to reach the Cat fight without every entering the 
-- replaced the logic based on a magic value to have a "beginning of the level checkpoint" with a logic based on pausing the achievement if the player enters the snowman room
+- replaced the logic based on a magic value to have a "beginning of the level checkpoint" with a logic based on reseting the achievement if the player enters the snowman room
 
 ### The Bigger They Are, The Harder They Fall, Work with What You Got, Don't Try This at Home!, Scratch Beneath the Surface (27739, 27740, 27741, 27742, 27747)
 - replaced the double 8-bit read of what is really a 16-bit value by a 16-bit read

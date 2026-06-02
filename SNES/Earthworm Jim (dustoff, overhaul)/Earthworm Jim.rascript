@@ -50,15 +50,18 @@ difficulty = {
 function inGame() => high4(0x6620) == 3 && byte(0x6B8E) == 0
 
 // The following can be detected while being used
-function notCommonForbiddenCodes() => disable_when(word(0x50B8) == 0xFFFF) &&  // Map View Mode Cheat
-                                   disable_when(word(0x50C0) != 0 && prev(word(0x00516C)) < word(0x00516C)) && // Extra Continue Cheat
-                                   disable_when(word(0x50C0) != 0 && prev(low4(0x005162)) < low4(0x005162)) && // Extra Life Cheat
-                                   disable_when(word(0x50C0) != 0 && prev(low4(0x006627)) < low4(0x006627)) && // Energy Refill Cheat
-                                   disable_when(word(0x50C0) != 0 && prev(low4(0x006620)) < low4(0x006620)) && // Ammo Refill Cheat
-                                   disable_when(word(0x50C0) != 0 && prev(word(0x0069A0)) < word(0x0069A0)) && // Plasma Power-Up Cheat
-                                   disable_when(word(0x5142) == 0xFFFF) &&  // Debug View: Freezeability
-                                   disable_when(word(0x5144) == 0xFFFF) && // Debug View: Cheat Mode 
-                                   (always_false() || never(high4(0x6620) == 0))
+function notAnyCheat() => disable_when(word(0x50B8) == 0xFFFF) && // Map View Mode Cheat
+                          disable_when(word(0x5142) == 0xFFFF) && // Debug View: Freezeability
+                          disable_when(word(0x5144) == 0xFFFF) && // Debug View: Cheat Mode 
+                          disable_when(high4(0x6620) == 0 && word(0x512A) > 0x0000) && // Level select from debug view
+                          disable_when(prev(word(0x50C0)) == 0x0007 && repeated(20, word(0x50C0) == 0xFFFF)) && // Any cheat being input                             
+                          (always_false() || never(high4(0x6620) == 0 && word(0x512A) == 0x0000)) // This ensures we go back to main menu and no level was selected through the Debug View
+
+function debugRoomLevelSelectOnly() => disable_when(word(0x50B8) == 0xFFFF) && // Map View Mode Cheat
+                                       disable_when(word(0x5142) == 0xFFFF) && // Debug View: Freezeability
+                                       disable_when(word(0x5144) == 0xFFFF) && // Debug View: Cheat Mode 
+                                       disable_when(prev(word(0x50C0)) == 0x0007 && repeated(5, word(0x50C0) == 0xFFFF)) && // Any cheat being input                             
+                                       (always_false() || never(high4(0x6620) == 0)) // This ensures we go back to main menu only
 
 // For map selection, there are several possibilities
 // - via the debug menu we end up in the main menu with a non 0x00 level value AND word(0x50C0) == 0xFFFF
@@ -68,7 +71,7 @@ function notCommonForbiddenCodes() => disable_when(word(0x50B8) == 0xFFFF) &&  /
 
 // Since some traces of cheats only last a few freames we cannot track it in RP. Instead we will use hidden leaderboards to prevent wrongful tickets in the future
 
-function notAnyCheat() => notCommonForbiddenCodes() && word(0x50C0) != 0xFFFF
+//function notAnyCheat() => notCommonForbiddenCodes() && disable_when(high4(0x6620) == 0 )
 function health() => low4(0x6627) * 100 + low4(0x6628) * 10 + low4(0x6629) 
 
 // TODO: find a mainMenu/in game flag
@@ -217,6 +220,7 @@ achievement(
 achievement(
     title = "A Snowball's Chance", points = 10,
     description = "Defeat Rusty the Snowman on Difficult mode",
+    type="missable",
     id = 27726, badge = "28226", 
     trigger = notAnyCheat() && inGame() && word(0x5146) == 0x0002 && 
               prev(word(0x512A)) == 0x0002 && word(0x512A) == 0x0001 // from Rusty the Snowman's map to the general What The Heck map
@@ -274,9 +278,9 @@ achievement(
 
 achievement(
     title = "Kicking Some Asteroid", points = 10,
-    description = "Win the first Andy Asteroids? race while collecting at least 60 fuel pods - specific level codes or the debug level skip code are allowed",
+    description = "Win the first Andy Asteroids? race while collecting at least 60 fuel pods - level select from the debug menu is allowed",
     id = 27734, badge = "28189", 
-    trigger = notCommonForbiddenCodes() && inGame() && word(0x006B4E) >= 60 &&
+    trigger = debugRoomLevelSelectOnly() && inGame() && word(0x006B4E) >= 60 &&
               prev(word(0x512A)) == 0x000F && word(0x512A) == 0x0001
 )
 
@@ -322,10 +326,11 @@ achievement(
 
 achievement(
     title = "The Nick Trick", points = 1,
-    description = "Pause the game and press Y, A, B, B, A, Y, A, B - this will block ALL other achievements!",
-    id = 27743, badge = "28187", published = "18/08/2015 19:18:57", modified = "31/08/2021 22:01:42",
-    trigger = inGame() && byte(0x50c0) == 0xFFFF && byte(0x0097) > 0
-)
+    description = "Pause the game and press Y, A, B, B, A, Y, A, B - this will block ALL other achievements as will most cheats!",
+    id = 27743, badge = "28187", 
+    trigger = inGame() && word(0x50c2) == 0x4000 && word(0x50c4) == 0x0080 && word(0x50c6) == 0x8000 && word(0x50c8) == 0x8000 &&
+                          word(0x50ca) == 0x0080 && word(0x50cc) == 0x4000 && word(0x50ce) == 0x0080 && prev(word(0x50d0)) == 0x0000 && word(0x50d0) == 0x8000
+)    
 
 achievement(
     title = "Scratch Beneath the Surface", points = 1,
@@ -347,50 +352,70 @@ achievement(
 // HARDER ONES (may have to keep a checkpoint here ?!)
 achievement(
     title = "Worms in Glass Houses", points = 25,
-    description = "Complete Tube Race without hitting any walls - specific level codes or the debug level skip code are allowed",
+    description = "Complete Tube Race without hitting any walls - level select from the debug menu is allowed",
     id = 27735, badge = "28184", 
-    trigger = notCommonForbiddenCodes() && inGame() && once(word(0x00512A) == 0x000E &&              
+    trigger = debugRoomLevelSelectOnly() && inGame() && once(word(0x00512A) == 0x000E &&              
               word(0x5174) == 0x01A0 && word(0x5176) == 0x021B) && // scripted starting point
-              never(word(0x005AD4) == 0x12)  && never(word(0x005A54) == 0x12) &&
+              never(word(0x005AEA) == 0x0000 && word(0x005A6A) == 0x0000) &&
               ((once(word(0x005AEA) == 0xFFFF) && disable_when(word(0x005AD4) > 0)) ||
                (once(word(0x005A6A) == 0xFFFF) && disable_when(word(0x005A54) > 0))) &&
-               trigger_when(word(0x5174) >= 0x0C50) && trigger_when(word(0x5174) <= 0x0CA0) && trigger_when(prev(word(0x5176)) < 0x04B0 && word(0x5176) >= 0x04B0) // arrival conservative bounding box (which cannot be reached from the bottom)
+               trigger_when(word(0x5174) >= 0x0C50) && trigger_when(word(0x5174) <= 0x0CA0) && trigger_when(prev(word(0x5176)) < 0x04A0 && word(0x5176) >= 0x04A0) // arrival conservative bounding box (which cannot be reached from the bottom)
 )
 
 // NOTE: the current way was to tell players to reset the game if they were hit, the following will reset when going to main menu, which is the very same
 achievement(
     title = "Thoughtful Pet Owner", points = 25,
-    description = "Complete For Pete's Sake without making Peter Puppy angry - specific level codes or the debug level skip code are allowed",
+    description = "Complete For Pete's Sake without making Peter Puppy angry - level select from the debug menu is allowed",
     id = 27736, badge = "28231", 
-    trigger = notCommonForbiddenCodes() && inGame() && once(word(0x00512A) == 0x0007) && never(repeated(2, word(0x00512A) != 0x0007)) && // checkpoint on starting the level
+    trigger = debugRoomLevelSelectOnly() && inGame() && once(word(0x00512A) == 0x0007 && word(0x5174) == 0x0070 && word(0x5176) == 0x0195) && // never(repeated(2, word(0x00512A) != 0x0007)) && // checkpoint on starting the level
               disable_when(byte(0x0069D2) == 11) &&
-              trigger_when(prev(word(0x512A)) == 0x0007 && word(0x512A) == 0x0014) // from For Pete's Sake to the correct Andy Asteroids? level    
-)
-
-achievement(
-    title = "Heading for Trouble", points = 25,
-    description = "Complete the \"Use Your Head!\" section of Buttville without taking damage - specific level codes or the debug level skip code are allowed",
-    id = 27737, badge = "28232", 
-    trigger = notCommonForbiddenCodes() && inGame() && once(word(0x00512A) == 0x0009 && word(0x5174) == 0x0120 && word(0x5176) == 0x017F) && 
-              never(prev(low4(0x6627)) != low4(0x6627) || prev(low4(0x6628)) != low4(0x6628) || prev(low4(0x6629)) != low4(0x6629)) && never(word(0x00512A) != 0x0008 && word(0x00512A) != 0x0009) &&
-              trigger_when(prev(word(0x00512A)) == 0x0009 && word(0x00512A) == 0x0008)
-)
-
-achievement(
-    title = "When Heck Freezes Over", points = 25,
-    description = "Complete What the Heck? without fighting Rusty the Snowman",
-    id = 27744, badge = "28235", 
-    trigger = once(byte(0x00512A) == 1) && byte(0x00512A) == 3 && never(byte(0x00512A) == 2) &&
-              once(byte(0x00572A) == 46) && once(byte(0x00572C) == 30) && byte(0x005144) != 255 &&
-              once(byte(0x00512A) == 0) && never(byte(0x0050B8) == 255) && never(byte(0x0050D0) == 128) &&
-              byte(0x0050B6) != 1 && never(byte(0x0050C0) == 7)
+              prev(word(0x512A)) == 0x0007 && trigger_when(word(0x512A) == 0x0014) // from For Pete's Sake to the correct Andy Asteroids? level    
 )
 
 achievement(
     title = "Dog-Eat-Worm World", points = 25,
-    description = "Complete For Pete's Sake while Peter Puppy is angry",
+    description = "Complete For Pete's Sake while Peter Puppy is angry - level select from the debug menu is allowed",
     id = 27745, badge = "28236", 
-    trigger = notCommonForbiddenCodes() && inGame() && word(0x512A) == 0x0007 &&
-              trigger_when(byte(0x0069D2) == 11 || byte(0x0069D2) == 12) && 
-              trigger_when(prev(byte(0x519B)) != 0x33 && byte(0x519B) == 0x33) // New delta check
+    trigger = debugRoomLevelSelectOnly() && inGame() && word(0x512A) == 0x0007 &&
+              (byte(0x0069D2) == 11 || byte(0x0069D2) == 12) && 
+              prev(byte(0x519B)) != 0x33 && byte(0x519B) == 0x33 // New delta check
+)
+
+achievement(
+    title = "Heading for Trouble", points = 25,
+    description = "Complete the \"Use Your Head!\" section of Buttville without taking damage - level select from the debug menu is allowed",
+    id = 27737, badge = "28232", 
+    trigger = debugRoomLevelSelectOnly() && inGame() && once(word(0x00512A) == 0x0009 && word(0x5174) == 0x0120 && word(0x5176) == 0x017F) && 
+              never(prev(health()) > health()) &&
+              prev(word(0x00512A)) == 0x0009 && trigger_when(word(0x00512A) == 0x0008)
+)
+
+achievement(
+    title = "When Heck Freezes Over", points = 25,
+    type="missable",
+    description = "Reach Evil the Cat's fight without fighting Rusty the Snowman beforehand in What the Heck?",
+    id = 27744, badge = "28235", 
+    trigger = notAnyCheat() && inGame() && once(word(0x00512A) == 0x0001 && word(0x5174) == 0x007c && word(0x5176) == 0x0630) && // chekpoint upon starting the level
+              never(word(0x00512A) == 0x0002) && // entered the snowman fight = reset
+              prev(word(0x00512A)) == 0x0001 && trigger_when(word(0x00512A) == 0x0003) // unlocked when moving the the Evil the Cat fight
+)
+
+// Leaderboards to track cheat usage (will be hidden)
+leaderboard(
+    title="Cheat usage detected",
+    description="Player used a cheat",
+    // IMPORTANT: manually add a "And Next" on the first line
+    start=byte(0x6B8E) == 0 && prior(word(0x50C0)) == 0x0007 && repeated(20, word(0x50C0) == 0xFFFF) && never(high4(0x6620) == 0 && word(0x512A) == 0x0000) && never(word(0x50C0) == 0x0000),
+    cancel=always_false(),
+    submit=always_true(),
+    value=1    
+)
+
+leaderboard(
+    title="Level select detected",
+    description="Player started a level from main menu using the debug view level select",
+    start=byte(0x6B8E) == 0 && prev(high4(0x6620)) == 0 && high4(0x6620) == 3 && word(0x512A) > 0x0000,
+    cancel=always_false(),
+    submit=always_true(),
+    value=1 
 )
