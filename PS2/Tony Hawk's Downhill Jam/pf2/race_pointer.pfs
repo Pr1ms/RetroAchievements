@@ -1,0 +1,119 @@
+{
+  "EmulatorTargetName": "PCSX2",
+  "ProcessId": 30924,
+  "LastScanParameters": {
+    "TargetAddress": 0,
+    "MaxLevel": 4,
+    "MaxOffset": 65535,
+    "MaxNegativeOffset": 1024,
+    "StaticBaseStart": 541353856,
+    "StaticBaseEnd": 542043239,
+    "MaxResults": 5000,
+    "ScanForStructureBase": true,
+    "Use16ByteAlignment": false,
+    "LimitCpuUsage": false,
+    "StopOnFirstPathFound": false,
+    "FindAllPathLevels": false,
+    "CandidatesPerLevel": 50,
+    "MaxCandidates": 10000000,
+    "FinalAddressTarget": 544380736,
+    "CapturedStates": [
+      {
+        "TargetAddress": 544380236
+      },
+      {
+        "TargetAddress": 544378916
+      },
+      {
+        "TargetAddress": 544380596
+      },
+      {
+        "TargetAddress": 544380736
+      }
+    ]
+  },
+  "Results": [
+    {
+      "BaseAddress": 541757092,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541757112,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541757292,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541757392,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541757592,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541757716,
+      "Offsets": [
+        23516,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541758292,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541758492,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541758892,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    },
+    {
+      "BaseAddress": 541760192,
+      "Offsets": [
+        26360,
+        12
+      ],
+      "FinalAddress": 544380736
+    }
+  ],
+  "SortedColumnName": null,
+  "SortDirection": 0
+}

@@ -1,0 +1,75 @@
+{
+  "EmulatorTargetName": "PCSX2",
+  "ProcessId": 33412,
+  "LastScanParameters": {
+    "TargetAddress": 0,
+    "MaxLevel": 4,
+    "MaxOffset": 65535,
+    "StaticBaseStart": 541353856,
+    "StaticBaseEnd": 542043236,
+    "LimitCpuUsage": false,
+    "StopOnFirstPathFound": false,
+    "FindAllPathLevels": false,
+    "CandidatesPerLevel": 50,
+    "MaxCandidates": 10000000,
+    "FinalAddressTarget": 544379036,
+    "FastScanMode": false,
+    "PrintPartialPaths": false,
+    "LastOffsetHint": 12,
+    "CapturedStates": null
+  },
+  "Results": [
+    {
+      "BaseAddress": 541999720,
+      "Offsets": [
+        7036,
+        12
+      ],
+      "FinalAddress": 544379036,
+      "IsPartial": false,
+      "BrokenStateAddresses": {}
+    },
+    {
+      "BaseAddress": 541999740,
+      "Offsets": [
+        7032,
+        12
+      ],
+      "FinalAddress": 544379036,
+      "IsPartial": false,
+      "BrokenStateAddresses": {}
+    },
+    {
+      "BaseAddress": 541999772,
+      "Offsets": [
+        7032,
+        12
+      ],
+      "FinalAddress": 544379036,
+      "IsPartial": false,
+      "BrokenStateAddresses": {}
+    },
+    {
+      "BaseAddress": 541999924,
+      "Offsets": [
+        7244,
+        12
+      ],
+      "FinalAddress": 544379036,
+      "IsPartial": false,
+      "BrokenStateAddresses": {}
+    },
+    {
+      "BaseAddress": 542000528,
+      "Offsets": [
+        7244,
+        12
+      ],
+      "FinalAddress": 544379036,
+      "IsPartial": false,
+      "BrokenStateAddresses": {}
+    }
+  ],
+  "SortedColumnName": null,
+  "SortDirection": 0
+}
