@@ -21,128 +21,128 @@ characters = {
 
 races = {
     0x00: "Dharma Dash, Race, Hong Kong (Tier 1)",
-    0x11: "Bagpipe Beatdown, Special, Edinburgh (Tier 2)",
-    0x22: "Vista Point, Slalom, Rio (Tier 3)",
-    0x33: "Knockdown, Special, Rio (Tier 4)",
-    0x44: "Out Of The Woods, Race, Rio (Tier 5)",
-    0x55: "Fallen Empire, Trick, Rome (Tier 6)",
-    0x66: "Del Centro, Race, Rome (Tier 7)",
-    0x77: "Waterfront Wipeout, Trick, Hong Kong (Tier 8)",
-    0x88: "Saturday Matinee, Race, Chicago (Tier 9)",
-    0x99: "Top to Bottom, Race, San Francisco (Tier 10)",
+    0x10: "Bagpipe Beatdown, Special, Edinburgh (Tier 2)",
+    0x20: "Vista Point, Slalom, Rio (Tier 3)",
+    0x30: "Knockdown, Special, Rio (Tier 4)",
+    0x40: "Out Of The Woods, Race, Rio (Tier 5)",
+    0x50: "Fallen Empire, Trick, Rome (Tier 6)",
+    0x60: "Del Centro, Race, Rome (Tier 7)",
+    0x70: "Waterfront Wipeout, Trick, Hong Kong (Tier 8)",
+    0x80: "Saturday Matinee, Race, Chicago (Tier 9)",
+    0x90: "Top to Bottom, Race, San Francisco (Tier 10)",
  
     0x01: "Cable Car Sprint, Race, San Francisco (Tier 1)",
-    0x12: "Road to Cuzco, Race, Machu Picchu (Tier 2)",
-    0x23: "Trails of Ruins, Race, Machu Picchu (Tier 3)",
-    0x34: "Fallen Empire, Race, Rome (Tier 4)",
-    0x45: "Lift Ticket, Tricks, Alps (Tier 5)",
-    0x56: "High Street, Slalom, Edinburgh (Tier 6)",
-    0x67: "Precision Shopping, Slalom, Chicago (Tier 7)",
-    0x78: "Lift Ticket, Slalom, Alps (Tier 8)",
-    0x89: "Scottish Catacombs, Race, Edinburgh (Tier 9)",
-    0x9a: "Top to Bottom, Slalom, Rome (Tier 10)",
+    0x11: "Road to Cuzco, Race, Machu Picchu (Tier 2)",
+    0x21: "Trails of Ruins, Race, Machu Picchu (Tier 3)",
+    0x31: "Fallen Empire, Race, Rome (Tier 4)",
+    0x41: "Lift Ticket, Tricks, Alps (Tier 5)",
+    0x51: "High Street, Slalom, Edinburgh (Tier 6)",
+    0x61: "Precision Shopping, Slalom, Chicago (Tier 7)",
+    0x71: "Lift Ticket, Slalom, Alps (Tier 8)",
+    0x81: "Scottish Catacombs, Race, Edinburgh (Tier 9)",
+    0x91: "Top to Bottom, Slalom, Rome (Tier 10)",
  
     0x02: "Castle Chaos, Race, Edinburgh (Tier 1)",
-    0x13: "Chinatown Collision, Special, San Francisco (Tier 2)",
-    0x24: "Kevin's Challenge, Special, Hong Kong (Tier 3)",
-    0x35: "Skateboard Mountain, Trick, Machu Picchu (Tier 4)",
-    0x46: "Road to Cuzco, Slalom, Machu Picchu (Tier 5)",
-    0x57: "Chinatown Tour, Slalom, San Francisco (Tier 6)",
-    0x68: "Lift Off, Race, Alps (Tier 7)",
-    0x79: "Shopping Spree, Race, Chicago (Tier 8)",
-    0x8a: "The Hills Are Alive, Race, Alps (Tier 9)",
-    0x9b: "Top to Bottom, Slalom, Machu Picchu (Tier 10)",
+    0x12: "Chinatown Collision, Special, San Francisco (Tier 2)",
+    0x22: "Kevin's Challenge, Special, Hong Kong (Tier 3)",
+    0x32: "Skateboard Mountain, Trick, Machu Picchu (Tier 4)",
+    0x42: "Road to Cuzco, Slalom, Machu Picchu (Tier 5)",
+    0x52: "Chinatown Tour, Slalom, San Francisco (Tier 6)",
+    0x62: "Lift Off, Race, Alps (Tier 7)",
+    0x72: "Shopping Spree, Race, Chicago (Tier 8)",
+    0x82: "The Hills Are Alive, Race, Alps (Tier 9)",
+    0x92: "Top to Bottom, Slalom, Machu Picchu (Tier 10)",
  
     0x03: "Street Issue, Slalom, Hong Kong (Tier 1)",
-    0x14: "Montain High, Race, Machu Picchu (Tier 2)",
-    0x25: "Top to Bottom, Trick, Edinburgh (Tier 3)",
-    0x36: "Del Centro, Trick, Rome (Tier 4)",
-    0x47: "Top to Bottom, Slalom, Hong Kong (Tier 5)",
-    0x58: "Seaside Village, Race, Rome (Tier 6)",
-    0x69: "Coaster Grind, Special, Chicago (Tier 7)",
-    0x7a: "Top To Bottom, Slalom, Rio (Tier 8)",
-    0x8b: "The Hills Are Alive, Trick, Alps (Tier 9)",
-    0x9c: "Top to Bottom, Slalom, Edinburgh (Tier 10)",
+    0x13: "Montain High, Race, Machu Picchu (Tier 2)",
+    0x23: "Top to Bottom, Trick, Edinburgh (Tier 3)",
+    0x33: "Del Centro, Trick, Rome (Tier 4)",
+    0x43: "Top to Bottom, Slalom, Hong Kong (Tier 5)",
+    0x53: "Seaside Village, Race, Rome (Tier 6)",
+    0x63: "Coaster Grind, Special, Chicago (Tier 7)",
+    0x73: "Top To Bottom, Slalom, Rio (Tier 8)",
+    0x83: "The Hills Are Alive, Trick, Alps (Tier 9)",
+    0x93: "Top to Bottom, Slalom, Edinburgh (Tier 10)",
  
     0x04: "Twin Peaks, Slalom, San Francisco (Tier 1)",
-    0x15: "City Lights, Slalom, Hong Kong (Tier 2)",
-    0x26: "Crash Test, Special, Rio (Tier 3)",
-    0x37: "Grind Time, Special, Hong Kong (Tier 4)",
-    0x48: "Clear the Streets, Special, Rome (Tier 5)",
-    0x59: "Out of the Woods, Trick, Rio (Tier 6)",
-    0x6a: "Round the Matterhorn, Trick, Alps (Tier 7)",
-    0x7b: "Top To Bottom, Trick, Rome (Tier 8)",
-    0x8c: "Favela Rush, Trick, Rio (Tier 9)",
-    0x9d: "Mall Trash, Trick, Chicago (Tier 10)",
+    0x14: "City Lights, Slalom, Hong Kong (Tier 2)",
+    0x24: "Crash Test, Special, Rio (Tier 3)",
+    0x34: "Grind Time, Special, Hong Kong (Tier 4)",
+    0x44: "Clear the Streets, Special, Rome (Tier 5)",
+    0x54: "Out of the Woods, Trick, Rio (Tier 6)",
+    0x64: "Round the Matterhorn, Trick, Alps (Tier 7)",
+    0x74: "Top To Bottom, Trick, Rome (Tier 8)",
+    0x84: "Favela Rush, Trick, Rio (Tier 9)",
+    0x94: "Mall Trash, Trick, Chicago (Tier 10)",
  
     0x05: "Gunnar's Threads, Race, Edinburgh (Tier 1)",
-    0x16: "Twin Peaks, Trick, San Francisco (Tier 2)",
-    0x27: "Elimination, Special, San Francisco (Tier 3)",
-    0x38: "Vista Point, Trick, Rio (Tier 4)",
-    0x49: "Girl Power, Race, Rio (Tier 5)",
-    0x5a: "Dharma Dash, Trick, Hong Kong (Tier 6)",
-    0x6b: "Waterfront Wipeout, Race, Hong Kong (Tier 7)",
-    0x7c: "Mall Rats, Special, Chicago (Tier 8)",
-    0x8d: "Top to Bottom, Slalom, San Francisco (Tier 9)",
-    0x9e: "Elimination Sale, Special, Chicago (Tier 10)",
+    0x15: "Twin Peaks, Trick, San Francisco (Tier 2)",
+    0x25: "Elimination, Special, San Francisco (Tier 3)",
+    0x35: "Vista Point, Trick, Rio (Tier 4)",
+    0x45: "Girl Power, Race, Rio (Tier 5)",
+    0x55: "Dharma Dash, Trick, Hong Kong (Tier 6)",
+    0x65: "Waterfront Wipeout, Race, Hong Kong (Tier 7)",
+    0x75: "Mall Rats, Special, Chicago (Tier 8)",
+    0x85: "Top to Bottom, Slalom, San Francisco (Tier 9)",
+    0x95: "Elimination Sale, Special, Chicago (Tier 10)",
  
     0x06: "Twin Peaks, Race, San Francisco (Tier 1)",
-    0x17: "Scottish Catacombs, Slalom, Edinburgh (Tier 2)",
-    0x28: "Hot Lava, Special, Rio (Tier 3)",
-    0x39: "Fallen Empire, Slalom, Rome (Tier 4)",
-    0x4a: "Boost Jam, Special, San Francisco (Tier 5)",
-    0x5b: "Castle Chaos, Slalom, Edinburgh (Tier 6)",
-    0x6c: "Parking Lot Shuffle, Race, Chicago (Tier 7)",
-    0x7d: "Bully Board, Special, Rio (Tier 8)",
-    0x8e: "Mall Moves, Trick, Chicago (Tier 9)",
-    0x9f: "Top to Bottom, Race, Alps (Tier 10)",
+    0x16: "Scottish Catacombs, Slalom, Edinburgh (Tier 2)",
+    0x26: "Hot Lava, Special, Rio (Tier 3)",
+    0x36: "Fallen Empire, Slalom, Rome (Tier 4)",
+    0x46: "Boost Jam, Special, San Francisco (Tier 5)",
+    0x56: "Castle Chaos, Slalom, Edinburgh (Tier 6)",
+    0x66: "Parking Lot Shuffle, Race, Chicago (Tier 7)",
+    0x76: "Bully Board, Special, Rio (Tier 8)",
+    0x86: "Mall Moves, Trick, Chicago (Tier 9)",
+    0x96: "Top to Bottom, Race, Alps (Tier 10)",
  
     0x07: "Castle Chaos, Trick, Edinburgh (Tier 1)",
-    0x18: "Road to Cuzco, Trick, Machu Picchu (Tier 2)",
-    0x3a: "Rooftop Tour, Slalom, Rio (Tier 4)",
-    0x6d: "Top To Bottom, Trick, San Francisco (Tier 6)",
-    0x7e: "Del Centro, Slalom, Rome (Tier 7)",
-    0x8f: "Seaside Village, Slalom, Rome (Tier 9)",
-    0xa0: "Top to Bottom, Trick, Alps (Tier 10)",
+    0x17: "Road to Cuzco, Trick, Machu Picchu (Tier 2)",
+    0x37: "Rooftop Tour, Slalom, Rio (Tier 4)",
+    0x57: "Top To Bottom, Trick, San Francisco (Tier 6)",
+    0x67: "Del Centro, Slalom, Rome (Tier 7)",
+    0x87: "Seaside Village, Slalom, Rome (Tier 9)",
+    0x97: "Top to Bottom, Trick, Alps (Tier 10)",
  
     0x08: "Waterfront Wipeout, Slalom, Hong Kong (Tier 1)",
-    0x19: "MacKenzie's Challenge, Special, Edinburgh (Tier 2)",
-    0x3b: "Mountain High, Slalom, Machu Picchu (Tier 4)",
-    0x6e: "Elimination, Special, Rome (Tier 6)",
-    0x7f: "Park It Anywhere, Trick, Chicago (Tier 7)",
-    0x90: "Full Mall Grind, Special, Chicago (Tier 9)",
-    0xa1: "Top to Bottom, Slalom, Alps (Tier 10)",
- 
+    0x18: "MacKenzie's Challenge, Special, Edinburgh (Tier 2)",
+    0x38: "Mountain High, Slalom, Machu Picchu (Tier 4)",
+    0x58: "Elimination, Special, Rome (Tier 6)",
+    0x68: "Park It Anywhere, Trick, Chicago (Tier 7)",
+    0x88: "Full Mall Grind, Special, Chicago (Tier 9)",
+    0x98: "Top to Bottom, Slalom, Alps (Tier 10)",
+
     0x09: "Tourist Trap, Race, San Francisco (Tier 1)",
-    0x1a: "Vista Point, Race, Rio (Tier 2)",
-    0x3c: "High Street, Trick, Edinburgh (Tier 4)",
-    0x6f: "Clearance Sale, Special, Chicago (Tier 6)",
-    0x80: "Round the Matterhorn, Slalom, Alps (Tier 7)",
-    0x91: "The Hills Are Alive, Slalom, Alps (Tier 9)",
-    0xa2: "Boost Jam, Special, Machu Picchu (Tier 10)",
+    0x19: "Vista Point, Race, Rio (Tier 2)",
+    0x39: "High Street, Trick, Edinburgh (Tier 4)",
+    0x59: "Clearance Sale, Special, Chicago (Tier 6)",
+    0x69: "Round the Matterhorn, Slalom, Alps (Tier 7)",
+    0x89: "The Hills Are Alive, Slalom, Alps (Tier 9)",
+    0x99: "Boost Jam, Special, Machu Picchu (Tier 10)",
  
     0x0a: "Cash Grab, Special, San Francisco (Tier 1)",
-    0x1b: "Tourist Spot, Slalom, San Francisco (Tier 2)",
-    0x3d: "Top to Bottom, Race, Edinburgh (Tier 4)",
-    0x70: "Hot Lava, Special, San Francisco (Tier 6)",
-    0x81: "Big Air, Trick, San Francisco (Tier 7)",
-    0x92: "Top to Bottom, Trick, Hong Kong (Tier 9)",
-    0xa3: "Unknown Skater, Special, Alps (Tier 10)",
+    0x1a: "Tourist Spot, Slalom, San Francisco (Tier 2)",
+    0x3a: "Top to Bottom, Race, Edinburgh (Tier 4)",
+    0x5a: "Hot Lava, Special, San Francisco (Tier 6)",
+    0x6a: "Big Air, Trick, San Francisco (Tier 7)",
+    0x8a: "Top to Bottom, Trick, Hong Kong (Tier 9)",
+    0x9a: "Unknown Skater, Special, Alps (Tier 10)",
  
-    0x1c: "Skateboard Mountain, Slalom, Machu Picchu (Tier 2)",
-    0x3e: "Favela Rush, Race, Rio (Tier 4)",
-    0x82: "Top To Bottom, Race, Machu Picchu (Tier 7)",
-    0x93: "Top to Bottom, Trick, Rio (Tier 9)",
+    0x1b: "Skateboard Mountain, Slalom, Machu Picchu (Tier 2)",
+    0x3b: "Favela Rush, Race, Rio (Tier 4)",
+    0x6b: "Top To Bottom, Race, Machu Picchu (Tier 7)",
+    0x8b: "Top to Bottom, Trick, Rio (Tier 9)",
+
+    0x1c: "Top to Bottom, Race, Hong Kong (Tier 2)",
+    0x3c: "Top To Bottom, Trick, Machu Picchu (Tier 4)",
+    0x6c: "Rome Burning, Race, Rome (Tier 7)",
+    0x8c: "Swiss Elimination, Special, Alps (Tier 9)",
  
-    0x1d: "Top to Bottom, Race, Hong Kong (Tier 2)",
-    0x3f: "Top To Bottom, Trick, Machu Picchu (Tier 4)",
-    0x83: "Rome Burning, Race, Rome (Tier 7)",
-    0x94: "Swiss Elimination, Special, Alps (Tier 9)",
- 
-    0x1e: "Bully Board, Special, Edinburgh (Tier 2)",
-    0x40: "Cash Grab, Special, Rome (Tier 4)",
-    0x84: "Boost Jam, Special, Alps (Tier 7)",
-    0x95: "Cash Grab, Special, Chicago (Tier 9)",
+    0x1d: "Bully Board, Special, Edinburgh (Tier 2)",
+    0x3d: "Cash Grab, Special, Rome (Tier 4)",
+    0x6d: "Boost Jam, Special, Alps (Tier 7)",
+    0x8d: "Cash Grab, Special, Chicago (Tier 9)",
 }
 
 tiers = {
@@ -181,6 +181,47 @@ boards = {
     0x12: "Vanguard"
 }
 
+// [Tier, Event, Gate Count]
+slalomInfos = [
+    [0,3,21], // Street Issue, Slalom, Hong Kong
+    [0,4,17], // Twin Peaks, Slalom, San Francisco
+    [0,8,23], // Waterfront Wipeout, Slalom, Hong Kong
+    
+    [1,4,29], // City Lights, Slalom, Hong Kong
+    [1,6,36], // Scottish Catacombs, Slalom, Edinburgh
+    [1,10,26], // Tourist Spot, Slalom, San Francisco
+    
+    [1,11,15], // Skateboard Mountain, Slalom, Machu Picchu
+    [2,0,16], // Vista Point, Slalom, Rio
+    [3,6,16], // Fallen Empire, Slalom, Rome
+    
+    [3,7,42], // Rooftop Tour, Slalom, Rio
+    [3,8,10], // Mountain High, Slalom, Machu Picchu
+    [4,2,15], // Road to Cuzco, Slalom, Machu Picchu
+    
+    [4,3,54], // Top to Bottom, Slalom, Hong Kong
+    [5,1,23], // High Street, Slalom, Edinburgh
+    [5,2,13], // Chinatown Tour, Slalom, San Francisco
+    
+    [5,6,22], // Castle Chaos, Slalom, Edinburgh
+    [6,1,15], // Precision Shopping, Slalom, Chicago
+    [6,7,12], // Del Centro, Slalom, Rome
+    
+    [6,9,21], // Round the Matterhorn, Slalom, Alps
+    [7,1,31], // Lift Ticket, Slalom, Alps
+    [7,3,69], // Top To Bottom, Slalom, Rio
+    
+    [8,5,40], // Top to Bottom, Slalom, San Francisco
+    [8,7,16], // Seaside Village, Slalom, Rome
+    [8,9,37], // The Hills Are Alive, Slalom, Alps
+    
+    [9,1,45], // Top to Bottom, Slalom, Rome
+    [9,2,44], // Top to Bottom, Slalom, Machu Picchu
+    [9,3,82], // Top to Bottom, Slalom, Edinburgh
+    
+    [9,8,87] // Top to Bottom, Slalom, Alps
+]
+
 function unlockedBoards(){
     sum = 0
     for index in range(0, 17){
@@ -206,13 +247,14 @@ function unlockedCharacters()
     return 9 + sum
 }
 
+function inRace() => dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1
 
 rich_presence_conditional_display(dword(0x4adc30) == 0x1, "Playing the \"Behind the Scenes\" Cutscene")
 
-rich_presence_conditional_display(dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1, "{0} is riding the {1} in {2} - Boards: {3}/19 - Characters: {4}/15 - 👑{5} ({6})", 
+rich_presence_conditional_display(inRace(), "{0} is riding the {1} in {2} - Boards: {3}/19 - Characters: {4}/15 - 👑{5} ({6})", 
                                   rich_presence_lookup("Character", dword(0x4b0678), characters),
                                   rich_presence_lookup("Board", dword(dword(dword(0x4e4268) + 0x184c) + 0x20), boards),
-                                  rich_presence_lookup("Race", 0x11 * dword(dword(dword(0x4e4268) + 0x184c) + 0x34) + dword(dword(dword(0x4e4268) + 0x184c) + 0x48), races),
+                                  rich_presence_lookup("Race", 0x10 * dword(dword(dword(0x4e4268) + 0x184c) + 0x34) + dword(dword(dword(0x4e4268) + 0x184c) + 0x48), races),
                                   rich_presence_value("Value", unlockedBoards(), "VALUE"),
                                   rich_presence_value("Value", unlockedCharacters(), "VALUE"),
                                   rich_presence_value("Value", dword(dword(dword(0x4e4268) + 0x2cac) + 0x104), "VALUE"),
@@ -325,6 +367,15 @@ function allOutfitsUnlocked(){
      
 function didNotCheat() => 0x00 == 0x00
           
+function inRaceCountdownMs() => 60000 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) + 1000 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) + dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70)
+
+function timesUp() => dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) == 0 && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) == 0 && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70) == 0
+function passedThroughAGate() => prev(dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48)) == dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) && 
+                                 prev(dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c)) < dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) ||
+                                 prev(dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48)) < dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48)
+          
+          
+          
 achievement("Check These New Threads",
             description="Unlock an alternative outfit",
             points=1,
@@ -430,10 +481,142 @@ achievement("I Could Not Manual So It Took a Bit of Grind",
                     dword(dword(dword(0x4e4268) + 0x2cac) + 0x104) == 827
 )
 
-function raceStatisticsTrigger() => dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1 && prev(dword(0x4adc20)) == 1 && dword(0x4adc20) == 2
+// THIS IS WRONG!!!
+function raceOver() => inRace() && prev(float(0x5e523c)) != float(0x5e523c)
+function raceOverTrigger() => inRace() && trigger_when(prev(float(0x5e523c)) != float(0x5e523c))
+
+achievement("A Cool Mil",
+            "Finish any Event with a raw Score statistic of at least 1,000,000",
+            points=10,
+            trigger=dword(0x5df134) >= 1000000 && raceOver()
+)
+
+achievement("Isn't the Point to Show Off?",
+            "Finish any Event with a Longest Combo Length statistic of at least 1 minute",
+            points=10,
+            trigger=float(0x5e242c) >= 60.0 && raceOver()
+)
 
 achievement("I'm Not Here for the View",
-            "Have a race statistic for Percent of Time at Max Speed of at least 80%",
+            "Finish any Event with a Percent of Time at Max Speed statistic of at least 80%",
             points=5,
-            trigger=float(0x5e2578) / float(0x5e523c) >= 0.8 && raceStatisticsTrigger()
+            trigger=float(0x5e2578) / float(0x5e523c) >= 0.8 && raceOver()
+)
+
+achievement("Were We Allowed to Touch the Ground?",
+            "Finish any Event with a Percent of Time on Ground statistic of at most 20%",
+            points=5,
+            trigger=float(0x5e25d4) / float(0x5e523c) <= 0.2 && raceOver()
+)
+
+achievement("Winning with Style",
+            "Finish any Event with a Total Tricks statistic of at least 300",
+            points=5,
+            trigger=dword(0x5df1d8) + dword(0x5df1dc) >= 300 && raceOver()
+)
+
+function level(tierId, eventId) => dword(dword(dword(0x4e4268) + 0x184c) + 0x34) == tierId && dword(dword(dword(0x4e4268) + 0x184c) + 0x48) == eventId
+
+function boostJam() => level(4, 6) || level(6, 13) || level(9, 9)
+
+achievement("Getting a Hang on Those Speed Boosts",
+            "Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 5",
+            points=5,
+            trigger= !boostJam() && dword(0x5e24c4) >= 5 && raceOver()
+)
+
+achievement("Wheels on Fire",
+            "Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 10",
+            points=10,
+            trigger= !boostJam() && dword(0x5e24c4) >= 10 && raceOver()
+)
+
+
+function allGatesInASlalom()
+{
+    cond = false
+    for slalomInfo in slalomInfos
+    {
+        cond = cond || level(slalomInfo[0], slalomInfo[1]) && tally(slalomInfo[2], passedThroughAGate())
+    }    
+    return cond
+}
+
+achievement("Time Collector",
+            "In any Slalom Event, pass through all Gates and finish the Event",
+            points=5,
+            trigger=raceOver() && never(prev(timesUp())) && allGatesInASlalom()
+)
+
+achievement("Porta Maggiore",
+            "In the Top to Bottom Slalom Event in Rome, pass through all 45 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 1) &&
+                    trigger_when(tally(45, passedThroughAGate()))
+)
+
+achievement("Intipunku",
+            "In the Top to Bottom Slalom Event in Machu Picchu, pass through all 44 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 2) &&
+                    trigger_when(tally(44, passedThroughAGate()))
+)
+
+achievement("Dragon Holes",
+            "In the Top to Bottom Slalom Event in Hong Kong, pass through all 54 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(4, 3) &&
+                    trigger_when(tally(54, passedThroughAGate()))
+)
+
+achievement("The Canongate",
+            "In the Top to Bottom Slalom Event in Edinburgh, pass through all 82 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 3) &&
+                    trigger_when(tally(82, passedThroughAGate()))
+)
+
+achievement("Gate of Heaven",
+            "In the Top to Bottom Slalom Event in Rio, pass through all 69 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(7, 3) &&
+                    trigger_when(tally(69, passedThroughAGate()))
+)
+
+achievement("Golden Gate",
+            "In the Top to Bottom Slalom Event in San Francisco, pass through all 40 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(8, 5) &&                    
+                    trigger_when(tally(40, passedThroughAGate()))
+)
+
+achievement("Portes du Soleil",
+            "In the Top to Bottom Slalom Event in the Alps, pass through all 87 Gates and finish the Event",
+            points=10,
+            trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 8) &&
+                    trigger_when(tally(87, passedThroughAGate()))
+)
+
+eventCount = 10
+function sumOfRewards()
+{
+    sum = 0
+    for index in range(0, eventCount - 1){
+        sum = sum + dword(0x6b5d38 + 0x10 * index)
+    }
+    return sum
+}
+
+achievement("Gold Is Not Enough",
+            "Beat any Event's record and be rewarded with a Golden Crown with Diamonds or better",
+            points=5,
+            trigger=inRace() && once(prev(float(0x5e523c)) != float(0x5e523c)) && never(!inRace()) && 
+                    prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4
+)
+            
+achievement("Crown Jewels",
+            "Beat any Event's record and be rewarded with a Golden Crown with Diamonds and Rubies",
+            points=10,
+            trigger=inRace() && once(prev(float(0x5e523c)) != float(0x5e523c)) && never(!inRace()) && 
+                    prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 5 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) == 5
 )
