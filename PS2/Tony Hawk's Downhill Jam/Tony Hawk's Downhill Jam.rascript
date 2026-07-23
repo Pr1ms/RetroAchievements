@@ -278,46 +278,46 @@ rich_presence_display("Playing Tony Hawk's Downhill Jam")
       - if the player switches savefiles in a single session (because data will no be cleared by the game in between)
     For end-of-race achievements, they cannot happen on load anyway, so they are self-protecting
 */
-function saveProtection() => dword(0x4adc7c) == 0 && dword(0x4adc20) == 0xffffffff
+function saveProtection() => dword(dword(dword(0x4a9114) + 0x8510) + 0xc) == 0x7f2e488f //dword(0x4adc7c) == 0 && dword(0x4adc20) == 0xffffffff
 
-achievement("Slightly Better Piece of Wood",
+achievement("Slightly Better Piece of Wood", id=625004,
             description="Unlock a new board",
             points=1,
             trigger=saveProtection() && aBoardIsUnlocking()
 )
             
 achievement("What Do You Mean? Of Course I Need 19 Boards!",
-            description="Unlock all boards",
+            description="Unlock all boards", id=625005,
             points=10,
             trigger=saveProtection() && prev(unlockedBoards()) == 18 && measured(unlockedBoards() == 19)
 )   
             
 achievement("Easily Done Love! Let Me Know When the Real Competition Starts!",
-            description="Unlock MacKenzie",
+            description="Unlock MacKenzie", id=625006,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x554)) == 0 && dword(dword(0x46f90c) + 0x554) == 1 
 )   
 
 achievement("It's over Already Huh? I'm Barely Even in Excruciating Pain!",
-            description="Unlock Crash",
+            description="Unlock Crash", id=625007,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x558)) == 0 && dword(dword(0x46f90c) + 0x558) == 1
 )   
 
 achievement("Now That's How You Skate Downhill... In a Video Game!",
-            description="Unlock Kevin",
+            description="Unlock Kevin", id=625008,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x55c)) == 0 && dword(dword(0x46f90c) + 0x55c) == 1 
 )   
 
 achievement("Winners Are Just Loosers Who Have Lost Their Way!",
-            description="Unlock Skyler",
+            description="Unlock Skyler", id=625009,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x564)) == 0 && dword(dword(0x46f90c) + 0x564) == 1
 )   
 
 achievement("Sometimes You're the Looser and Sometimes You're Me!",
-            description="Unlock Victor",
+            description="Unlock Victor", id=625010,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x568)) == 0 && dword(dword(0x46f90c) + 0x568) == 1
 )   
@@ -376,7 +376,7 @@ function passedThroughAGate() => prev(dword(dword(dword(0x4e4268) + 0xd3c0) + 0x
           
           
           
-achievement("Check These New Threads",
+achievement("Check These New Threads", id=625011,
             description="Unlock an alternative outfit",
             points=1,
             trigger=saveProtection() && anOutfitIsUnlocking()
@@ -390,90 +390,91 @@ achievement("Blinding the Competition with Style",
 ) 
 */
 
-achievement("Full Wardrobe",
+achievement("Full Wardrobe", id=625012,
             description="Unlock all alternative outfits for a skater",
             points=5,
             trigger=saveProtection() && fullWardrobeForAChar()
 )        
 
-achievement("Fashionista",
+achievement("Fashionista", id=625013,
             description="Unlock all alternative outfits",
             points=10,
             trigger=saveProtection() && allOutfitsUnlocked()
 )       
 
-achievement("Rookie",
-            "Unlock Tier 2 Events",
+achievement("Rookie", id=625033,
+            description="Unlock Tier 2 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 0 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 1
+            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x104)) >= 13 &&
+                    prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 0 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 1 
 )     
 
-achievement("Barnstormer",
-            "Unlock Tier 3 Events",
+achievement("Barnstormer", id=625034,
+            description="Unlock Tier 3 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 1 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 2
 )  
 
-achievement("Boarder",
-            "Unlock Tier 4 Events",
+achievement("Boarder", id=625035,
+            description="Unlock Tier 4 Events",
             type="progression",
             points=10,
             trigger=saveProtection()&& prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 2 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 3
 )  
 
-achievement("Semi-Pro",
-            "Unlock Tier 5 Events",
+achievement("Semi-Pro", id=625036,
+            description="Unlock Tier 5 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 3 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 4
 )     
 
-achievement("Pro",
-            "Unlock Tier 6 Events",
+achievement("Pro", id=625037,
+            description="Unlock Tier 6 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 4 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 5
 )     
 
-achievement("Champion",
-            "Unlock Tier 7 Events",
+achievement("Champion", id=625038,
+            description="Unlock Tier 7 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 5 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 6
 )     
 
-achievement("Sensei",
-            "Unlock Tier 8 Events",
+achievement("Sensei", id=625039,
+            description="Unlock Tier 8 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 6 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 7
 )     
 
-achievement("Grandmaster",
-            "Unlock Tier 9 Events",
+achievement("Grandmaster", id=625040,
+            description="Unlock Tier 9 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 7 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 8
 )     
 
-achievement("Legend",
-            "Unlock Tier 10 Events",
+achievement("Legend", id=625041,
+            description="Unlock Tier 10 Events",
             type="progression",
             points=10,
             trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 8 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 9
 )     
 
-achievement("Conqueror",
-            "Beat Tier 10 and unlock the Mystery Skater",
+achievement("Conqueror", id=625014,
+            description="Beat Tier 10 and unlock the Mystery Skater",
             type="win_condition",
             points=25,
             trigger=saveProtection() && dword(dword(0x46f90c) + 0x560) == 1 && prev(dword(dword(0x46f90c) + 0x560)) == 0
 )     
 
-achievement("I Could Not Manual So It Took a Bit of Grind",
-            "Reach 100% with any character",
+achievement("I Could Not Manual So It Took a Bit of Grind", id=625049,
+            description="Reach 100% with any character",
             points=25,
             trigger=saveProtection() && 
                     prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x104)) < 827 && 
@@ -486,31 +487,31 @@ function raceOver() => inRace() && prev(float(0x5e523c)) != float(0x5e523c)
 function raceOverTrigger() => inRace() && trigger_when(prev(float(0x5e523c)) != float(0x5e523c))
 
 achievement("A Cool Mil",
-            "Finish any Event with a raw Score statistic of at least 1,000,000",
+            description="Finish any Event with a raw Score statistic of at least 1,000,000",
             points=10,
             trigger=dword(0x5df134) >= 1000000 && raceOver()
 )
 
 achievement("Isn't the Point to Show Off?",
-            "Finish any Event with a Longest Combo Length statistic of at least 1 minute",
+            description="Finish any Event with a Longest Combo Length statistic of at least 1 minute",
             points=10,
             trigger=float(0x5e242c) >= 60.0 && raceOver()
 )
 
-achievement("I'm Not Here for the View",
-            "Finish any Event with a Percent of Time at Max Speed statistic of at least 80%",
+achievement("I'm Not Here for the View", id=624200,
+            description="Finish any Event with a Percent of Time at Max Speed statistic of at least 80%",
             points=5,
             trigger=float(0x5e2578) / float(0x5e523c) >= 0.8 && raceOver()
 )
 
 achievement("Were We Allowed to Touch the Ground?",
-            "Finish any Event with a Percent of Time on Ground statistic of at most 20%",
+            description="Finish any Event with a Percent of Time on Ground statistic of at most 20%",
             points=5,
             trigger=float(0x5e25d4) / float(0x5e523c) <= 0.2 && raceOver()
 )
 
 achievement("Winning with Style",
-            "Finish any Event with a Total Tricks statistic of at least 300",
+            description="Finish any Event with a Total Tricks statistic of at least 300",
             points=5,
             trigger=dword(0x5df1d8) + dword(0x5df1dc) >= 300 && raceOver()
 )
@@ -520,15 +521,15 @@ function level(tierId, eventId) => dword(dword(dword(0x4e4268) + 0x184c) + 0x34)
 function boostJam() => level(4, 6) || level(6, 13) || level(9, 9)
 
 achievement("Getting a Hang on Those Speed Boosts",
-            "Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 5",
+            description="Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 5",
             points=5,
-            trigger= !boostJam() && dword(0x5e24c4) >= 5 && raceOver()
+            trigger= !boostJam() && dword(0x5e24c8) >= 5 && raceOver()
 )
 
 achievement("Wheels on Fire",
-            "Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 10",
+            description="Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 10",
             points=10,
-            trigger= !boostJam() && dword(0x5e24c4) >= 10 && raceOver()
+            trigger= !boostJam() && dword(0x5e24c8) >= 10 && raceOver()
 )
 
 
@@ -542,81 +543,83 @@ function allGatesInASlalom()
     return cond
 }
 
-achievement("Time Collector",
-            "In any Slalom Event, pass through all Gates and finish the Event",
+achievement("Time Collector", id=625528,
+            description="In any Slalom Event, pass through all Gates and finish the Event",
             points=5,
             trigger=raceOver() && never(prev(timesUp())) && allGatesInASlalom()
 )
 
-achievement("Porta Maggiore",
-            "In the Top to Bottom Slalom Event in Rome, pass through all 45 Gates and finish the Event",
+achievement("Porta Maggiore", id=625555,
+            description="In the Top to Bottom Slalom Event in Rome, pass through all 45 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 1) &&
                     trigger_when(tally(45, passedThroughAGate()))
 )
 
-achievement("Intipunku",
-            "In the Top to Bottom Slalom Event in Machu Picchu, pass through all 44 Gates and finish the Event",
+achievement("Intipunku", id=625556,
+            description="In the Top to Bottom Slalom Event in Machu Picchu, pass through all 44 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 2) &&
                     trigger_when(tally(44, passedThroughAGate()))
 )
 
-achievement("Dragon Holes",
-            "In the Top to Bottom Slalom Event in Hong Kong, pass through all 54 Gates and finish the Event",
+achievement("Dragon Holes", id=625557,
+            description="In the Top to Bottom Slalom Event in Hong Kong, pass through all 54 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(4, 3) &&
                     trigger_when(tally(54, passedThroughAGate()))
 )
 
-achievement("The Canongate",
-            "In the Top to Bottom Slalom Event in Edinburgh, pass through all 82 Gates and finish the Event",
+achievement("The Canongate", id=625558,
+            description="In the Top to Bottom Slalom Event in Edinburgh, pass through all 82 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 3) &&
                     trigger_when(tally(82, passedThroughAGate()))
 )
 
-achievement("Gate of Heaven",
-            "In the Top to Bottom Slalom Event in Rio, pass through all 69 Gates and finish the Event",
+achievement("Gate of Heaven", id=625559,
+            description="In the Top to Bottom Slalom Event in Rio, pass through all 69 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(7, 3) &&
                     trigger_when(tally(69, passedThroughAGate()))
 )
 
-achievement("Golden Gate",
-            "In the Top to Bottom Slalom Event in San Francisco, pass through all 40 Gates and finish the Event",
+achievement("Golden Gate", id=625560,
+            description="In the Top to Bottom Slalom Event in San Francisco, pass through all 40 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(8, 5) &&                    
                     trigger_when(tally(40, passedThroughAGate()))
 )
 
-achievement("Portes du Soleil",
-            "In the Top to Bottom Slalom Event in the Alps, pass through all 87 Gates and finish the Event",
+achievement("Portes du Soleil", id=625561,
+            description="In the Top to Bottom Slalom Event in the Alps, pass through all 87 Gates and finish the Event",
             points=10,
             trigger=raceOverTrigger() && never(prev(timesUp())) && level(9, 8) &&
                     trigger_when(tally(87, passedThroughAGate()))
 )
 
-eventCount = 10
-function sumOfRewards()
-{
-    sum = 0
-    for index in range(0, eventCount - 1){
-        sum = sum + dword(0x6b5d38 + 0x10 * index)
-    }
-    return sum
-}
-
-achievement("Gold Is Not Enough",
-            "Beat any Event's record and be rewarded with a Golden Crown with Diamonds or better",
+achievement("Gold Is Not Enough", id=625579,
+            description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds or better",
             points=5,
             trigger=inRace() && once(prev(float(0x5e523c)) != float(0x5e523c)) && never(!inRace()) && 
                     prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4
 )
             
-achievement("Crown Jewels",
-            "Beat any Event's record and be rewarded with a Golden Crown with Diamonds and Rubies",
+achievement("Crown Jewels", id=625580,
+            description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds and Rubies",
             points=10,
             trigger=inRace() && once(prev(float(0x5e523c)) != float(0x5e523c)) && never(!inRace()) && 
                     prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 5 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) == 5
 )
+
+function skateLettersPicked() => dword(dword(dword(0x4a9114) + 0x5988) + 0xc) == 5
+achievement("Arcade Mode", id=625804,
+            description="In any Trick Event, collect SKATE and finish the Event",
+            points=5,
+            trigger=raceOver() && skateLettersPicked() && (
+                level(0, 7) || level(1, 5) || level(1, 7) || level(2, 3) || level(3, 2) || level(3, 3) || level(3, 5) || level(3, 9) || level(3, 12) ||
+                level(4, 1) || level(5, 0) || level(5, 4) || level(5, 5) || level(5, 7) || level(6, 4) || level(6, 8) || level(6, 10) || level(7, 0) ||
+                level(7, 4) || level(8, 3) || level(8, 4) || level(8, 6) || level(8, 10) || level(8, 11) || level(9, 4) || level(9, 7)
+            )
+)
+
