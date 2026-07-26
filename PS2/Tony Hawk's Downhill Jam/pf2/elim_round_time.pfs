@@ -1,0 +1,86 @@
+{
+    "ArrayGroups": [
+    ],
+    "Bookmarks": [
+    ],
+    "EmulatorTargetName": "PCSX2",
+    "LastScanParameters": {
+        "ArraySearchRange": 128,
+        "CandidatesPerLevel": 1000,
+        "DetectArrays": false,
+        "DynamicStaticDetection": false,
+        "FastScanMode": false,
+        "FinalAddressTarget": 544380496,
+        "FindAllPathLevels": false,
+        "LastOffsetHint": 12,
+        "LimitCpuUsage": false,
+        "MaxCandidates": 10000000,
+        "MaxLevel": 10,
+        "MaxOffset": 65535,
+        "PrintPartialPaths": false,
+        "StaticBaseEnd": 542043236,
+        "StaticBaseStart": 541353856,
+        "StopOnFirstPathFound": false,
+        "TargetAddress": 0
+    },
+    "ProcessId": 31044,
+    "Results": [
+        {
+            "BaseAddress": 541999740,
+            "BrokenStateAddresses": [
+            ],
+            "FinalAddress": 544380496,
+            "IsPartial": false,
+            "Offsets": [
+                15888,
+                12
+            ]
+        },
+        {
+            "BaseAddress": 541999772,
+            "BrokenStateAddresses": [
+            ],
+            "FinalAddress": 544380496,
+            "IsPartial": false,
+            "Offsets": [
+                15888,
+                12
+            ]
+        },
+        {
+            "BaseAddress": 541999720,
+            "BrokenStateAddresses": [
+            ],
+            "FinalAddress": 544380496,
+            "IsPartial": false,
+            "Offsets": [
+                15892,
+                12
+            ]
+        },
+        {
+            "BaseAddress": 541999924,
+            "BrokenStateAddresses": [
+            ],
+            "FinalAddress": 544380496,
+            "IsPartial": false,
+            "Offsets": [
+                16100,
+                12
+            ]
+        },
+        {
+            "BaseAddress": 542000528,
+            "BrokenStateAddresses": [
+            ],
+            "FinalAddress": 544380496,
+            "IsPartial": false,
+            "Offsets": [
+                16100,
+                12
+            ]
+        }
+    ],
+    "SortDirection": 0,
+    "SortedColumnName": ""
+}
