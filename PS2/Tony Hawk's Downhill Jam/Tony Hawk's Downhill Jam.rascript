@@ -233,9 +233,11 @@ function unlockedCharacters()
     return 9 + sum
 }
 
-function inRace() => dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1
+function inRace() => dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1 && dword(dword(dword(0x4e427c) + 0x30a8) + 0xc) == 1
 
 rich_presence_conditional_display(dword(0x4adc30) == 0x1, "Playing the \"Behind the Scenes\" Cutscene")
+
+rich_presence_conditional_display(dword(dword(dword(0x4e427c) + 0x30a8) + 0xc) > 1, "Skating Downhill with Friends")
 
 rich_presence_conditional_display(inRace(), "{0} is riding the {1} in {2} - Boards: {3}/19 - Characters: {4}/15 - 👑{5} ({6})", 
                                   rich_presence_lookup("Character", dword(0x4b0678), characters),
@@ -474,16 +476,16 @@ achievement("I Could Not Manual So It Took a Bit of Grind", id=625049,
 function raceOver() => inRace() && prev(float(0x5e523c)) != float(0x5e523c)
 function raceOverTrigger() => inRace() && trigger_when(prev(float(0x5e523c)) != float(0x5e523c))
 
-achievement("A Cool Mil",
+achievement("A Cool Mil", id=626930,
             description="Finish any Event with a raw Score statistic of at least 1,000,000",
             points=10,
-            trigger=dword(0x5df134) >= 1000000 && raceOver()
+            trigger=inRace() && dword(0x5df134) >= 1000000 && prev(dword(0x5df134)) != dword(0x5df134)
 )
 
-achievement("Isn't the Point to Show Off?",
-            description="Finish any Event with a Longest Combo Length statistic of at least 1 minute",
+achievement("Were We Allowed to Touch the Ground?", id=626928,
+            description="Finish any Event with a Longest Combo Length statistic of at least 30 seconds",
             points=10,
-            trigger=float(0x5e242c) >= 60.0 && raceOver()
+            trigger=float(0x5e242c) >= 30.0 && raceOver()
 )
 
 achievement("I'm Not Here for the View", id=624200,
@@ -492,13 +494,7 @@ achievement("I'm Not Here for the View", id=624200,
             trigger=float(0x5e2578) / float(0x5e523c) >= 0.8 && raceOver()
 )
 
-achievement("Were We Allowed to Touch the Ground?",
-            description="Finish any Event with a Percent of Time on Ground statistic of at most 20%",
-            points=5,
-            trigger=float(0x5e25d4) / float(0x5e523c) <= 0.2 && raceOver()
-)
-
-achievement("Winning with Style",
+achievement("Winning with Style", id=626929,
             description="Finish any Event with a Total Tricks statistic of at least 300",
             points=5,
             trigger=dword(0x5df1d8) + dword(0x5df1dc) >= 300 && raceOver()
@@ -590,15 +586,13 @@ achievement("Portes du Soleil", id=625561,
 achievement("Gold Is Not Enough", id=625579,
             description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds or better",
             points=5,
-            trigger=inRace() && once(prev(float(0x5e523c)) != float(0x5e523c)) && never(!inRace()) && 
-                    prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4
+            trigger=inRace() && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4
 )
             
 achievement("Crown Jewels", id=625580,
             description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds and Rubies",
             points=10,
-            trigger=inRace() && once(prev(float(0x5e523c)) != float(0x5e523c)) && never(!inRace()) && 
-                    prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 5 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) == 5
+            trigger=inRace() && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 5 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) == 5
 )
 
 trickEventIds = [0x182a62bd, 0xf93ad2ab, 0x86009977, 0x4681f5d5, 0xdf68a641, 0x81233307, 0xf107a9e1, 0x24447d59, 0x1f09c8cd, 0x1f47a6a4,
@@ -622,68 +616,110 @@ achievement("Arcade Mode", id=625804,
             trigger=skateLettersPicked() && anyTrickEvent() && raceOver() 
 )
 
-achievement("Too Bad This Game Does Not Have the Pizza Guy",
+achievement("Too Bad This Game Does Not Have the Pizza Guy", id=626644,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Rome",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x1f47a6a4 && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x1f47a6a4 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
-achievement("Inca-redible Skating",
+achievement("Inca-redible Skating", id=626646,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Machu Picchu",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xd8e56076 && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xd8e56076 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
-achievement("Spring Roll",
+achievement("Spring Roll", id=626645,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Hong Kong",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x1059779e && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x1059779e && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
-achievement("Haggis and Hardflips",
+achievement("Haggis and Hardflips", id=626647,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Edinburgh",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xdf68a641 && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xdf68a641 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
-achievement("Carnival of Kickflips",
+achievement("Carnival of Kickflips", id=626648,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Rio",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xba20e8fa && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xba20e8fa && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
-achievement("California Roll",
+achievement("California Roll", id=626649,
             description="Collect SKATE and then win the Top to Bottom Trick Event in San Francisco",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x3e58ead6 && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x3e58ead6 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
-achievement("Skating Is Just Snowboarding with Wheels",
+achievement("Skating Is Just Snowboarding with Wheels", id=626650,
             description="Collect SKATE and then win the Top to Bottom Trick Event in the Alps",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x18640cd4 && skateLettersPicked() && raceOver()
+            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x18640cd4 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 function totalSecondsEquals(targetSeconds) => 60 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) + dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c)  == targetSeconds && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70) == 0
+function timerReset() => dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) == 0 && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) == 0 && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70) == 0
 
-achievement("The Best Way Not to Be Last Is to Be First", 
+achievement("The Best Way Not to Be Last Is to Be First", id=626698,
             description="Win any Elimination Event while being first each time someone gets eliminated",
             points=5,
-            trigger=raceOver() && (dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x204c7506 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x57947e95 ||
-                                   dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x01533974 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x06709304) &&
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 0 && totalSecondsEquals(dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 0 && totalSecondsEquals(2 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 0 && totalSecondsEquals(3 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 0 && totalSecondsEquals(4 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc)))
+            trigger=(dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x204c7506 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x57947e95 ||
+                     dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x01533974 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x06709304) &&
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(2 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(3 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(4 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) &&
+                    raceOverTrigger() && never(timerReset())
 )
 
-achievement("Slow and Steady Wins the Race", 
+achievement("Slow and Steady Wins the Race", id=62669,
             description="Win any Elimination Event while being next to last each time someone gets eliminated",
             points=5,
-            trigger=raceOver() && (dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x204c7506 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x57947e95 ||
-                                   dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x01533974 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x06709304) &&
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 3 && totalSecondsEquals(dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 2 && totalSecondsEquals(2 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 1 && totalSecondsEquals(3 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
-                    once(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) == 0 && totalSecondsEquals(4 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc)))
+            trigger=(dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x204c7506 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x57947e95 ||
+                     dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x01533974 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x06709304) &&
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 3 && totalSecondsEquals(dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 2 && totalSecondsEquals(2 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 1 && totalSecondsEquals(3 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
+                    disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(4 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) &&
+                    raceOverTrigger() && never(timerReset())
+)
+
+achievement("Faster than the Wild Parrots of Telegraph Hill", id=626671,
+            description="Beat the Event record in the Top to Bottom Race in San Francisco for the first time",
+            points=10,
+            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xbaf9e4fa && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
+                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+)
+
+
+achievement("Faster than Alpine Groundhogs", id=626672,
+            description="Beat the Event record in the Top to Bottom Race in the Alps for the first time",
+            points=10,
+            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x5f2f4aca && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
+                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+)
+
+
+achievement("Faster than a Unicorn", id=626673,
+            description="Beat the Event record in the Top to Bottom Race in Edinburgh for the first time",
+            points=10,
+            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x842d6bb1 && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
+                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+)
+
+
+achievement("Faster than a Puma", id=626674,
+            description="Beat the Event record in the Top to Bottom Race in Machu Picchu for the first time",
+            points=10,
+            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x642f45b5 && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
+                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+)
+
+
+achievement("Faster than a White Dolphin", id=626675,
+            description="Beat the Event record in the Top to Bottom Race in Hong Kong for the first time",
+            points=10,
+            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x0f692d87 && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
+                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
 )
