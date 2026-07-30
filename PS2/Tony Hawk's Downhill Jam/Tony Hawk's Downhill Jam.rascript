@@ -80,6 +80,7 @@ events = {
     0x634281ac: "Montain High, Race, Machu Picchu",
     0x642f45b5: "Top To Bottom, Race, Machu Picchu",
     0x68b4e562: "Vista Point, Slalom, Rio",
+    0x690e9f21: "Cash Grab, Special, Chicago",
     0x6d4ece84: "Scottish Catacombs, Race, Edinburgh",
     0x6fd9217b: "Top To Bottom, Slalom, Rio",
     0x762b478f: "Unknown Skater, Special, Alps",
@@ -211,7 +212,7 @@ slalomInfos = [
 function unlockedBoards(){
     sum = 0
     for index in range(0, 17){
-        sum = sum + dword(dword(dword(0x4e4268) + 0x2cac) + 0x188 + 4 * index)
+        sum = sum + dword(dword(dword(0x4a9114) + 0x2fd0) + 0xa8 + 4 * index)
     }
     return 1 + sum
 }
@@ -219,7 +220,7 @@ function unlockedBoards(){
 function aBoardIsUnlocking(){
     cond = false
     for index in range(0, 17){
-        cond = cond || prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x188 + 4 * index)) == 0 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x188 + 4 * index) == 1
+        cond = cond || prev(dword(dword(dword(0x4a9114) + 0x2fd0) + 0xa8 + 4 * index)) == 0 && dword(dword(dword(0x4a9114) + 0x2fd0) + 0xa8 + 4 * index) == 1
     }
     return cond
 }
@@ -233,20 +234,24 @@ function unlockedCharacters()
     return 9 + sum
 }
 
-function inRace() => dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1 && dword(dword(dword(0x4e427c) + 0x30a8) + 0xc) == 1
+function inRaceScore() => dword(dword(dword(0x4e4268) + 0xd3c0) + 0xfc)
+function inRace() => dword(dword(dword(0x4e4268) + 0x1b7c) + 0xc) == 1 && dword(dword(dword(0x4a9114) + 0x355c) + 0x20) == 1
+function currentEvent() => dword(dword(dword(0x4a9114) + 0x6cbc) + 0xc)
+function bestRewardForCurrentEvent() => dword(dword(dword(0x4a9114) + 0x5448) + 0x20)
+function crownsCount() => dword(dword(dword(0x4a9114) + 0x2fd0) + 0x24)
+function maxUnlockedTier() => dword(dword(dword(0x4a9114) + 0x2fd0) + 0x54)
+function currentBoard() => dword(dword(dword(0x4a9114) + 0x9c50) + 0xc)
 
-rich_presence_conditional_display(dword(0x4adc30) == 0x1, "Playing the \"Behind the Scenes\" Cutscene")
-
-rich_presence_conditional_display(dword(dword(dword(0x4e427c) + 0x30a8) + 0xc) > 1, "Skating Downhill with Friends")
+rich_presence_conditional_display(dword(dword(dword(0x4a9114) + 0x355c) + 0x20) > 1, "Playing Tony Hawk's Downhill Jam with a Friend")
 
 rich_presence_conditional_display(inRace(), "{0} is riding the {1} in {2} - Boards: {3}/19 - Characters: {4}/15 - 👑{5} ({6})", 
                                   rich_presence_lookup("Character", dword(0x4b0678), characters),
-                                  rich_presence_lookup("Board", dword(dword(dword(0x4e4268) + 0x184c) + 0x20), boards),
-                                  rich_presence_lookup("Event", dword(dword(dword(0x4e4268) + 0x184c) + 0x5c), events),
+                                  rich_presence_lookup("Board", currentBoard(), boards),
+                                  rich_presence_lookup("Event", currentEvent(), events),
                                   rich_presence_value("Value", unlockedBoards(), "VALUE"),
                                   rich_presence_value("Value", unlockedCharacters(), "VALUE"),
-                                  rich_presence_value("Value", dword(dword(dword(0x4e4268) + 0x2cac) + 0x104), "VALUE"),
-                                  rich_presence_lookup("Tier", dword(dword(dword(0x4e4268) + 0x2cac) + 0x134), tiers)
+                                  rich_presence_value("Value", crownsCount(), "VALUE"),
+                                  rich_presence_lookup("Tier", maxUnlockedTier() , tiers)
 )
 
 rich_presence_conditional_display(dword(dword(dword(0x4a9114) + 0x8510) + 0xc) == 0x5c982102, "Choosing a Skater")
@@ -254,8 +259,8 @@ rich_presence_conditional_display(dword(dword(dword(0x4a9114) + 0x8510) + 0xc) =
 rich_presence_conditional_display(dword(dword(dword(0x4a9114) + 0x8510) + 0xc) == 0x7f2e488f, "In the Events Hub - Boards: {0}/19 - Characters: {1}/15 - 👑{2} ({3})",
                                   rich_presence_value("Value", unlockedBoards(), "VALUE"),
                                   rich_presence_value("Value", unlockedCharacters(), "VALUE"),
-                                  rich_presence_value("Value", dword(dword(dword(0x4e4268) + 0x2cac) + 0x104), "VALUE"),
-                                  rich_presence_lookup("Tier", dword(dword(dword(0x4e4268) + 0x2cac) + 0x134), tiers)
+                                  rich_presence_value("Value", crownsCount(), "VALUE"),
+                                  rich_presence_lookup("Tier", maxUnlockedTier() , tiers)
 )
 
 rich_presence_display("Playing Tony Hawk's Downhill Jam")
@@ -357,7 +362,7 @@ function allOutfitsUnlocked(){
      
 function didNotCheat() => 0x00 == 0x00
           
-function inRaceCountdownMs() => 60000 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) + 1000 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) + dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70)
+function inRaceCountdownCs() => 6000 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) + 100 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) + dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70)
 
 function timesUp() => dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) == 0 && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c) == 0 && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70) == 0
 function passedThroughAGate() => prev(dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48)) == dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) && 
@@ -396,64 +401,64 @@ achievement("Rookie", id=625033,
             description="Unlock Tier 2 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x104)) >= 13 &&
-                    prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 0 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 1 
+            trigger=saveProtection() && prev(crownsCount()) >= 13 &&
+                    prev(maxUnlockedTier()) == 0 && maxUnlockedTier() == 1 
 )     
 
 achievement("Barnstormer", id=625034,
             description="Unlock Tier 3 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 1 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 2
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 1 && maxUnlockedTier() == 2
 )  
 
 achievement("Boarder", id=625035,
             description="Unlock Tier 4 Events",
             type="progression",
             points=10,
-            trigger=saveProtection()&& prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 2 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 3
+            trigger=saveProtection()&& prev(maxUnlockedTier()) == 2 && maxUnlockedTier() == 3
 )  
 
 achievement("Semi-Pro", id=625036,
             description="Unlock Tier 5 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 3 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 4
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 3 && maxUnlockedTier() == 4
 )     
 
 achievement("Pro", id=625037,
             description="Unlock Tier 6 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 4 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 5
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 4 && maxUnlockedTier() == 5
 )     
 
 achievement("Champion", id=625038,
             description="Unlock Tier 7 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 5 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 6
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 5 && maxUnlockedTier() == 6
 )     
 
 achievement("Sensei", id=625039,
             description="Unlock Tier 8 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 6 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 7
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 6 && maxUnlockedTier() == 7
 )     
 
 achievement("Grandmaster", id=625040,
             description="Unlock Tier 9 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 7 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 8
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 7 && maxUnlockedTier() == 8
 )     
 
 achievement("Legend", id=625041,
             description="Unlock Tier 10 Events",
             type="progression",
             points=10,
-            trigger=saveProtection() && prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x134)) == 8 && dword(dword(dword(0x4e4268) + 0x2cac) + 0x134) == 9
+            trigger=saveProtection() && prev(maxUnlockedTier()) == 8 && maxUnlockedTier() == 9
 )     
 
 achievement("Conqueror", id=625014,
@@ -467,12 +472,12 @@ achievement("I Could Not Manual So It Took a Bit of Grind", id=625049,
             description="Reach 100% with any character",
             points=25,
             trigger=saveProtection() && 
-                    prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x104)) < 827 && 
-                    prev(dword(dword(dword(0x4e4268) + 0x2cac) + 0x104)) >= 815 && 
-                    dword(dword(dword(0x4e4268) + 0x2cac) + 0x104) == 827
+                    prev(crownsCount()) < 827 && 
+                    prev(crownsCount()) >= 815 && 
+                    crownsCount() == 827
 )
 
-// THIS IS WRONG!!!
+
 function raceOver() => inRace() && prev(float(0x5e523c)) != float(0x5e523c)
 function raceOverTrigger() => inRace() && trigger_when(prev(float(0x5e523c)) != float(0x5e523c))
 
@@ -491,7 +496,7 @@ achievement("Were We Allowed to Touch the Ground?", id=626928,
 achievement("I'm Not Here for the View", id=624200,
             description="Finish any Event with a Percent of Time at Max Speed statistic of at least 80%",
             points=5,
-            trigger=float(0x5e2578) / float(0x5e523c) >= 0.8 && raceOver()
+            trigger=float(0x5e2578) / float(0x5e523c) + 0.0 >= 0.8 && raceOver()
 )
 
 achievement("Winning with Style", id=626929,
@@ -501,9 +506,9 @@ achievement("Winning with Style", id=626929,
 )
 
 
-function boostJam() => dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x454a908a ||
-                       dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x2d1e286c ||
-                       dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x7adb59ab
+function boostJam() => currentEvent() == 0x454a908a ||
+                       currentEvent() == 0x2d1e286c ||
+                       currentEvent() == 0x7adb59ab
 
 achievement("Getting a Hang on Those Speed Boosts", id=626452,
             description="Finish any Event except a Boost Jam with a Speed Boost Chained statistic of at least 5",
@@ -523,7 +528,7 @@ function allGatesInASlalom()
     cond = false
     for slalomInfo in slalomInfos
     {
-        cond = cond || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == slalomInfo[0] && tally(slalomInfo[1], passedThroughAGate())
+        cond = cond || currentEvent() == slalomInfo[0] && tally(slalomInfo[1], passedThroughAGate())
     }    
     return cond
 }
@@ -537,62 +542,62 @@ achievement("Time Collector", id=625528,
 achievement("Porta Maggiore", id=625555,
             description="In the Top to Bottom Slalom Event in Rome, pass through all 45 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xe3af3ac6 &&
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0xe3af3ac6 &&
                     trigger_when(tally(45, passedThroughAGate()))
 )
 
 achievement("Intipunku", id=625556,
             description="In the Top to Bottom Slalom Event in Machu Picchu, pass through all 44 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x8bb52bf8 &&
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0x8bb52bf8 &&
                     trigger_when(tally(44, passedThroughAGate()))
 )
 
 achievement("Dragon Holes", id=625557,
             description="In the Top to Bottom Slalom Event in Hong Kong, pass through all 54 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x25acfda5 &&
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0x25acfda5 &&
                     trigger_when(tally(54, passedThroughAGate()))
 )
 
 achievement("The Canongate", id=625558,
             description="In the Top to Bottom Slalom Event in Edinburgh, pass through all 82 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x330f0331 &&
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0x330f0331 &&
                     trigger_when(tally(82, passedThroughAGate()))
 )
 
 achievement("Gate of Heaven", id=625559,
             description="In the Top to Bottom Slalom Event in Rio, pass through all 69 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x6fd9217b &&
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0x6fd9217b &&
                     trigger_when(tally(69, passedThroughAGate()))
 )
 
 achievement("Golden Gate", id=625560,
             description="In the Top to Bottom Slalom Event in San Francisco, pass through all 40 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x5d85359a &&                    
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0x5d85359a &&                    
                     trigger_when(tally(40, passedThroughAGate()))
 )
 
 achievement("Portes du Soleil", id=625561,
             description="In the Top to Bottom Slalom Event in the Alps, pass through all 87 Gates and finish the Event",
             points=10,
-            trigger=raceOverTrigger() && never(prev(timesUp())) && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xb3ad6850 &&
+            trigger=raceOverTrigger() && never(prev(timesUp())) && currentEvent() == 0xb3ad6850 &&
                     trigger_when(tally(87, passedThroughAGate()))
 )
 
 achievement("Gold Is Not Enough", id=625579,
             description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds or better",
             points=5,
-            trigger=inRace() && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4
+            trigger=inRace() && prev(bestRewardForCurrentEvent()) < 4 && bestRewardForCurrentEvent() >= 4
 )
             
 achievement("Crown Jewels", id=625580,
             description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds and Rubies",
             points=10,
-            trigger=inRace() && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 5 && dword(dword(dword(0x4e4268) + 0x184c) + 0x84) == 5
+            trigger=inRace() && prev(bestRewardForCurrentEvent()) < 5 && bestRewardForCurrentEvent() == 5
 )
 
 trickEventIds = [0x182a62bd, 0xf93ad2ab, 0x86009977, 0x4681f5d5, 0xdf68a641, 0x81233307, 0xf107a9e1, 0x24447d59, 0x1f09c8cd, 0x1f47a6a4,
@@ -604,7 +609,7 @@ function anyTrickEvent()
     cond = false
     for trickEventId in trickEventIds
     {
-        cond = cond || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == trickEventId
+        cond = cond || currentEvent() == trickEventId
     }    
     return cond
 }                 
@@ -619,43 +624,43 @@ achievement("Arcade Mode", id=625804,
 achievement("Too Bad This Game Does Not Have the Pizza Guy", id=626644,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Rome",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x1f47a6a4 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0x1f47a6a4 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 achievement("Inca-redible Skating", id=626646,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Machu Picchu",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xd8e56076 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0xd8e56076 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 achievement("Spring Roll", id=626645,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Hong Kong",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x1059779e && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0x1059779e && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 achievement("Haggis and Hardflips", id=626647,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Edinburgh",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xdf68a641 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0xdf68a641 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 achievement("Carnival of Kickflips", id=626648,
             description="Collect SKATE and then win the Top to Bottom Trick Event in Rio",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xba20e8fa && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0xba20e8fa && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 achievement("California Roll", id=626649,
             description="Collect SKATE and then win the Top to Bottom Trick Event in San Francisco",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x3e58ead6 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0x3e58ead6 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 achievement("Skating Is Just Snowboarding with Wheels", id=626650,
             description="Collect SKATE and then win the Top to Bottom Trick Event in the Alps",
             points=10,
-            trigger=dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x18640cd4 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
+            trigger=currentEvent() == 0x18640cd4 && trigger_when(skateLettersPicked()) && raceOverTrigger() 
 )
 
 function totalSecondsEquals(targetSeconds) => 60 * dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) + dword(dword(dword(0x4e4268) + 0xd3c0) + 0x5c)  == targetSeconds && dword(dword(dword(0x4e4268) + 0xd3c0) + 0x70) == 0
@@ -664,8 +669,8 @@ function timerReset() => dword(dword(dword(0x4e4268) + 0xd3c0) + 0x48) == 0 && d
 achievement("The Best Way Not to Be Last Is to Be First", id=626698,
             description="Win any Elimination Event while being first each time someone gets eliminated",
             points=5,
-            trigger=(dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x204c7506 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x57947e95 ||
-                     dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x01533974 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x06709304) &&
+            trigger=(currentEvent() == 0x204c7506 || currentEvent() == 0x57947e95 ||
+                     currentEvent() == 0x01533974 || currentEvent() == 0x06709304) &&
                     disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
                     disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(2 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
                     disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 0 && totalSecondsEquals(3 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
@@ -673,11 +678,11 @@ achievement("The Best Way Not to Be Last Is to Be First", id=626698,
                     raceOverTrigger() && never(timerReset())
 )
 
-achievement("Slow and Steady Wins the Race", id=62669,
+achievement("Slow and Steady Wins the Race", id=626699,
             description="Win any Elimination Event while being next to last each time someone gets eliminated",
             points=5,
-            trigger=(dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x204c7506 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x57947e95 ||
-                     dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x01533974 || dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x06709304) &&
+            trigger=(currentEvent() == 0x204c7506 || currentEvent() == 0x57947e95 ||
+                     currentEvent() == 0x01533974 || currentEvent() == 0x06709304) &&
                     disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 3 && totalSecondsEquals(dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
                     disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 2 && totalSecondsEquals(2 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
                     disable_when(dword(dword(dword(0x4a9114) + 0x7514) + 0xc) != 1 && totalSecondsEquals(3 * dword(dword(dword(0x4e427c) + 0x3e10) + 0xc))) && 
@@ -688,38 +693,275 @@ achievement("Slow and Steady Wins the Race", id=62669,
 achievement("Faster than the Wild Parrots of Telegraph Hill", id=626671,
             description="Beat the Event record in the Top to Bottom Race in San Francisco for the first time",
             points=10,
-            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0xbaf9e4fa && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
-                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+            trigger=inRace() && currentEvent() == 0xbaf9e4fa && prev(bestRewardForCurrentEvent()) < 4 && 
+                    trigger_when(bestRewardForCurrentEvent() >= 4)
 )
 
 
 achievement("Faster than Alpine Groundhogs", id=626672,
             description="Beat the Event record in the Top to Bottom Race in the Alps for the first time",
             points=10,
-            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x5f2f4aca && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
-                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+            trigger=inRace() && currentEvent() == 0x5f2f4aca && prev(bestRewardForCurrentEvent()) < 4 && 
+                    trigger_when(bestRewardForCurrentEvent() >= 4)
 )
 
 
 achievement("Faster than a Unicorn", id=626673,
             description="Beat the Event record in the Top to Bottom Race in Edinburgh for the first time",
             points=10,
-            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x842d6bb1 && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
-                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+            trigger=inRace() && currentEvent() == 0x842d6bb1 && prev(bestRewardForCurrentEvent()) < 4 && 
+                    trigger_when(bestRewardForCurrentEvent() >= 4)
 )
 
 
 achievement("Faster than a Puma", id=626674,
             description="Beat the Event record in the Top to Bottom Race in Machu Picchu for the first time",
             points=10,
-            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x642f45b5 && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
-                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+            trigger=inRace() && currentEvent() == 0x642f45b5 && prev(bestRewardForCurrentEvent()) < 4 && 
+                    trigger_when(bestRewardForCurrentEvent() >= 4)
 )
 
 
 achievement("Faster than a White Dolphin", id=626675,
             description="Beat the Event record in the Top to Bottom Race in Hong Kong for the first time",
             points=10,
-            trigger=inRace() && dword(dword(dword(0x4e4268) + 0x184c) + 0x5c) == 0x0f692d87 && prev(dword(dword(dword(0x4e4268) + 0x184c) + 0x84)) < 4 && 
-                    trigger_when(dword(dword(dword(0x4e4268) + 0x184c) + 0x84) >= 4)
+            trigger=inRace() && currentEvent() == 0x0f692d87 && prev(bestRewardForCurrentEvent()) < 4 && 
+                    trigger_when(bestRewardForCurrentEvent() >= 4)
 )
+
+// Target is max remaining time
+slaloms = [
+    [0x0acc9ff3, "Seaside Village, Slalom, Rome"],
+    [0x15d1be5b, "Skateboard Mountain, Slalom, Machu Picchu"],
+    [0x22c139bc, "Street Issue, Slalom, Hong Kong"],
+    [0x25acfda5, "Top to Bottom, Slalom, Hong Kong"],
+    [0x2a82050c, "Chinatown Tour, Slalom, San Francisco"],
+    [0x2dc9fdf3, "Lift Ticket, Slalom, Alps"],
+    [0x330f0331, "Top to Bottom, Slalom, Edinburgh"],
+    [0x3399eb76, "Precision Shopping, Slalom, Chicago"],
+    [0x3462c728, "Castle Chaos, Slalom, Edinburgh"],
+    [0x5acecd65, "The Hills Are Alive, Slalom, Alps"],
+    [0x5ae8f183, "Twin Peaks, Slalom, San Francisco"],
+    [0x5d85359a, "Top to Bottom, Slalom, San Francisco"],
+    [0x62d68ecd, "Road to Cuzco, Slalom, Machu Picchu"],
+    [0x68b4e562, "Vista Point, Slalom, Rio"],
+    [0x6fd9217b, "Top To Bottom, Slalom, Rio"],
+    [0x7dcbaf65, "Del Centro, Slalom, Rome"],
+    [0x8bb52bf8, "Top to Bottom, Slalom, Machu Picchu"],
+    [0x8cd8efe1, "Mountain High, Slalom, Machu Picchu"],
+    [0xad6b9692, "High Street, Slalom, Edinburgh"],
+    [0xb3ad6850, "Top to Bottom, Slalom, Alps"],
+    [0xb4c0ac49, "Round the Matterhorn, Slalom, Alps"],
+    [0xbbc86806, "City Lights, Slalom, Hong Kong"],
+    [0xc3e1a039, "Tourist Spot, Slalom, San Francisco"],
+    [0xcccf5890, "Waterfront Wipeout, Slalom, Hong Kong"],
+    [0xda6ca604, "Scottish Catacombs, Slalom, Edinburgh"],
+    [0xe3af3ac6, "Top to Bottom, Slalom, Rome"],
+    [0xe4c2fedf, "Fallen Empire, Slalom, Rome"],
+    [0xf1bdb4d8, "Rooftop Tour, Slalom, Rio"],
+]
+
+// Target is max raw score
+tricks = [
+    [0x1059779e, "Top to Bottom, Trick, Hong Kong"],
+    [0x1734b387, "Dharma Dash, Trick, Hong Kong"],
+    [0x182a62bd, "Fallen Empire, Trick, Rome"],
+    [0x18640cd4, "Top to Bottom, Trick, Alps"],
+    [0x1f09c8cd, "Round the Matterhorn, Trick, Alps"],
+    [0x1f47a6a4, "Top To Bottom, Trick, Rome"],
+    [0x24447d59, "Out of the Woods, Trick, Rio"],
+    [0x3186c543, "Road to Cuzco, Trick, Machu Picchu"],
+    [0x39352ecf, "Twin Peaks, Trick, San Francisco"],
+    [0x3e58ead6, "Top To Bottom, Trick, San Francisco"],
+    [0x410c33e2, "High Street, Trick, Edinburgh"],
+    [0x4681f5d5, "Skateboard Mountain, Trick, Machu Picchu"],
+    [0x4980e145, "Mall Trash, Trick, Chicago"],
+    [0x4eed255c, "Park It Anywhere, Trick, Chicago"],
+    [0x53434dcf, "Favela Rush, Trick, Rio"],
+    [0x81233307, "Del Centro, Trick, Rome"],
+    [0x86009977, "Lift Ticket, Tricks, Alps"],
+    [0xba20e8fa, "Top to Bottom, Trick, Rio"],
+    [0xbd4d2ce3, "Vista Point, Trick, Rio"],
+    [0xd73b4fe3, "Big Air, Trick, San Francisco"],
+    [0xd7e474e6, "Mall Moves, Trick, Chicago"],
+    [0xd8056258, "Castle Chaos, Trick, Edinburgh"],
+    [0xd8e56076, "Top To Bottom, Trick, Machu Picchu"],
+    [0xdf68a641, "Top to Bottom, Trick, Edinburgh"],
+    [0xf107a9e1, "The Hills Are Alive, Trick, Alps"],
+    [0xf93ad2ab, "Waterfront Wipeout, Trick, Hong Kong"]
+]
+
+// Target is min total time
+races = [
+    // Common Races
+    [0x0804e99e, "Dharma Dash, Race, Hong Kong"],
+    [0x0f692d87, "Top to Bottom, Race, Hong Kong"],
+    [0x114123ce, "Rome Burning, Race, Rome"],
+    [0x13287523, "Trails of Ruins, Race, Machu Picchu"],
+    [0x162ce7d7, "Fallen Empire, Race, Rome"],
+    [0x1a49fe12, "Gunnar's Threads, Race, Edinburgh"],
+    [0x249d7159, "Tourist Trap, Race, San Francisco"],
+    [0x26accbaf, "Girl Power, Race, Rio"],
+    [0x539a41cf, "Cable Car Sprint, Race, San Francisco"],
+    [0x5f2f4aca, "Top to Bottom, Race, Alps"],
+    [0x62af25e2, "Parking Lot Shuffle, Race, Chicago"],
+    [0x634281ac, "Montain High, Race, Machu Picchu"],
+    [0x642f45b5, "Top To Bottom, Race, Machu Picchu"],
+    [0x6d4ece84, "Scottish Catacombs, Race, Edinburgh"],
+    [0x7bd7d2f0, "Vista Point, Race, Rio"],
+    [0x8340afa8, "Castle Chaos, Race, Edinburgh"],
+    [0x842d6bb1, "Top to Bottom, Race, Edinburgh"],
+    [0x8ca144ce, "Saturday Matinee, Race, Chicago"],
+    [0x8d4ce080, "Road to Cuzco, Race, Machu Picchu"],
+    [0x8f25b66d, "Del Centro, Race, Rome"],
+    [0x95d9b3dc, "Favela Rush, Race, Rio"],
+    [0xb64cefff, "The Hills Are Alive, Race, Alps"],
+    [0xbaf9e4fa, "Top to Bottom, Race, San Francisco"],
+    [0xbd9420e3, "Twin Peaks, Race, San Francisco"],
+    [0xc14bdf69, "Lift Off, Race, Alps"],
+    [0xe2de834a, "Out Of The Woods, Race, Rio"],
+    [0xe60a88b2, "Waterfront Wipeout, Race, Hong Kong"],
+    [0xf82286fb, "Seaside Village, Race, Rome"],
+    [0xfba67458, "Shopping Spree, Race, Chicago"],
+    
+    // Eliminations
+    [0x01533974, "Elimination, Special, Rome"],
+    [0x06709304, "Swiss Elimination, Special, Alps"],
+    [0x57947e95, "Elimination Sale, Special, Chicago"],
+    [0x204c7506, "Elimination, Special, San Francisco"],
+    
+    // Duels
+    [0x1756d90f, "Kevin's Challenge, Special, Hong Kong"],
+    [0xd86708d0, "MacKenzie's Challenge, Special, Edinburgh"],
+    [0x762b478f, "Unknown Skater, Special, Alps"],
+    [0xbd2f466b, "Crash Test, Special, Rio"],
+    
+    // Lava
+    [0x1e4677a0, "Hot Lava, Special, Rio"],
+    [0xdaf00296, "Hot Lava, Special, San Francisco"],
+
+    // Boost Jam
+    [0x2d1e286c, "Boost Jam, Special, Machu Picchu"],
+    [0x454a908a, "Boost Jam, Special, Alps"],
+]
+
+// Target is max money
+moneys = [
+    [0x13a97bfe, "Cash Grab, Special, San Francisco"],
+    [0x0c119ba7, "Cash Grab, Special, Rome"],
+    [0x690e9f21, "Cash Grab, Special, Chicago"]
+]
+
+// Target is max wacking
+wackings = [
+    [0x50da199a, "Bagpipe Beatdown, Special, Edinburgh"],
+    [0x57c1ce02, "Bully Board, Special, Edinburgh"],
+    [0x0c0c3bd0, "Knockdown, Special, Rio"],
+    [0x807a206d, "Clear the Streets, Special, Rome"],
+    [0x572135c4, "Mall Rats, Special, Chicago"],
+    [0x7bc7a633, "Bully Board, Special, Rio"],
+]
+
+// Target is grind distance
+grinds = [
+    [0x093871c9, "Grind Time, Special, Hong Kong"],
+    [0x1860a303, "Coaster Grind, Special, Chicago"],
+    [0x8169f2b9, "Full Mall Grind, Special, Chicago"],
+]
+
+// Target is max damage
+damages =  [
+    [0x5721eaff, "Chinatown Collision, Special, San Francisco"],
+    [0x3e50f00a, "Clearance Sale, Special, Chicago"],
+]
+
+for race in races
+{
+    leaderboard("Fastest in " + race[1],
+                "Fastest Time in " + race[1],
+                lower_is_better = true,
+                format = "MILLISECS",
+                start=currentEvent() == race[0] && raceOver() && float(0x5e523c) > 0.0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=float(0x5e523c) * 100.0
+    
+    )
+}
+
+for trick in tricks
+{
+    leaderboard("Highest Score in " + trick[1],
+                "Highest raw Score in " + trick[1] + " - time or SKATE bonuses are not taken into account",
+                format = "VALUE",
+                start=inRace() && currentEvent() == trick[0] && prev(dword(0x5df134)) != dword(0x5df134) && dword(0x5df134) == inRaceScore() && dword(0x5df134) > 0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=dword(0x5df134)
+    
+    )
+}
+
+for money in moneys
+{
+    leaderboard("Money Grabbed in " + money[1],
+                "Highest raw Score in " + money[1] + " - time bonus is not taken into account",
+                format = "VALUE",
+                start=inRace() && currentEvent() == money[0] && prev(dword(0x5df134)) != dword(0x5df134) && dword(0x5df134) == inRaceScore() && dword(0x5df134) > 0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=dword(0x5df134)
+    
+    )
+}
+
+for slalom in slaloms
+{
+    leaderboard("Extra Time in " + slalom[1],
+                "Highest remaining Time in " + slalom[1],
+                format = "MILLISECS",
+                start=currentEvent() == slalom[0] && raceOver() && float(0x5e523c) > 0.0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=float(0x5e523c) * 100.0
+    )
+}
+
+for wacking in wackings 
+{
+    leaderboard("Smacks in " + wacking[1],
+                "Highest number of Smacks in " + wacking[1],
+                format = "VALUE",
+                start=inRace() && currentEvent() == wacking[0] && prev(dword(0x5df134)) != dword(0x5df134) && dword(0x5df134) == inRaceScore() && dword(0x5df134) > 0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=dword(0x5df134)
+    
+    )
+}
+
+for damage in damages 
+{
+    leaderboard("Damage in " + damage[1],
+                "Highest raw Score in " + damage[1] + " - time bonus is not taken into account",
+                format = "VALUE",
+                start=inRace() && currentEvent() == damage[0] && prev(dword(0x5df134)) != dword(0x5df134) && dword(0x5df134) == inRaceScore() && dword(0x5df134) > 0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=dword(0x5df134)
+    
+    )
+}
+
+for grind in grinds
+{
+    leaderboard("Grind in " + grind[1],
+                "Longest total Grind Distance in " + grind[1],
+                format = "VALUE",
+                start=inRace() && currentEvent() == grind[0] && prev(dword(0x5df134)) != dword(0x5df134) && dword(0x5df134) == inRaceScore() && dword(0x5df134) > 0,
+                cancel=always_false(),
+                submit=always_true(),
+                value=dword(0x5df134)
+    
+    )
+}
