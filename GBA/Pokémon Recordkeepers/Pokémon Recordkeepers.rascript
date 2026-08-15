@@ -116,7 +116,7 @@ function common_mons(){
 
 function inGame() => word(0x11e8) == 0x0001
 
-function battleWonAgainst(pkmnId) => word(0x8766) > 0 && prev(word(0x873c)) != 0 && prev(word(0x87a8)) == pkmnId && word(0x873c) == 0 && word(0x87a8) == 0
+function battleWonAgainst(pkmnId) => word(0x8766) > 0 && prev(word(0x873c)) != 0 && prev(word(0x87a8)) == pkmnId && word(0x873c) == 0 && word(0x87a8) == 0 && word(0x87d2) == 0
 
 rich_presence_conditional_display(word(0x11e8) == 0x0000, "In Main Menu")
 
@@ -156,6 +156,12 @@ achievement(
 )
 
 achievement(
+    title = "Relapse", points = 1,
+    description = "Try and go behind Naoto's counter after being warned not to",
+    trigger = inGame() && bit4(tbyte(0x50f8) + 0x8e40) == 1 && word(0xe830) == 0x1b && prev(word(0xe832)) == 0x1f && word(0xe832) == 0x1e 
+)
+
+achievement(
     title = "A Victory Before Breakfast", points = 3, type = "missable",
     description = "Beat Satsuki in the Introductory Battle",
     trigger = inGame() && byte(tbyte(0x50f8) + 0x9164) == 0 && trigger_when(battleWonAgainst(0xfb))
@@ -163,16 +169,16 @@ achievement(
 
 // LEARNING ABOUT MYTHS/STORIES BEFOREHAND
 achievement(
-    title = "An Abundance of Information", points = 2, type = "missable",
+    title = "An Abundance of Information", points = 1, type = "missable",
     description = "Before beating \"Overflowing Abundance\", meet Morgan and read about the Myth in the Archive",
     trigger = never(!inGame()) && word(tbyte(0x50f8) + 0xa188) == 0 && byte(tbyte(0x50f8) + 0x9164) == 1 && // Intro is over and the Myth has never been beaten
               !(byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) != 0x00) &&  // Hiding it if working on another myth
               trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x03) || prev(bit5(tbyte(0x50f8) + 0x8e84) == 0)) &&
-              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x03) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x04) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
+              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x04) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
 )
 
 achievement(
-    title = "Not Loosing Track of the Mission", points = 2, type = "missable",
+    title = "Not Loosing Track of the Mission", points = 1, type = "missable",
     description = "Before beating \"The Lost Archipelago\", meet Kenichi and read about the Myth in the Archive",
     trigger = never(!inGame()) && word(tbyte(0x50f8) + 0xa1c4) == 0 && byte(tbyte(0x50f8) + 0x9164) == 1 && // Intro is over and the Myth has never been beaten
               !(byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) != 0x01) &&  // Hiding it if working on another myth
@@ -181,12 +187,12 @@ achievement(
 )
 
 achievement(
-    title = "Curiosity Is Not a Sin", points = 2, type = "missable",
+    title = "Curiosity Is Not a Sin", points = 1, type = "missable",
     description = "Before beating \"The Original Sinner\", meet Hanzo and Nakamura and read about the Myth in the Archive",
     trigger = never(!inGame()) && word(tbyte(0x50f8) + 0xa200) == 0 && byte(tbyte(0x50f8) + 0x9164) == 1 && // Intro is over and the Myth has never been beaten
               !(byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) != 0x02) &&  // Hiding it if working on another myth
               trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x11) || prev(bit6(tbyte(0x50f8) + 0x8e85) == 0)) &&
-              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x11) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x12) && bit5(tbyte(0x50f8) + 0x8e85) == 1 && bit6(tbyte(0x50f8) + 0x8e85) == 1)
+              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x12) && bit5(tbyte(0x50f8) + 0x8e85) == 1 && bit6(tbyte(0x50f8) + 0x8e85) == 1)
 )
 
 achievement(
@@ -198,30 +204,30 @@ achievement(
 
 // MINOR ENDINGS FOR MYTHS
 achievement(
-    title = "[PLACEHOLDER] Lost Archipelago Minor Ending", points = 1, type = "missable",
+    title = "Hyoku's Failure", points = 1, type = "missable",
     description = "Read the Minor Ending to \"The Lost Archipelago\" in the Archive and talk to Kenichi about it",
-    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x01 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0xa1c0) > 5)) || // In the Myth and it has never been beaten under True conditions
-              byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0xa1c0) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
-              trigger_when(prev(byte(0x16e61) != 0xff) || prev(bit1(tbyte(0x50f8) + 0x8e85) == 0)) &&
-              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x0b) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x0c) && bit5(tbyte(0x50f8) + 0x8e85) == 1 && bit6(tbyte(0x50f8) + 0x8e85) == 1)
+    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x01 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0x916c) > 5)) || // In the Myth and it has never been beaten under True conditions
+              byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0x916c) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
+              trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x0b) || prev(bit2(tbyte(0x50f8) + 0x8e85) == 0)) &&
+              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x0c) && bit2(tbyte(0x50f8) + 0x8e85) == 1)
 )
 
 achievement(
-    title = "[PLACEHOLDER] Overflowing Abundane Minor Ending", points = 1, type = "missable",
+    title = "It's Finally Done", points = 1, type = "missable",
     description = "Read the Minor Ending to \"Overflowing Abundance\" in the Archive and talk to Morgan about it",
-    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x00 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0xa184) > 5)) || // In the Myth and it has never been beaten under True conditions
-              byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0xa184) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
-              trigger_when(prev(byte(0x16e61) != 0xff) || prev(bit1(tbyte(0x50f8) + 0x8e85) == 0)) &&
-              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x05) && bit1(tbyte(0x50f8) + 0x8e85) == 1)
+    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x00 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0x9168) > 5)) || // In the Myth and it has never been beaten under True conditions
+              byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0x9168) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
+              trigger_when(prev(byte(0x16e61) != 0xff) || prev(bit6(tbyte(0x50f8) + 0x8e84) == 0)) &&
+              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x05) && bit6(tbyte(0x50f8) + 0x8e84) == 1)
 )
 
 achievement(
     title = "[PLACEHOLDER] Original Sinner Minor Ending", points = 1, type = "missable",
     description = "Read the Minor Ending to \"The Original Sinner\" in the Archive and talk to Hanzo about it",
-    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x02 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0xa1fc) > 5)) || // In the Myth and it has never been beaten under True conditions
-              byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0xa1fc) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
-              trigger_when(prev(byte(0x16e61) != 0xff) || prev(bit1(tbyte(0x50f8) + 0x8e85) == 0)) &&
-              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x13) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x14) && bit5(tbyte(0x50f8) + 0x8e85) == 1 && bit6(tbyte(0x50f8) + 0x8e85) == 1)
+    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x02 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0x916a) > 5)) || // In the Myth and it has never been beaten under True conditions
+              byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0x916a) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
+              trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x13) || prev(bit1(tbyte(0x50f8) + 0x8e85) == 0)) &&
+              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x14) && bit5(tbyte(0x50f8) + 0x8e85) == 1 && bit6(tbyte(0x50f8) + 0x8e85) == 1)
 )
 
 // TRULY COMPLETING MYTHS/STORIES
@@ -254,32 +260,32 @@ achievement(
 
 // TRUE ENDINGS FOR MYTHS
 achievement(
-    title = "[PLACEHOLDER] Lost Archipelago True Ending", points = 2, 
+    title = "Ryoku's Victory", points = 1, 
     description = "Read the True Ending to \"The Lost Archipelago\" in the Archive and meet Kenichi's family",
     trigger = never(!inGame()) && 
-              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x03) || prev(bit5(tbyte(0x50f8) + 0x8e84) == 0)) &&
-              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x0f) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x10) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
+              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x0f) || prev(bit3(tbyte(0x50f8) + 0x8e85) == 0)) &&
+              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x10) && bit3(tbyte(0x50f8) + 0x8e85) == 1)
 )
 
 achievement(
-    title = "[PLACEHOLDER] Overflowing Abundane True Ending", points = 2,
+    title = "Death Became Known Once More", points = 1,
     description = "Read the True Ending to \"Overflowing Abundance\" in the Archive and talk to Yfa about it",
     trigger = never(!inGame()) &&
-              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x03) || prev(bit5(tbyte(0x50f8) + 0x8e84) == 0)) &&
-              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x07) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x08) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
+              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x07) || prev(bit6(tbyte(0x50f8) + 0x8e84) == 0)) &&
+              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x08) && bit6(tbyte(0x50f8) + 0x8e84) == 1)
 )
 
 achievement(
-    title = "[PLACEHOLDER] Original Sinner True Ending", points = 2,
+    title = "[PLACEHOLDER] Original Sinner True Ending", points = 1,
     description = "Read the True Ending to \"The Original Sinner\" in the Archive and talk to Nakamura about it",
     trigger = never(!inGame()) &&
-              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x03) || prev(bit5(tbyte(0x50f8) + 0x8e84) == 0)) &&
-              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x16) && once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x17) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
+              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x16) || prev(bit5(tbyte(0x50f8) + 0x8e84) == 0)) &&
+              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x17) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
 )
 
 // ENDING FOR STORIES
 achievement(
-    title = "A Merry Conclusion", points = 2,
+    title = "A Merry Conclusion", points = 1,
     description = "After learning what it truly means to be a Recordkeeper, read the Ending of the \"Nightmare After Christmas\" in the Archive",
     trigger = inGame() &&
               byte(0x16e61) == 0xff && prev(dword(0x16e64) == 0x1a) && dword(0x16e64) == 0x1b
@@ -363,41 +369,48 @@ achievement(
     trigger = inGame() && mythBeatenWithAllArchetypes(0xaa3e)
 )
 
+function enteredFight() => prev(word(0x873c)) == 0 && word(0x873c) > 0
 
 // STATS BOOSTING ACHIEVEMENTS
 achievement(
     title = "As Healthy as an IV-Less Wailord", points = 5,
     description = "Have your active Pokémon in Battle with their base HP of at least 450",
-    trigger = inGame()
+    trigger = inGame() && word(0x873c) > 0 && word(0x876a) >= 450 &&
+              prev(word(0x873c)) != word(0x873c) // this covers both entering the fight with a valid mon or we switching to valid one
 )
 
 achievement(
     title = "As Strong as an IV-Less Rampardos", points = 5,
     description = "Have your active Pokémon in Battle with their base Atk of at least 335",
-    trigger = inGame()
+    trigger = inGame() && word(0x873c) > 0 && word(0x873e) >= 335 &&
+              prev(word(0x873c)) != word(0x873c)
 )
 
 achievement(
     title = "Far Better than the Tankiest IV-Less One Out There", points = 5,
     description = "Have your active Pokémon in Battle with their base Def of at least 465",
-    trigger = inGame()
+    trigger = inGame() && word(0x873c) > 0 && word(0x8740) >= 465 &&
+              prev(word(0x873c)) != word(0x873c)
 )
 
 achievement(
     title = "As Good a Caster as an IV-Less Attack Deoxys", points = 5,
     description = "Have your active Pokémon in Battle with their base SpA of at least 365",
-    trigger = inGame()
+    trigger = inGame() && word(0x873c) > 0 && word(0x8744) >= 365 &&
+              prev(word(0x873c)) != word(0x873c)
 )
 
 achievement(
     title = "As Stoic as an IV-Less Lugia", points = 5,
     description = "Have your active Pokémon in Battle with their base SpD of at least 344",
-    trigger = inGame()
+    trigger = inGame() && word(0x873c) > 0 && word(0x8746) >= 344 &&
+              prev(word(0x873c)) != word(0x873c)
 )
 
 achievement(
     title = "As Fast as an IV-less Ninjask", points = 5,
     description = "Have your active Pokémon in Battle with their base Spe of at least 325",
-    trigger = inGame()
+    trigger = inGame() && word(0x873c) > 0 && word(0x8742) >= 325 &&
+              prev(word(0x873c)) != word(0x873c)
 )
 
