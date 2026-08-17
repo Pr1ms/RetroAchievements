@@ -222,12 +222,12 @@ achievement(
 )
 
 achievement(
-    title = "[PLACEHOLDER] Original Sinner Minor Ending", points = 1, type = "missable",
+    title = "Missing Griseous Orb", points = 1, type = "missable",
     description = "Read the Minor Ending to \"The Original Sinner\" in the Archive and talk to Hanzo about it",
     trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x02 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0x916a) > 5)) || // In the Myth and it has never been beaten under True conditions
               byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0x916a) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
-              trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x13) || prev(bit1(tbyte(0x50f8) + 0x8e85) == 0)) &&
-              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x14) && bit5(tbyte(0x50f8) + 0x8e85) == 1 && bit6(tbyte(0x50f8) + 0x8e85) == 1)
+              trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x13) || prev(bit1(tbyte(0x50f8) + 0x8e86) == 0)) &&
+              trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x14) && bit1(tbyte(0x50f8) + 0x8e86) == 1)
 )
 
 // TRULY COMPLETING MYTHS/STORIES
@@ -276,11 +276,11 @@ achievement(
 )
 
 achievement(
-    title = "[PLACEHOLDER] Original Sinner True Ending", points = 1,
+    title = "The Truth About the Distortion World", points = 1,
     description = "Read the True Ending to \"The Original Sinner\" in the Archive and talk to Nakamura about it",
     trigger = never(!inGame()) &&
-              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x16) || prev(bit5(tbyte(0x50f8) + 0x8e84) == 0)) &&
-              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x17) && bit5(tbyte(0x50f8) + 0x8e84) == 1)
+              (prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x16) || prev(bit2(tbyte(0x50f8) + 0x8e86) == 0)) &&
+              (once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x17) && bit2(tbyte(0x50f8) + 0x8e86) == 1)
 )
 
 // ENDING FOR STORIES
