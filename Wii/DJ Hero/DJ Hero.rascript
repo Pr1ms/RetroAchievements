@@ -1,10 +1,111 @@
 // DJ Hero
 // #ID = 34823
 
+
+beatIds = {
+    001: "Izzo (H.O.V.A.) / I Want You Back",
+    002: "Izzo (H.O.V.A.) / My Name Is",
+    003: "Day 'n' Nite / Boom Boom Pow",
+    004: "Paper Planes / Eric B. Is President",
+    005: "Da Funk / Strange Enough ft. Karen O, ODB & Fatlip",
+    006: "Bustin' Loose / Bust a Move",
+    007: "Intergalactic / Rapture",
+    008: "Robot Rock / Al-Naafiysh (The Soul)",
+    009: "We Will Rock You / Robot Rock",
+    010: "Disco Inferno / Last Night a D.J. Saved My Life",
+    011: "Feel Good Inc. / Atomic",
+    012: "Big Beat / Lapdance",
+    013: "Bittersweet Symphony / Rock the Bells",
+    014: "Fight! Smash! Win! / Intergalactic",
+    015: "Shout / Eric B. Is President",
+    016: "Another One Bites the Dust / Brass Monkey",
+    017: "Ain't No Love In The Heart Of The City / Fuzz And Them",
+    018: "Disco Inferno / Let's Dance",
+    019: "Ace of Spades / Groundhog",
+    020: "Jukebox Hero / DJ Hero (Standard)",
+    021: "Disturbia / Control",
+    022: "Technologic / Cars",
+    023: "Boom Boom Pow / Satisfaction",
+    024: "Jukebox Hero / DJ Hero (Guitar)",
+    025: "Just to Get a Rep / Shook Ones, Pt. 2",
+    026: "Bring the Noise 20XX / Genesis",
+    027: "Disturbia / Disco Inferno",
+    028: "Here's a Little Something For Ya / The Number Song",
+    029: "Ain't No Love in the Heart of the City / How Do You Want It",
+    030: "Zulu Nation Throwdown / Get Down",
+    031: "My Name Is / Loser",
+    032: "Nothing but You / I Can't Stop (DP Remix)",
+    033: "Six Days (Remix ft. Mos Def) / Where It's At",
+    034: "Monkey Wrench / Sabotage",
+    035: "Six Days (Remix ft. Mos Def) / Annie's Horn",
+    036: "Rockit",
+    037: "Strange Enough ft. Karen O, ODB & Fatlip / Theme from Shaft",
+    038: "Insane in the Brain / The Edge",
+    039: "Ice Ice Baby / U Can't Touch This",
+    040: "The Edge / Eric B. Is President",
+    041: "Megamix 2",
+    042: "Beverly Hills / Fresh Rhymes and Videotape",
+    043: "I Want You Back / Semi-Charmed Life (Guitar)",
+    044: "Beats / Big Beat",
+    045: "Disturbia / Somebody Told Me",
+    046: "I Want You Back / Semi-Charmed Life (Standard)",
+    047: "Change Clothes / All Eyez on Me",
+    048: "Poison",
+    317: "Another One Bites the Dust / Da Funk",
+    050: "Around the World / Bust a Move",
+    051: "Jack of Spades / Short Circuit",
+    052: "I Heard It Through the Grapevine / Let's Dance",
+    053: "All Eyez on Me / Bittersweet Symphony",
+    054: "Shout / Six Days (Remix ft. Mos Def)",
+    056: "Excuse Me Miss / Give It to Me",
+    057: "Beats and Pieces",
+    058: "Megamix 1",
+    059: "Good Thang / Big Beat",
+    076: "Play That Funky Music / Just to Get a Rep",
+    149: "Jayou / Big Beat",
+    160: "Poison / Word Up!",
+    164: "Fix Up, Look Sharp / Organ Donor (Extended Overhaul)",
+    170: "Born To Roll / Mr. Big Stuff",
+    171: "Insane in the Brain / Spooky",
+    177: "Fix Up, Look Sharp / Genesis",
+    180: "Last Night a D.J. Saved My Life / Word Up!",
+    186: "Jack of Spades / Let's Dance",
+    195: "Shout / Pjanoo",
+    200: "Bustin' Loose / Time of the Season",
+    210: "Hollaback Girl / Give It to Me",
+    213: "Satisfaction / Elements of Life",
+    215: "Hollaback Girl / Feel Good Inc.",
+    218: "I Heard It Through the Grapevine / Feel Good Inc.",
+    220: "Poison / Intergalactic",
+    226: "Ice Ice Baby / Straight Up",
+    228: "Jayou / Rockit",
+    237: "Lookin' At Me / Hey Mama",
+    239: "Paper Planes / Lookin' At Me",
+    240: "Bring the Noise 20XX",
+    257: "Shut 'em Down / Where It's At",
+    262: "I Want You Back / Just to Get a Rep",
+    264: "Universal Mind Control (UMC) / Jeep A** Gutter (Remix)",
+    266: "Put Your Hands Up for Detroit / I Can't Stop (DP Remix)",
+    267: "How Ya Like Me Now / I Like to Move It",
+    270: "Somebody Told Me / Pjanoo",
+    278: "Groundhog",
+    297: "Hollaback Girl / Last Night a D.J. Saved My Life",
+    302: "Here Comes My DJ / Cars",
+    303: "Rockit / Lapdance",
+    308: "Boom / Tap",
+    310: "Hella Good / Television Rules the Nation",
+    321: "Lee Majors Come Again / Da Funk",
+    333: "Tutti Frutti / Beats"
+}
+
+function buildBeatId() => 100 * low4((dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x356c) & 0x1fffffff) + 0x09d) +
+                          10 * low4((dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x356c) & 0x1fffffff) + 0x09e) +
+                          low4((dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x356c) & 0x1fffffff) + 0x09f)
+
 function totalStarCount() => dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + 0x1550)
 
 function inGame() => dword_be(0x797acc) != 0
-function inSong() => dword_be(0x797d88) != 0
+function inSong() => dword_be(0x00797d88) != 0
 
 cheats = {
     0: "",
@@ -17,9 +118,10 @@ function sumOfCheats() => dword_be(0x4f4e8c) + dword_be(0x4f4ec4) + dword_be(0x4
                           dword_be(0x4f52ec) + dword_be(0x4f5324) + dword_be(0x4f535c)
 function isNotCheating() => sumOfCheats() == 0
 
-rich_presence_conditional_display(inGame() && inSong(), "Mixing - Total Stars: {0}/465 {1}", 
+rich_presence_conditional_display(inGame() && inSong(), "Mixing {2} - Total Stars: {0}/465 {1}", 
                                   rich_presence_value("Value", totalStarCount(), "VALUE"),
-                                  rich_presence_lookup("CHEATS", sumOfCheats(), cheats, fallback=" - Using Cheats")
+                                  rich_presence_lookup("CHEATS", sumOfCheats(), cheats, fallback=" - Using Cheats"),
+                                  rich_presence_lookup("BEATS", buildBeatId(), beatIds, fallback="Unknown Beat")
 )
 
 rich_presence_conditional_display(inGame(), "In the Hub - Total Stars: {0}/465 {1}", 
@@ -63,20 +165,20 @@ progressionData = [
     ["Grandmaster Flash Presents", [0x1300, 0x12f0], 2, "non-bonus "],
     ["Jay-Z Mixtape", [0x0020, 0x0390, 0x0300, 0x0030], 4, ""],
     ["In The Groove", [0x0d80, 0x10c0, 0x01c0, 0x0b20], 4, ""],
-    ["Revenge Of The Boom Bap", [0x0b50, 0x1020, 0x0370, 0x0040], 4, ""],
+    ["Revenge Of The Boom Bap", [0x0b50, 0x1020, 0x0370, 0x0040], 4, ""],   
     ["Extended Play", [0x0ee0, 0x0e30, 0x0290, 0x0070], 4, ""],
     ["DJ Jazzy Jeff Presents", [0x00e0, 0x0100], 2, "non-bonus "],
-    ["DJ Yoda Presents", [], 3, ""],
-    ["Daft Punk Record Bag", [], 10, ""],
-    ["Born To Rock", [], 5, ""],
-    ["Breaking Needles", [], 4, ""],
-    ["DJ AM Presents", [], 3, ""],  
-    ["DJ Shadow Presents", [], 4, ""],
-    ["J.Period Presents", [], 2, ""],
-    ["DJ Z-Trip Presents", [], 3, ""],
-    ["Tearing Up Wax", [], 4, ""],
-    ["Scratch Perverts Presents", [], 5, ""],
-    ["The Vinyl Cut", [], 2, ""]
+    ["DJ Yoda Presents", [0x1070, 0x14e0], 2, "non-bonus "],
+    ["Daft Punk Record Bag", [0x00a0, 0x0060, 0x1370, 0x0340, 0x0330, 0x0170, 0x03b0], 10, "non-bonus "],
+    ["Born To Rock", [0x00f0, 0x0140, 0x0230, 0x0190, 0x0f10], 5, ""],
+    ["Breaking Needles", [0x0360, 0x0f00, 0x0350, 0x00b0], 4, ""],
+    ["DJ AM Presents", [0x12a0, 0x0dd0], 3, "non-bonus "],  
+    ["DJ Shadow Presents", [0x0bb0, 0x0c90, 0x01d0], 4, "non-bonus "],
+    ["J.Period Presents", [0x01a0, 0x03c0], 2, ""],
+    ["DJ Z-Trip Presents", [0x01b0, 0x0110], 2, "non-bonus "],
+    ["Tearing Up Wax", [0x0260, 0x0210, 0x0240, 0x0e50], 4, ""],
+    ["Scratch Perverts Presents", [0x0050, 0x03a0, 0x0090, 0x1090, 0x1170], 5, ""],
+    ["The Vinyl Cut", [0x0240, 0x0350, 0x1170, 0x0d60], 1, ""]
 ]
  
 // 5 of those is 0xa0000000, 3 is 0x60000000, 1 is 0x20000000
@@ -106,13 +208,46 @@ for progression in progressionData{
     )
 }
 
-// Unlock bonus song
+function unlockBonusBeat(offset)
+{
+   return isNotCheating() && inGame() && prev(dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + offset)) / 0x80000000 == 0 && dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + offset) / 0x80000000 == 1  
+}
 achievement(title="Mashed in a Flash", points=5,
             description="Unlock the bonus track in Grandmaster Flash Presents",
-            trigger=isNotCheating() && inGame() && prev(dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + 0x1350)) / 0x80000000 == 0 && dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + 0x1350) / 0x80000000 == 1
+            trigger=unlockBonusBeat(0x1350)
 )
 
 achievement(title="Up for Some Extra Jazz", points=5,
             description="Unlock the bonus track in DJ Jazzy Jeff Presents",
-            trigger=isNotCheating() && inGame() && prev(dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + 0x0270)) / 0x80000000 == 0 && dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + 0x0270) / 0x80000000 == 1
+            trigger=unlockBonusBeat(0x0270)
+)
+
+achievement(title="Do or Do Not, There Is One More to Try", points=5,
+            description="Unlock the bonus track in DJ Jazzy Jeff Presents",
+            trigger=unlockBonusBeat(0x02d0)
+)
+
+achievement(title="Bottomless Bag", points=5,
+            description="Unlock the bonus track in Daft Punk Record Bag",
+            trigger=unlockBonusBeat(0x02a0)
+)
+
+achievement(title="I AM Ready for More", points=5,
+            description="Unlock the bonus track in DJ AM Presents",
+            trigger=unlockBonusBeat(0x0310)
+)
+
+achievement(title="One More Sonic Treat", points=5,
+            description="Unlock the bonus track in DJ Shadow Presents",
+            trigger=unlockBonusBeat(0x1420)
+)
+
+achievement(title="A Through Z... And Then Some", points=5,
+            description="Unlock the bonus track in DJ Shadow Presents",
+            trigger=unlockBonusBeat(0x0150)
+)
+
+achievement(title="A Final Treat Before You Go", points=3,
+            description="Unlock the bonus track in The Vinyl Cut",
+            trigger=unlockBonusBeat(0x0250)
 )
