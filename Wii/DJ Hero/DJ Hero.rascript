@@ -253,7 +253,7 @@ function buildBeatId() => 100 * low4((dword_be((dword_be(0x797d64) & 0x1fffffff)
 function totalStarCount() => dword_be((dword_be((dword_be(0x797aa8) & 0x1fffffff) + 0xbc) & 0x1fffffff) + 0x1550)
 
 function inGame() => dword_be(0x797acc) != 0
-function inSong() => dword_be(0x00797d88) != 0 || 1 == 1
+function inSong() => currentBeatState() >= 1 && currentBeatState() <= 0x15
 
 cheats = {
     0: "",
@@ -488,7 +488,7 @@ achievement(title="6-Stars Victory", points=10,
 fullsetChallenges = [
     ["Joseph Saddler", "Grandmaster Flash Presents", [303, 302, 308], 15, 0x0d],
     ["Jeffrey Allen Townes", "DJ Jazzy Jeff Presents", [305, 306, 038], 15, 0x12],
-    ["Thomas Bangalter & Guy-Manuel de Homem-Christo", "Daft Punk Record Bag", [332, 298, 310, 309, 326, 295, 414, 413], 40, 0x14],
+    ["Thomas Bangalter & Guillaume Emmanuel de Homem-Christo", "Daft Punk Record Bag", [332, 298, 310, 309, 326, 295, 414, 413], 40, 0x14],
     ["Adam Goldstein", "DJ AM Presents", [297, 220, 402], 15, 0x17],
     ["Joshua Paul Davis", "DJ Shadow Presents", [186, 200, 410, 321], 20, 0x18],
     ["Zach Sciacca", "DJ Z-Trip Presents", [407, 279, 405], 15, 0x1a],    
@@ -524,7 +524,7 @@ challengeData = [
     [149, "Jayou / Big Beat", 509, "The Big Jayou"],
     [154, "Disco Inferno / Let's Dance", 637, "Inferno Dance"],
     [160, "Poison / Word Up!", 523, "Poison Word"],
-    [164, "Fix Up, Look Sharp / Organ Donor (Extended Overhaul)", 475, "You Look Sharp, No Wonder the Sound Has So Much Body"],
+    [164, "Fix Up, Look Sharp / Organ Donor (Extended Overhaul)", 475, "You Look Sharp, No Wonder the Sound Has so Much Body"],
     [169, "Intergalactic / Rapture", 509, "Intergalactic Rapture"],
     [170, "Born To Roll / Mr. Big Stuff", 335, "Mr. Big Roll"],
     [171, "Insane in the Brain / Spooky", 373, "Spooky Brain"],
@@ -532,7 +532,7 @@ challengeData = [
     [180, "Last Night a D.J. Saved My Life / Word Up!", 662, "Last Word"],
     [186, "Jack of Spades / Let's Dance", 592, "Jack of Spades Under the Moonlight"],
     [195, "Shout / Pjanoo", 428, "You Shouldn't Have to Sell Your Pjanoo"],
-    [197, "Disturbia / Control", 474, "Your Mind's In Control"],
+    [197, "Disturbia / Control", 474, "Your Mind's in Control"],
     [200, "Bustin' Loose / Time of the Season", 559, "Bustin' the Season"],
     [208, "Disturbia / Disco Inferno", 527, "Disturbed Disco"],
     [210, "Hollaback Girl / Give It to Me", 583, "Hollaback Baby"],
@@ -540,7 +540,7 @@ challengeData = [
     [215, "Hollaback Girl / Feel Good Inc.", 515, "Feel Good Girl"],
     [218, "I Heard It Through the Grapevine / Feel Good Inc.", 671, "Grapevine Inc."],
     [220, "Poison / Intergalactic", 707, "Intergalactic Poison"],
-    [226, "Ice Ice Baby / Straight Up", 559, "Straight Up on the Ice"],
+    [226, "Ice Ice Baby / Straight Up", 559, "Straight up on the Ice"],
     [228, "Jayou / Rockit", 815, "We're Known to Rockit"],
     [237, "Lookin' At Me / Hey Mama", 580, "Lookin' at Mama"],
     [238, "I Want You Back / Semi-Charmed Life (Guitar)", 639, "I Want Life and My Guitar Back"],
@@ -560,7 +560,7 @@ challengeData = [
     [265, "Disturbia / Somebody Told Me", 673, "Somebody Disturbed Me"],
     [266, "Put Your Hands Up for Detroit / I Can't Stop (DP Remix)", 565, "Detroit Can't Stop"],
     [267, "How Ya Like Me Now / I Like to Move It", 791, "How Ya Like to Move"],
-    [270, "Somebody Told Me / Pjanoo", 548, "Somebody Told Me You Play The Pjanoo"],
+    [270, "Somebody Told Me / Pjanoo", 548, "Somebody Told Me You Play the Pjanoo"],
     [273, "Ace of Spades / Groundhog", 668, "Groundhog Eyes Watching You"],
     [275, "Disco Inferno / Last Night a D.J. Saved My Life", 632, "Last Night a DJ Saved Disco"],
     [276, "Shout / Six Days (Remix ft. Mos Def)", 677, "Shouting Days"],
@@ -571,7 +571,7 @@ challengeData = [
     [295, "Technologic / Cars", 718, "Technologic Cars"],
     [297, "Hollaback Girl / Last Night a D.J. Saved My Life", 862, "Last Night a DJ Saved My Girl"],
     [298, "Da Funk / Strange Enough ft. Karen O, ODB & Fatlip", 687, "Strange Funk"],
-    [299, "Six Days (Remix ft. Mos Def) / Where It's At", 549, "It's At Six"],
+    [299, "Six Days (Remix ft. Mos Def) / Where It's At", 549, "It's at Six"],
     [302, "Here Comes My DJ / Cars", 631, "Here Comes My Car"],
     [303, "Rockit / Lapdance", 925, "Lapdance Rock"],
     [305, "Bittersweet Symphony / Rock the Bells", 874, "Symphonic Bells"],
@@ -600,20 +600,36 @@ challengeData = [
     [407, "Bring the Noise 20XX / Genesis", 719, "Bring the Genesis"],
     [408, "My Name Is / Loser", 852, "My Name Is NOT Loser"],
     [409, "All Eyez on Me / Bittersweet Symphony", 871, "All Eyez on the Symphony"],
-    [410, "Here's a Little Something For Ya / The Number Song (2009)", 761, "Here's The Number Song for Ya"],
+    [410, "Here's a Little Something For Ya / The Number Song (2009)", 761, "Here's the Number Song for Ya"],
     [411, "Feel Good Inc. / Atomic", 505, "Feel Atomic"],
     [412, "Robot Rock / Al-Naafiysh (The Soul)", 920, "The Robot Soul"],
-    [413, "Megamix 2", 1004, "Daft Punk Megamix 1"],
-    [414, "Megamix 1", 772, "Daft Punk Megamix 2"],
-    [415, "Izzo (H.O.V.A.) / My Name Is", 785, "My Name is Jehovah"],
+    [413, "Megamix 2", 1004, "Daft Punk Megamix 2"],
+    [414, "Megamix 1", 772, "Daft Punk Megamix 1"],
+    [415, "Izzo (H.O.V.A.) / My Name Is", 785, "My Name Is Jehovah"],
     [419, "Excuse Me Miss / Give It to Me", 831, "Git It to Me Miss"],
     [675, "Fight! Smash! Win! / Intergalactic", 505, "Intergalactic Win!"],
     [681, "I Heard It Through the Grapevine / Let's Dance", 463, "Let's Dance Through the Grapevine"],    
 ]
 
-for challengeDataLine in challengeData{
+for challengeDataLine in challengeData
+{
     achievement(title=challengeDataLine[3], points=10,
                 description="Earn 5 Stars on " + challengeDataLine[1] + " on Expert difficulty",
                 trigger=isNotCheating() && inGame() && buildBeatId() == challengeDataLine[0] && currentSongDifficulty() == 4 && currentSongStars() == 5 && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13)
     )
+}
+
+// Leaderboards: one per difficulty between medium and expert
+for challengeDataLine in challengeData
+{
+    for difficulty in [[2, "Medium"], [3, "Hard"], [4, "Expert"]]
+    {
+        leaderboard(title=challengeDataLine[1] + " - "+ difficulty[1],
+                    description="Highest Score on " + challengeDataLine[1] + " on " + difficulty[1] + " difficulty",
+                    start=isNotCheating() && inGame() && currentSongDifficulty() == difficulty[0] && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13),
+                    cancel=always_false(),
+                    submit=always_true(),
+                    value=currentSongScore()
+        )
+    }
 }
