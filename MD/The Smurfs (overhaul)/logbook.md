@@ -32,11 +32,11 @@ First thing first: debug mode is enabled via a cheat at startup and stays up for
 
 Second thing: I removed all hits and also reversed the timeout check to not have it be a resetIf.
 
-Finally, instead of using a end of stage flag and a "fil rouge" transition (no actual idea what this address was supposed to be doing) which did not seem very reliable I've based my unlocked on map transition.
+Finally, instead of using a end of stage flag and a "fil rouge" transition (no actual idea what this address was supposed to be doing), neither of which did not seem very reliable I've based my unlocked on map transition.
 
 The way the game works tracks both an act and a map but maps aren't relative to the acts, it's actually a global enum. Nice thing is: the map transition happens when you end a map (even if it's the last map of its act) while the act transition only happens when the game zooms out to the world to showcase the next act's title.
 
-Therefore, the good timing for unlocks is when the game switches to the first map of the next act while still being in the current act.
+Therefore, the good timing for unlocks is when the game switches to the first map of the next act.
 Added bonus: this transition does not need to have the "no timeout" protection.
 
 ### Challenges

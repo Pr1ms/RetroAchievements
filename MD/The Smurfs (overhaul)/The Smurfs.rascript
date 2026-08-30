@@ -2,22 +2,34 @@
 // #ID = 4436
 
 
-acts = {
-    0x01: "The Village",
-    0x02: "The Forest",
-    0x03: "The Bridge",
-    0x04: "The Black Forest",
-    0x05: "The Lake",
-    0x06: "The Field",
-    0x07: "The Dam",
-    0x08: "The Swamp",
-    0x09: "The Cave",
-    0x0a: "The Mountain",
-    0x0b: "The Mine",
-    0x0c: "The Volcano",
-    0x0d: "The Descent",
-    0x0e: "The Cliff",
-    0x0f: "Gargamel's Manor House"
+maps = {
+    0x00: "Exploring The Village",
+    0x01: "Strolling in The Forest",
+    0x02: "Climbing a tree in The Forest",
+    0x03: "Crossing The Bridge",
+    0x04: "Exploring The Black Forest",
+    0x05: "Fighting the Carnivorous Plant in The Black Forest",
+    0x06: "Crossing The Lake",
+    0x07: "Braving a storm in The Lake",
+    0x08: "Crossing The Fields",
+    0x09: "Crossing The Fields",
+    0x0a: "Finding their way to the other side of The Dam",
+    0x0b: "Avoiding Bugs in The Swamp",
+    0x0c: "Fighting the Snake in The Swamp",
+    0x0d: "Setting dynamite off in The Cave",
+    0x0e: "Setting dynamite off in The Cave",
+    0x0f: "Climbing The Mountain",
+    0x10: "Climbing The Mountain",
+    0x11: "Riding a minecart in The Mine",
+    0x12: "Trying to outrun lava in The Volcano",
+    0x13: "Trying to outrun lava in The Volcano",
+    0x14: "Fighting the Dragon in The Volcano",
+    0x15: "Riding a sleigh in The Descent",
+    0x16: "Exploring The Cliff",
+    0x17: "Riding bubbles through Gargamel's Manor House's Garden",
+    0x18: "Making their way through Gargamel's Manor House",
+    0x19: "Climbing a big staircase in Gargamel's Manor House",
+    0x1a: "Fighting Gargamel in Gargamel's Manor House"
 }
 
 difficulties = {
@@ -42,15 +54,15 @@ function score()
 }
 
 function noDebugMode() => byte(0x4849) != 0xff
-function act() => byte(0xfc8a) 
 function map() => byte(0xf34e) 
 function difficulty() => byte(0xf351) 
 function hp() => byte(0xf377)
-function gameOver() => byte(0xf370) == 0x09 && byte(0xf371) == 0x09
+function gameOver() => byte(0xf371) == 0x09 
+function inGame() => byte(0xf371) < 0x09
 
 rich_presence_conditional_display(byte(0xf372) == 0x09 && byte(0xf373) == 0x09, "In Main Menu")
-rich_presence_conditional_display(byte(0xfc8a) > 0, "Playing {0} ({1}) - Lives: {2} - Score: {3}{4}",
-                                  rich_presence_lookup("Act", byte(0xfc8a), acts),
+rich_presence_conditional_display(byte(0xfc8a) > 0, "{0} ({1}) - Lives: {2} - Score: {3}{4}",
+                                  rich_presence_lookup("Map", byte(0xf34e), maps),
                                   rich_presence_lookup("Difficulty", byte(0xf351), difficulties),
                                   rich_presence_value("Number", lives()),
                                   rich_presence_value("Score", score(), "SCORE"),
@@ -60,310 +72,310 @@ rich_presence_conditional_display(byte(0xfc8a) > 0, "Playing {0} ({1}) - Lives: 
 rich_presence_display("Playing The Smurfs")
 
 achievement(
-    title = "The Village", points = 5, type="progression",
-    description = "Finish the act 1",
+    title = "There Is a Place, a Place That Knows No Sadness...", points = 5, type="progression",
+    description = "Complete Act 1: The Village",
     id = 26795, badge = "27239", 
-    trigger = noDebugMode() && act() == 1 && prev(map()) == 0x00 && map() == 0x01
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x00 && map() == 0x01
 )
 
 achievement(
-    title = "The Forest", points = 5,
-    description = "Finish the act 2",
+    title = "Always Begin with the Familiar Places", points = 5,
+    description = "Complete Act 2: The Forest",
     id = 26796, badge = "27242", 
-    trigger = noDebugMode() && act() == 2 && prev(map()) == 0x02 && map() == 0x03
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x02 && map() == 0x03
 )
 
 achievement(
-    title = "The Bridge", points = 5, type="progression",
-    description = "Finish the act 3",
+    title = "A Smurf Has No Fears!", points = 5, type="progression",
+    description = "Complete Act 3: The Bridge",
     id = 26797, badge = "27243", 
-    trigger = noDebugMode() && act() == 3 && prev(map()) == 0x03 && map() == 0x04
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x03 && map() == 0x04
 )
 
 achievement(
-    title = "The Black Forest", points = 5, type="progression",
-    description = "Finish the act 4",
+    title = "Hey Hefty, What's Back There...?", points = 5, type="progression",
+    description = "Complete Act 4: The Black Forest",
     id = 26798, badge = "27244", 
-    trigger = noDebugMode() && prev(map()) == 0x05 && map() == 0x06
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x05 && map() == 0x06
 )
 
 achievement(
-    title = "The Lake", points = 5, type="progression",
-    description = "Finish the act 5",
+    title = "Jokey Smurf and the Duckies", points = 5, type="progression",
+    description = "Complete Act 5: The Lake",
     id = 26799, badge = "27245", 
-    trigger = noDebugMode() && act() == 5 && prev(map()) == 0x07 && map() == 0x08
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x07 && map() == 0x08
 )
 
 achievement(
-    title = "The Field", points = 5, type="progression",
-    description = "Finish the act 6",
+    title = "We Keep Our Fields Nice and Peaceful", points = 5, type="progression",
+    description = "Complete Act 6: The Field",
     id = 26800, badge = "27246", 
-    trigger = noDebugMode() && act() == 6 && prev(map()) == 0x09 && map() == 0x0a
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x09 && map() == 0x0a
 )
 
 achievement(
-    title = "The Dam", points = 5, type="progression",
-    description = "Finish the act 7",
+    title = "Dam You Gargamel!", points = 5, type="progression",
+    description = "Complete Act 7: The Dam",
     id = 26801, badge = "27247", 
-    trigger = noDebugMode() && act() == 7 && prev(map()) == 0x0a && map() == 0x0b
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x0a && map() == 0x0b
 )
 
 achievement(
-    title = "The Swamp", points = 5, type="progression",
-    description = "Finish the act 8",
+    title = "Get Out of Our Swamp!", points = 5, type="progression",
+    description = "Complete Act 8: The Swamp",
     id = 26802, badge = "27248", 
-    trigger = noDebugMode() && act() == 8 && prev(map()) == 0x0c && map() == 0x0d
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x0c && map() == 0x0d
 )
 
 achievement(
-    title = "The Cave", points = 5, type="progression",
-    description = "Finish the act 9",
+    title = "Cave Diving for the Missing Smurfs!", points = 5, type="progression",
+    description = "Complete Act 9: The Cave",
     id = 26803, badge = "27250", 
-    trigger = noDebugMode() && act() == 9 && prev(map()) == 0x0e && map() == 0x0f
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x0e && map() == 0x0f
 )
 
 achievement(
-    title = "The Mountain", points = 5, type="progression",
-    description = "Finish the act 10",
+    title = "We'd Climb Any Mountain for Smurfette", points = 5, type="progression",
+    description = "Complete Act 10: The Mountain",
     id = 26804, badge = "27301", 
-    trigger = noDebugMode() && act() == 10 && prev(map()) == 0x10 && map() == 0x11
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x10 && map() == 0x11
 )
 
 achievement(
-    title = "The Mine", points = 5, type="progression",
-    description = "Finish the act 11",
+    title = "Smurfs Thrive in the Mines!", points = 5, type="progression",
+    description = "Complete Act 11: The Mine",
     id = 26805, badge = "27270", 
-    trigger = noDebugMode() && act() == 11 && prev(map()) == 0x11 && map() == 0x12
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x11 && map() == 0x12
 )
 
 achievement(
-    title = "The Volcano", points = 5, type="progression",
-    description = "Finish the act 12",
+    title = "Are Smurfs Fireproof?", points = 5, type="progression",
+    description = "Complete Act 12: The Volcano",
     id = 26806, badge = "27276", 
-    trigger = noDebugMode() && act() == 12 && prev(map()) == 0x14 && map() == 0x15
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x14 && map() == 0x15
 )
 
 achievement(
-    title = "The Descent", points = 5, type="progression",
-    description = "Finish the act 13",
+    title = "What's an Adventure Without a Little Fall?", points = 5, type="progression",
+    description = "Complete Act 13: The Descent",
     id = 26807, badge = "27269", 
-    trigger = noDebugMode() && act() == 13 && prev(map()) == 0x15 && map() == 0x16
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x15 && map() == 0x16
 )
 
 achievement(
-    title = "The Cliff", points = 5, type="progression",
-    description = "Finish the act 14",
+    title = "Us Smurfs Must Brave the Cliff", points = 5, type="progression",
+    description = "Complete Act 14: The Cliff",
     id = 26808, badge = "27268", 
-    trigger = noDebugMode() && act() == 14 && prev(map()) == 0x16 && map() == 0x17
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x16 && map() == 0x17
 )
 
 achievement(
-    title = "Gargamel's manor", points = 5, type="win_condition",
-    description = "Finish the act 15",
+    title = "One Small Step for Smurf, One Giant Leap for Smurfkind", points = 5, type="win_condition",
+    description = "Defeat the Evil Lord Gargamel and save Smurfette!",
     id = 26809, badge = "27266", 
-    trigger = noDebugMode() && act() == 15 && prev(map()) == 0x1a && map() == 0x00
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x1a && map() == 0x00
 )
 
 achievement(
-    title = "You won't see me again", points = 10,
-    description = "Finish the act 1 (hard mode)",
+    title = "You Won't See Me Again", points = 10,
+    description = "Complete Act 1: The Village on Hard difficulty",
     id = 26810, badge = "27272", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 1 && prev(map()) == 0x00 && map() == 0x01
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x00 && map() == 0x01
 )
 
 achievement(
-    title = "Call me Tarzan", points = 10,
-    description = "Finish the act 2 (hard mode)",
+    title = "Call Me Tarzan", points = 10,
+    description = "Complete Act 2: The Forest on Hard difficulty",
     id = 26811, badge = "27273", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 2 && prev(map()) == 0x02 && map() == 0x03
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x02 && map() == 0x03
 )
 
 achievement(
-    title = "It would be better by plane", points = 10,
-    description = "Finish the act 3 (hard mode)",
+    title = "It Would Be Better by Plane", points = 10,
+    description = "Complete Act 3: The Bridge on Hard difficulty",
     id = 26812, badge = "27283", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 3 && prev(map()) == 0x03 && map() == 0x04
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x03 && map() == 0x04
 )
 
 achievement(
-    title = "Surprise motherf*cker", points = 10,
-    description = "Finish the act 4 (hard mode)",
+    title = "Quite the Hefty Surprise", points = 10,
+    description = "Complete Act 4: The Black Forest on Hard difficulty",
     id = 26813, badge = "27326", 
-    trigger = noDebugMode() && difficulty() == 2 && prev(map()) == 0x05 && map() == 0x06
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x05 && map() == 0x06
 )
 
 achievement(
-    title = "Faster than light", points = 10,
-    description = "Finish the act 5 (hard mode)",
+    title = "Faster Than Light", points = 10,
+    description = "Complete Act 5: The Lake on Hard difficulty",
     id = 26814, badge = "27280", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 5 && prev(map()) == 0x07 && map() == 0x08
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x07 && map() == 0x08
 )
 
 achievement(
-    title = "It's like Sonic spinball", points = 10,
-    description = "Finish the act 6 (hard mode)",
+    title = "It's Like Sonic's Spinball!", points = 10,
+    description = "Complete Act 6: The Field on Hard difficulty",
     id = 26815, badge = "27281", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 6 && prev(map()) == 0x09 && map() == 0x0a
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x09 && map() == 0x0a
 )
 
 achievement(
-    title = "I am the barrage", points = 10,
-    description = "Finish the act 7 (hard mode)",
+    title = "I'm the Barrage", points = 10,
+    description = "Complete Act 7: The Dam on Hard difficulty",
     id = 26816, badge = "27279", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 7 && prev(map()) == 0x0a && map() == 0x0b
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x0a && map() == 0x0b
 )
 
 achievement(
-    title = "I'm not a light", points = 10,
-    description = "Finish the act 8 (hard mode)",
+    title = "Sometimes All It Needs Is a Smurf's Touch", points = 10,
+    description = "Complete Act 8: The Swamp on Hard difficulty",
     id = 26817, badge = "27282", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 8 && prev(map()) == 0x0c && map() == 0x0d
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x0c && map() == 0x0d
 )
 
 achievement(
-    title = "Alone in the dark", points = 10,
-    description = "Finish the act 9 (hard mode)",
+    title = "All Alone in the Dark", points = 10,
+    description = "Complete Act 9: The Cave on Hard difficulty",
     id = 26818, badge = "27271", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 9 && prev(map()) == 0x0e && map() == 0x0f
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x0e && map() == 0x0f
 )
 
 achievement(
-    title = "Again we are back to Tibet", points = 10,
-    description = "Finish the act 10 (hard mode)",
+    title = "Hefty Smurf the Mountaineer", points = 10,
+    description = "Complete Act 10: The Mountain on Hard difficulty",
     id = 26819, badge = "27263", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 10 && prev(map()) == 0x10 && map() == 0x11
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x10 && map() == 0x11
 )
 
 achievement(
-    title = "Donkey Kong would be proud", points = 10,
-    description = "Finish the act 11 (hard mode)",
+    title = "The Ride of a Smurf's Life", points = 10,
+    description = "Complete Act 11: The Mine on Hard difficulty",
     id = 26820, badge = "27314", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 11 && prev(map()) == 0x11 && map() == 0x12
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x11 && map() == 0x12
 )
 
 achievement(
-    title = "The cake is not a lie", points = 10,
-    description = "Finish the act 12 (hard mode)",
+    title = "The Cake Isn't a Lie", points = 10,
+    description = "Complete Act 12: The Volcano on Hard difficulty",
     id = 26821, badge = "27302", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 12 && prev(map()) == 0x14 && map() == 0x15
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x14 && map() == 0x15
 )
 
 achievement(
-    title = "SSX style", points = 10,
-    description = "Finish the act 13 (hard mode)",
+    title = "SSX Style", points = 10,
+    description = "Complete Act 13: The Descent on Hard difficulty",
     id = 26822, badge = "27315", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 13 && prev(map()) == 0x15 && map() == 0x16
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x15 && map() == 0x16
 )
 
 achievement(
-    title = "Knock on wood", points = 10,
-    description = "Finish the act 14 (hard mode)",
+    title = "Knock on Wood", points = 10,
+    description = "Complete Act 14: The Cliff on Hard difficulty",
     id = 26823, badge = "27317", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 14 && prev(map()) == 0x16 && map() == 0x17
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x16 && map() == 0x17
 )
 
 achievement(
-    title = "Ecraser Detruire Annihiler", points = 25,
-    description = "Finish the act 15 (hard mode)",
+    title = "Crushing, Destroying, and Annihilating You!", points = 25,
+    description = "Complete Act 15: Gargamel's Manor House on Hard difficulty",
     id = 26824, badge = "27401", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 15 && prev(map()) == 0x1a && map() == 0x00
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x1a && map() == 0x00
 )
 
 achievement(
-    title = "Snake charmer", points = 10,
-    description = "Kill the snake in one try and without getting hit (hard mode)",
+    title = "Snake Charmer", points = 10,
+    description = "Defeat the Snake without getting hit on Hard difficulty",
     id = 26825, badge = "27325", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 8 && prev(map()) == 0x0c && trigger_when(map() == 0x0d) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x0c && trigger_when(map() == 0x0d) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
 )
 
 achievement(
-    title = "Dragon hunter", points = 10,
-    description = "Kill the dragon in one try and without getting hit (hard mode)",
+    title = "Dragon Hunter", points = 10,
+    description = "Defeat the Dragon without getting hit on Hard difficulty",
     id = 26826, badge = "27267", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 12 && prev(map()) == 0x14 && trigger_when(map() == 0x15) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x14 && trigger_when(map() == 0x15) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
 )
 
 achievement(
     title = "True Survivor", points = 10,
-    description = "Kill Gargamel in one try and without getting hit (hard mode)",
+    description = "Defeat Gargamel without getting hit on Hard difficulty",
     id = 26827, badge = "27275", 
-    trigger = noDebugMode() && difficulty() == 2 && act() == 15 && prev(map()) == 0x1a && trigger_when(map() == 0x00) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x1a && trigger_when(map() == 0x00) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
 )
 
 achievement(
-    title = "Gardening routine", points = 10,
-    description = "Kill the carnivorous plant in one try and without getting hit (hard mode)",
+    title = "Gardening Routine", points = 10,
+    description = "Defeat the Carnivorous Plant without getting hit on Hard difficulty",
     id = 26828, badge = "27363", 
-    trigger = noDebugMode() && difficulty() == 2 && prev(map()) == 0x05 && trigger_when(map() == 0x06) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
+    trigger = noDebugMode() && inGame() && difficulty() == 2 && prev(map()) == 0x05 && trigger_when(map() == 0x06) && disable_when(hp() < prev(hp()), until=prev(map()) != map())
 )
 
 achievement(
     title = "Immortal Smurf", points = 10,
-    description = "Have 20 lifes",
+    description = "Obtain 20 lives",
     id = 26829, badge = "27316", 
-    trigger = noDebugMode() && prev(lives()) == 19 && lives() == 20
+    trigger = noDebugMode() && inGame() && prev(lives()) == 19 && lives() == 20
 )
 
 achievement(
-    title = "Cead Mile Failte", points = 10,
-    description = "Get a score of 100 000",
+    title = "A Hundred Thousand Welcomes", points = 10,
+    description = "Score 100,000 points",
     id = 26830, badge = "27358", 
-    trigger = noDebugMode() && prev(byte(0xf369)) == 0 && byte(0xf369) == 1
+    trigger = noDebugMode() && inGame() && prev(byte(0xf369)) == 0 && byte(0xf369) == 1
 )
 
 achievement(
-    title = "I'm better than Indiana", points = 10,
-    description = "Finish the act 11 without dying",
+    title = "I'm Better Than Indiana", points = 10,
+    description = "Complete Act 11: The Mine without dying",
     id = 26831, badge = "27356", 
-    trigger = noDebugMode() && act() == 11 && prev(map()) == 0x11 && trigger_when(map() == 0x12) && disable_when(lives() < prev(lives()), until=prev(act()) != act())
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x11 && trigger_when(map() == 0x12) && disable_when(lives() < prev(lives()), until=prev(map()) != 0x12)
 )
 
 achievement(
-    title = "I scared the yeti", points = 10,
-    description = "Finish the act 13 without dying",
+    title = "I Think I Scared the Yeti", points = 10,
+    description = "Complete Act 13: The Descent without dying",
     id = 26832, badge = "27361", 
-    trigger = noDebugMode() && act() == 13 && prev(map()) == 0x15 && trigger_when(map() == 0x16) && disable_when(lives() < prev(lives()), until=prev(act()) != act())
+    trigger = noDebugMode() && inGame() && prev(map()) == 0x15 && trigger_when(map() == 0x16) && disable_when(lives() < prev(lives()), until=prev(map()) != 0x16)
 )
 
 achievement(
     title = "Overdose", points = 10,
-    description = "Collect 100 leafs in a single playthrough",
+    description = "Obtain 100 Sarsaparilla Leaves",
     id = 26833, badge = "27360", 
-    trigger = noDebugMode() && prev(byte(0xf36e)) == 9 && prev(byte(0xf36f)) == 9 && byte(0xf36e) == 0 && byte(0xf36f) == 0
+    trigger = noDebugMode() && inGame() && prev(byte(0xf36e)) == 9 && prev(byte(0xf36f)) == 9 && byte(0xf36e) == 0 && byte(0xf36f) == 0
 )
 
 achievement(
-    title = "Mario would be proud", points = 10,
-    description = "Get 50 stars in a single playthrough",
+    title = "You Know, Mario Would Be Proud...", points = 10,
+    description = "Obtain 50 Stars",
     id = 26834, badge = "27362", 
-    trigger = noDebugMode() && prev(byte(0xf375)) == 4 && byte(0xf375) == 5
+    trigger = noDebugMode() && inGame() && prev(byte(0xf375)) == 4 && byte(0xf375) == 5
 )
 
 achievement(
-    title = "The raft of the Smurf", points = 10,
-    description = "Get 4 life in the bonus stage raft",
+    title = "The Raft of the Smurf", points = 10,
+    description = "Obtain 4 Smurf Dolls in The Raft Ride",
     id = 26835, badge = "27402", 
-    trigger = noDebugMode() && byte(0x00f34f) == 0x1c && repeated(4, lives() > prev(lives())) && never(byte(0x00f34f) != 0x1c)
+    trigger = noDebugMode() && inGame() && byte(0x00f34f) == 0x1c && repeated(4, lives() > prev(lives())) && never(byte(0x00f34f) != 0x1c)
 )
 
 achievement(
-    title = "I forgot the baby", points = 10,
-    description = "Get 5 life in the bonus stage stork",
+    title = "I Forgot the Baby!", points = 10,
+    description = "Obtain 5 Smurf Dolls in The Stork Journey",
     id = 26836, badge = "27357", 
-    trigger =noDebugMode() && byte(0x00f34f) == 0x1b && repeated(5, lives() > prev(lives())) && never(byte(0x00f34f) != 0x1b)
+    trigger =noDebugMode() && inGame() && byte(0x00f34f) == 0x1b && repeated(5, lives() > prev(lives())) && never(byte(0x00f34f) != 0x1b)
 )
 
 achievement(
-    title = "Can i have a little Smurf?", points = 25,
-    description = "Finish the game without using passwords and with 20 lifes or more (hard mode)",
+    title = "Holy Smurf!", points = 25,
+    description = "Beat the game with at least 20 lives and without using passwords on Hard difficulty",
     id = 28015, badge = "29602", 
-    trigger = noDebugMode() && once(act() == 1 && map() == 0x00) && byte(0xf371) >= 2 && difficulty() == 2 && act() == 15 && prev(map()) == 0x1a && map() == 0x00 &&
+    trigger = noDebugMode() && inGame() && once(prev(map()) == 0x00) && byte(0xf371) >= 2 && difficulty() == 2 && prev(map()) == 0x1a && map() == 0x00 &&
               never(gameOver()) // Game Over
 )
 
 leaderboard("Highscore: Easy",
             "Highest possible score upon winning the game or going game over on Easy Level",
-            start=noDebugMode() && difficulty() == 0 && (act() == 15 && prev(map()) == 0x1a && map() == 0x00 || // Win
+            start=noDebugMode() && difficulty() == 0 && (inGame() && prev(map()) == 0x1a && map() == 0x00 || // Win
                   prev(byte(0xf371)) != 0x9 && gameOver()), // Game Over
             cancel=always_false(),
             submit=always_true(),
@@ -373,7 +385,7 @@ leaderboard("Highscore: Easy",
 
 leaderboard("Highscore: Medium",
             "Highest possible score upon winning the game or going game over on Medium Level",
-            start=noDebugMode() && difficulty() == 1 && (act() == 15 && prev(map()) == 0x1a && map() == 0x00 || // Win
+            start=noDebugMode() && difficulty() == 1 && (inGame() && prev(map()) == 0x1a && map() == 0x00 || // Win
                   prev(byte(0xf371)) != 0x9 && gameOver()), // Game Over
             cancel=always_false(),
             submit=always_true(),
@@ -383,7 +395,7 @@ leaderboard("Highscore: Medium",
 
 leaderboard("Highscore: Hard",
             "Highest possible score upon winning the game or going game over on Hard Level",
-            start=noDebugMode() && difficulty() == 2 && (act() == 15 && prev(map()) == 0x1a && map() == 0x00 || // Win
+            start=noDebugMode() && difficulty() == 2 && (inGame() && prev(map()) == 0x1a && map() == 0x00 || // Win
                   prev(byte(0xf371)) != 0x9 && gameOver()), // Game Over
             cancel=always_false(),
             submit=always_true(),
