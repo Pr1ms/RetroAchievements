@@ -1,17 +1,18 @@
 // Wrecking Crew
 // #ID = 38446
 
-function inGame() => byte(0x37) == 0
+function inGame() => byte(0x37) == 0 && byte(0x60) <= 99
 function score() => low4(0x86) * 100 + high4(0x86) * 1000 + low4(0x85) * 10000 + high4(0x85) * 100000
 function lives() => byte(0x90)
+function currentPhase() => byte(0x92)
 
 rich_presence_conditional_display(byte(0x37) == 1 && byte(0x38) == 4, "In Demo Mode")
 rich_presence_conditional_display(byte(0x37) == 1, "In Main Menu")
 rich_presence_conditional_display(byte(0x37) == 0 && byte(0x38) == 0x08, "Game Over • Score: {0}",
                                   rich_presence_value("Score", score(), "SCORE")
 )
-rich_presence_conditional_display(byte(0x37) == 0, "Phase {0} (Started at {1}) • Score: {2} • Lives: {3}",
-                                                   rich_presence_value("Number", byte(0x92) + 1, "VALUE"),
+rich_presence_conditional_display(inGame(), "Phase {0} (Started at {1}) • Score: {2} • Lives: {3}",
+                                                   rich_presence_value("Number", currentPhase() + 1, "VALUE"),
                                                    rich_presence_value("Number", byte(0x60) + 1, "VALUE"),
                                                    rich_presence_value("Score", score(), "SCORE"),
                                                    rich_presence_value("Number", lives(), "VALUE")                                                   
@@ -63,9 +64,59 @@ function pickedUpHammer() => (prev(byte(0x5c) == 0) && byte(0x5c) == 1) || (prev
 for progression in progressions{
     achievement(title=progression[2], type="progression", points=progression[3],
                 description="Beat Phases " + progression[0] + " through " + progression[1] + " without going back to Main Menu",
-                trigger=inGame() && never(byte(0x37) == 1) && once(currentLevel() == progression[0] - 1) && currentLevel() == progression[1] - 1 && levelWon()
+                trigger=byte(0x60) <= 99 && never(byte(0x37) != 0) && once(currentLevel() == progression[0] - 1) && currentLevel() == progression[1] - 1 && levelWon()
     )
 }
+
+achievement(title="Say My Name!", points = 2,
+            description="Collect a set of MARIO letters",
+            trigger=inGame() && oneUp()
+)
+
+achievement(title="Weapon Upgrade", points = 2,
+            description="Collect a Golden Hammer",
+            trigger=inGame() && pickedUpHammer()
+)
+
+achievement(title="Careful Planning", points = 5,
+            description="Collect a set of MARIO letters and a Golden Hammer in the same Phase",
+            trigger=inGame() && once(oneUp()) && once(pickedUpHammer()) && never(prev(currentPhase()) != currentPhase())
+)
+
+achievement(title="Can I Spend a Point in Dual Wield?", points = 5,
+            description="Collect a Golden Hammer while already wielding one",
+            trigger=inGame() && prev(byte(0x5c)) == 1 && byte(0x5c) == 1 && prev(score()) + 3200 == score()
+)
+
+achievement(title="100k Run!", points=1,
+            description="Score 100,000 points",
+            trigger=inGame() && prev(high4(0x85)) == 0 && high4(0x85) == 1
+)
+
+achievement(title="Full Quarter", points=1,
+            description="Score 250,000 points",
+            trigger=inGame() && high4(0x85) == 2 && prev(low4(0x85)) == 4 && low4(0x85) == 5
+)
+
+achievement(title="Half a Million", points=1,
+            description="Score 500,000 points",
+            trigger=inGame() && prev(high4(0x85)) == 4 && high4(0x85) == 5
+)
+
+achievement(title="Now Leave Your Mark in the Leaderboards", points=1,
+            description="Score 750,000 points",
+            trigger=inGame() && high4(0x85) == 7 && prev(low4(0x85)) == 4 && low4(0x85) == 5
+)
+
+achievement(title="Lucky #1 Dime", points =1,
+            description="Find the Coin in a Bonus Round",
+            trigger=inGame() && byte(0x38) == 0x10 && prev(score()) < score()
+)
+
+achievement(title="Took One Glance to Know It Was Not Load-Bearing!", points =10,
+            description="Find the Coin in a Bonus Round with only one element destroyed",
+            trigger=inGame() && byte(0x38) == 0x10 && prev(score()) + 10000 == score()
+)
 
 for index in range(0, 9)
 {
@@ -110,8 +161,8 @@ leaderboard(title="Highscore from Scratch", description="Get the highest Score p
 for levelId in range(1, 100)
 {
     leaderboard(title="Phase " + levelId + " Speedrun", description="Win Phase " + levelId + " as fast as possible",
-            start=currentLevel() == levelId - 1 && levelStarted(),
-            cancel=prev(lives()) > lives(),
+            start=inGame() && currentLevel() == levelId - 1 && levelStarted(),
+            cancel=prev(lives()) > lives() || !inGame(),
             submit=levelWon(),
             format="FRAMES",
             value=!paused()

@@ -1,13 +1,19 @@
 // Zenji
 // #ID = 9579
 
+player = {
+    0: "1",
+    1: "1",
+    2: "2"
+}
+
 function inGame() => byte(0x001A) == 0x01
 function score() => bcd(byte(0x01B3)) * 1000000 + bcd(byte(0x01B4)) * 10000 + bcd(byte(0x01B5)) * 100 + bcd(byte(0x01B6))
 
 rich_presence_conditional_display(inGame(), "Player {2} - Solved Puzzles: {3} - Faces: {0} - Score: {1}",
                                   rich_presence_value("VALUE", bcd(byte(0x01B1)), "Value"),
                                   rich_presence_value("SCORE", score(), "Score"),
-                                  rich_presence_value("VALUE", bcd(byte(0x01A7)), "Value"),
+                                  rich_presence_lookup("Player", byte(0x01A7), player),
                                   rich_presence_value("VALUE", bcd(byte(0x01B0)), "Value")
 )
 rich_presence_conditional_display(byte(0x001D) == 0x0D, "In Main Menu")

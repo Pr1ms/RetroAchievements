@@ -26,9 +26,9 @@ function AbsorbedPersians() => bitcount(gameMemoryPointer + 0x90) + bitcount(gam
                                bitcount(gameMemoryPointer + 0x94) + bitcount(gameMemoryPointer + 0x95) + 
                                bitcount(gameMemoryPointer + 0x96) + bitcount(gameMemoryPointer + 0x97) + 
                                bitcount(gameMemoryPointer + 0x98) + bitcount(gameMemoryPointer + 0x99)
-
+               
 function PickedUpConsumables() => bitcount(gameMemoryPointer + 0xAE) + bitcount(gameMemoryPointer + 0xAF) + 
-                                  bitcount(gameMemoryPointer + 0xB0) - bit7(gameMemoryPointer + 0xB0)
+                                  bitcount(gameMemoryPointer + 0xB0) - bit7(gameMemoryPointer + 0xB0)               
                                   
 function PressedGCSwitches() => bit2(gameMemoryPointer + 0xd6) + bit3(gameMemoryPointer + 0xd6) + bit4(gameMemoryPointer + 0xd6)           
                                                        
@@ -339,7 +339,8 @@ achievement(
     points=10,
     description = "Pick up every consumable item",
     trigger = unless(InMainMenu()) && CurrentlyPlaying() && 
-              measured(PickedUpConsumables() == 23) && prev(PickedUpConsumables()) == 22
+              measured(PickedUpConsumables() == 23) && 
+              prev(PickedUpConsumables()) == 22
 )
 
 // For fun / easter eggs
@@ -360,7 +361,7 @@ achievement(
     title = "That's Not How It Happened",
     points = 2,
     description="Reverse time to get back from an empty lifebar and live long enough to enjoy it",
-    trigger = never(GameOver()) && unless(!CurrentlyPlaying() && !GameOver()) && 
+    trigger = never(GameOver()) && never(InMainMenu()) && unless(!CurrentlyPlaying()) && 
               repeated(600, once(byte(gameMemoryPointer + 0x82) == 0) &&  byte(gameMemoryPointer + 0x82) > 0)
 )
 
@@ -545,13 +546,14 @@ rich_presence_conditional_display(RoomMatches(0x05, 0x03),
                                   rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)),
                                   rich_presence_value("Unsigned", word(pointerAt(1) + 0x78))  )                                                  
 
-
-// General case
-rich_presence_display("Exploring the palace - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
+rich_presence_conditional_display(bit0(0xf21)==1, "Exploring the palace - Level {0} - Sand Persians {1}/75 - Rings {2}/2 - Medal Gates {3}/8",
                       rich_presence_value("Unsigned", PlayerLevel()),
                       rich_presence_value("Unsigned", AbsorbedPersians()),
                       rich_presence_value("Unsigned", bit0(gameMemoryPointer + 0xd2) + bit1(gameMemoryPointer + 0xd2)),
                       rich_presence_value("Unsigned", bitcount(gameMemoryPointer + 0xcb)))
+
+// General case
+rich_presence_display("Playing Prince of Persia: The Sands of Time")
 
 
 //
@@ -565,7 +567,7 @@ leaderboard(
     // When turning from stone to flesh the griffin "pushes" the player which leads to a (damageless) "hit" animation
     start=CurrentlyPlaying() && RoomMatches(0x00, 0x19) && bit1(gameMemoryPointer + 0x9d) == 0 && 
     (CurrentAnimation() == 0x32 && prev(CurrentAnimation()) != 0x32 || CurrentAnimation() == 0x33 && prev(CurrentAnimation()) != 0x33), 
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x00, 0x19), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=ZeroToOne(bit1(gameMemoryPointer + 0x9d)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
@@ -576,7 +578,7 @@ leaderboard(
     "Boss Speedrun: Second Sand Griffin Encounter",
     "Finish the second Sand Griffin encounter as fast as possible",
     start=RoomMatches(0x01, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xa1) == 0, 
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x01, 0x19), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=ZeroToOne(bit1(gameMemoryPointer + 0xa1)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
@@ -587,7 +589,7 @@ leaderboard(
     "Boss Speedrun: Third Sand Griffin Encounter",
     "Finish the third Sand Griffin encounter as fast as possible",
     start=RoomMatches(0x02, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xa5) == 0, 
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x02, 0x19), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=ZeroToOne(bit1(gameMemoryPointer + 0xa5)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
@@ -598,7 +600,7 @@ leaderboard(
     "Boss Speedrun: Final Sand Griffin Encounter",
     "Kill the Sand Griffin as fast as possible",
     start=RoomMatches(0x03, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xa9) == 0, 
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x03, 0x19), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=ZeroToOne(bit1(gameMemoryPointer + 0xa9)), // Room is marked as solved
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
@@ -609,7 +611,7 @@ leaderboard(
     "Boss Speedrun: First Vizier Encounter",
     "Finish the first Vizier encounter and acquire the Scroll of Fury as fast as possible",
     start=RoomMatches(0x04, 0x19) && prev(byte(gameMemoryPointer + 0x65)) != 0x19 && bit1(gameMemoryPointer + 0xad) == 0, 
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x04, 0x19), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=ZeroToOne(bit5(gameMemoryPointer + 0xc2)), // Scroll of Fury acquired (the player may still die before that)
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
@@ -620,7 +622,7 @@ leaderboard(
     "Boss Speedrun: Final Vizier Encounter",
     "Kill the Vizier as fast as possible",
     start=RoomMatches(0x05, 0x03) && prev(byte(gameMemoryPointer + 0x65)) != 0x03,
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x05, 0x03), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, // Vizier dead, cutscene started
     value=always_true(), // We count every frame of the leaderboard being on
     format="FRAMES",
@@ -634,7 +636,7 @@ leaderboard(
     "Finish the game having absorbed as few Sand Persians as possible",
     // Starts and submits on the same frame to avoid screen pollution
     start=RoomMatches(0x05, 0x03) && word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, 
-    cancel=GameOver() || InMainMenu() || !RoomMatches(0x05, 0x03), // Player died, reset the game or left the room
+    cancel=GameOver() || InMainMenu(), // Player died or reset the game
     submit=word(pointerAt(1) + 0x78) == 0 && byte(0x0f21) == 2 && prev(byte(0x0f21)) != 2, // Vizier dead, cutscene started
     value=AbsorbedPersians(),
     format="VALUE",

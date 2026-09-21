@@ -1,0 +1,228 @@
+{
+  "EmulatorTargetName": "PCSX2",
+  "ProcessId": 26296,
+  "LastScanParameters": {
+    "TargetAddress": 0,
+    "MaxLevel": 15,
+    "MaxOffset": 65535,
+    "MaxNegativeOffset": 1024,
+    "StaticBaseStart": 541065216,
+    "StaticBaseEnd": 542113791,
+    "MaxResults": 5000,
+    "ScanForStructureBase": true,
+    "Use16ByteAlignment": false,
+    "LimitCpuUsage": false,
+    "StopOnFirstPathFound": false,
+    "FindAllPathLevels": false,
+    "CandidatesPerLevel": 50,
+    "MaxCandidates": 10000000,
+    "FinalAddressTarget": 566101156,
+    "CapturedStates": [
+      {
+        "TargetAddress": 567311580
+      },
+      {
+        "TargetAddress": 564475364
+      },
+      {
+        "TargetAddress": 566101156
+      }
+    ]
+  },
+  "Results": [
+    {
+      "BaseAddress": 541360516,
+      "Offsets": [
+        42672,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541360516,
+      "Offsets": [
+        33648,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541369004,
+      "Offsets": [
+        40628,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541369004,
+      "Offsets": [
+        31604,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541369252,
+      "Offsets": [
+        40628,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541369252,
+      "Offsets": [
+        31604,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373348,
+      "Offsets": [
+        38580,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373348,
+      "Offsets": [
+        29556,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373444,
+      "Offsets": [
+        38580,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373444,
+      "Offsets": [
+        29556,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373620,
+      "Offsets": [
+        38580,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373620,
+      "Offsets": [
+        29556,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373740,
+      "Offsets": [
+        38580,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541373740,
+      "Offsets": [
+        29556,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541456920,
+      "Offsets": [
+        43296,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541845812,
+      "Offsets": [
+        44440,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541847288,
+      "Offsets": [
+        44440,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541853476,
+      "Offsets": [
+        51248,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541853476,
+      "Offsets": [
+        42224,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541853816,
+      "Offsets": [
+        44384,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541871592,
+      "Offsets": [
+        300,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541954856,
+      "Offsets": [
+        51248,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541954856,
+      "Offsets": [
+        42224,
+        1932
+      ],
+      "FinalAddress": 566101156
+    },
+    {
+      "BaseAddress": 541963228,
+      "Offsets": [
+        44328,
+        1932
+      ],
+      "FinalAddress": 566101156
+    }
+  ],
+  "SortedColumnName": null,
+  "SortDirection": 0
+}

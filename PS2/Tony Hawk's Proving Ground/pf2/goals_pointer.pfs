@@ -1,0 +1,96 @@
+{
+  "EmulatorTargetName": "PCSX2",
+  "ProcessId": 9604,
+  "LastScanParameters": {
+    "TargetAddress": 0,
+    "MaxLevel": 5,
+    "MaxOffset": 1048575,
+    "MaxNegativeOffset": 1024,
+    "StaticBaseStart": 542351104,
+    "StaticBaseEnd": 542963168,
+    "MaxResults": 5000,
+    "ScanForStructureBase": true,
+    "Use16ByteAlignment": false,
+    "LimitCpuUsage": false,
+    "StopOnFirstPathFound": false,
+    "FindAllPathLevels": false,
+    "CandidatesPerLevel": 50,
+    "MaxCandidates": 1000000,
+    "FinalAddressTarget": 543816608,
+    "CapturedStates": [
+      {
+        "TargetAddress": 543816608
+      },
+      {
+        "TargetAddress": 543816608
+      }
+    ]
+  },
+  "Results": [
+    {
+      "BaseAddress": 542502304,
+      "Offsets": [
+        12424
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542637676,
+      "Offsets": [
+        320
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922300,
+      "Offsets": [
+        1024
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922304,
+      "Offsets": [
+        816
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922308,
+      "Offsets": [
+        608
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922568,
+      "Offsets": [
+        816
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922576,
+      "Offsets": [
+        608
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922620,
+      "Offsets": [
+        1024
+      ],
+      "FinalAddress": 543816608
+    },
+    {
+      "BaseAddress": 542922676,
+      "Offsets": [
+        400
+      ],
+      "FinalAddress": 543816608
+    }
+  ],
+  "SortedColumnName": null,
+  "SortDirection": 0
+}

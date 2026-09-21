@@ -239,6 +239,8 @@ function inRace() => dword(dword(dword(0x3d597c) + 0x1b4c) + 0xc) == 1 && dword(
 function currentEvent() => dword(dword(dword(0x3d597c) + 0xb91c) + 0xc)
 
 function bestRewardForCurrentEvent() => dword(dword(dword(0x3d597c) + 0xa0a8) + 0x20)
+function bestRewardForCurrentEventAlt() => dword(dword(dword(0x3d597c) + 0x58a0) + 0xc)
+
 function crownsCount() => dword(dword(dword(0x3d597c) + 0x7c30) + 0x24)
 function maxUnlockedTier() => dword(dword(dword(0x3d597c) + 0x7c30) + 0x54)
 function currentBoard() => dword(dword(dword(0x3d597c) + 0xe8b0) + 0xc)
@@ -306,13 +308,13 @@ achievement("Now That's How You Skate Downhill... In a Video Game!",
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x55c)) == 0 && dword(dword(0x46f90c) + 0x55c) == 1 
 )   
 
-achievement("Winners Are Just Loosers Who Have Lost Their Way!",
+achievement("Winners Are Just Losers Who Have Lost Their Way!",
             description="Unlock Skyler", id=625009,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x564)) == 0 && dword(dword(0x46f90c) + 0x564) == 1
 )   
 
-achievement("Sometimes You're the Looser and Sometimes You're Me!",
+achievement("Sometimes You're the Loser and Sometimes You're Me!",
             description="Unlock Victor", id=625010,
             points=5,
             trigger=saveProtection() && prev(dword(dword(0x46f90c) + 0x568)) == 0 && dword(dword(0x46f90c) + 0x568) == 1
@@ -619,13 +621,15 @@ achievement("Portes du Soleil", id=625561,
 achievement("Gold Is Not Enough", id=625579,
             description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds or better",
             points=5,
-            trigger=inRace() && prev(bestRewardForCurrentEvent()) < 4 && bestRewardForCurrentEvent() >= 4
+            trigger=inRace() && (prev(bestRewardForCurrentEvent()) < 4 && bestRewardForCurrentEvent() >= 4 && bestRewardForCurrentEvent() <= 5 || 
+                                 prev(bestRewardForCurrentEventAlt()) < 4 && bestRewardForCurrentEventAlt() >= 4 && bestRewardForCurrentEventAlt() <= 5)
 )
             
 achievement("Crown Jewels", id=625580,
             description="Beat any Event's record and be rewarded with a Golden Crown with Diamonds and Rubies",
             points=10,
-            trigger=inRace() && prev(bestRewardForCurrentEvent()) < 5 && bestRewardForCurrentEvent() == 5
+            trigger=inRace() && (prev(bestRewardForCurrentEvent()) < 5 && bestRewardForCurrentEvent() == 5 ||
+                                 prev(bestRewardForCurrentEventAlt()) < 5 && bestRewardForCurrentEventAlt() == 5)
 )
 
 trickEventIds = [0x182a62bd, 0xf93ad2ab, 0x86009977, 0x4681f5d5, 0xdf68a641, 0x81233307, 0xf107a9e1, 0x24447d59, 0x1f09c8cd, 0x1f47a6a4,
@@ -721,40 +725,45 @@ achievement("Slow and Steady Wins the Race", id=626699,
 achievement("Faster than the Wild Parrots of Telegraph Hill", id=626671,
             description="Beat the Event record in the Top to Bottom Race in San Francisco for the first time",
             points=10,
-            trigger=inRace() && currentEvent() == 0xbaf9e4fa && prev(bestRewardForCurrentEvent()) < 4 && 
-                    trigger_when(bestRewardForCurrentEvent() >= 4)
+            trigger=inRace() && currentEvent() == 0xbaf9e4fa && 
+                    (prev(bestRewardForCurrentEvent()) >= 0 && prev(bestRewardForCurrentEvent()) < 4 && trigger_when(bestRewardForCurrentEvent() >= 4) && trigger_when(bestRewardForCurrentEvent() <= 5) || 
+                     prev(bestRewardForCurrentEventAlt()) >= 0 && prev(bestRewardForCurrentEventAlt()) < 4 && trigger_when(bestRewardForCurrentEventAlt() >= 4) && trigger_when(bestRewardForCurrentEventAlt() <= 5))                    
 )
 
 
 achievement("Faster than Alpine Groundhogs", id=626672,
             description="Beat the Event record in the Top to Bottom Race in the Alps for the first time",
             points=10,
-            trigger=inRace() && currentEvent() == 0x5f2f4aca && prev(bestRewardForCurrentEvent()) < 4 && 
-                    trigger_when(bestRewardForCurrentEvent() >= 4)
+            trigger=inRace() && currentEvent() == 0x5f2f4aca &&
+                    (prev(bestRewardForCurrentEvent()) >= 0 && prev(bestRewardForCurrentEvent()) < 4 && trigger_when(bestRewardForCurrentEvent() >= 4) && trigger_when(bestRewardForCurrentEvent() <= 5) || 
+                     prev(bestRewardForCurrentEventAlt()) >= 0 && prev(bestRewardForCurrentEventAlt()) < 4 && trigger_when(bestRewardForCurrentEventAlt() >= 4) && trigger_when(bestRewardForCurrentEventAlt() <= 5))    
 )
 
 
 achievement("Faster than a Unicorn", id=626673,
             description="Beat the Event record in the Top to Bottom Race in Edinburgh for the first time",
             points=10,
-            trigger=inRace() && currentEvent() == 0x842d6bb1 && prev(bestRewardForCurrentEvent()) < 4 && 
-                    trigger_when(bestRewardForCurrentEvent() >= 4)
+            trigger=inRace() && currentEvent() == 0x842d6bb1 && 
+                    (prev(bestRewardForCurrentEvent()) >= 0 && prev(bestRewardForCurrentEvent()) < 4 && trigger_when(bestRewardForCurrentEvent() >= 4) && trigger_when(bestRewardForCurrentEvent() <= 5) || 
+                     prev(bestRewardForCurrentEventAlt()) >= 0 && prev(bestRewardForCurrentEventAlt()) < 4 && trigger_when(bestRewardForCurrentEventAlt() >= 4) && trigger_when(bestRewardForCurrentEventAlt() <= 5))    
 )
 
 
 achievement("Faster than a Puma", id=626674,
             description="Beat the Event record in the Top to Bottom Race in Machu Picchu for the first time",
             points=10,
-            trigger=inRace() && currentEvent() == 0x642f45b5 && prev(bestRewardForCurrentEvent()) < 4 && 
-                    trigger_when(bestRewardForCurrentEvent() >= 4)
+            trigger=inRace() && currentEvent() == 0x642f45b5 && 
+                    (prev(bestRewardForCurrentEvent()) >= 0 && prev(bestRewardForCurrentEvent()) < 4 && trigger_when(bestRewardForCurrentEvent() >= 4) && trigger_when(bestRewardForCurrentEvent() <= 5) || 
+                     prev(bestRewardForCurrentEventAlt()) >= 0 && prev(bestRewardForCurrentEventAlt()) < 4 && trigger_when(bestRewardForCurrentEventAlt() >= 4) && trigger_when(bestRewardForCurrentEventAlt() <= 5))    
 )
 
 
 achievement("Faster than a White Dolphin", id=626675,
             description="Beat the Event record in the Top to Bottom Race in Hong Kong for the first time",
             points=10,
-            trigger=inRace() && currentEvent() == 0x0f692d87 && prev(bestRewardForCurrentEvent()) < 4 && 
-                    trigger_when(bestRewardForCurrentEvent() >= 4)
+            trigger=inRace() && currentEvent() == 0x0f692d87 && 
+                    (prev(bestRewardForCurrentEvent()) >= 0 && prev(bestRewardForCurrentEvent()) < 4 && trigger_when(bestRewardForCurrentEvent() >= 4) && trigger_when(bestRewardForCurrentEvent() <= 5) || 
+                     prev(bestRewardForCurrentEventAlt()) >= 0 && prev(bestRewardForCurrentEventAlt()) < 4 && trigger_when(bestRewardForCurrentEventAlt() >= 4) && trigger_when(bestRewardForCurrentEventAlt() <= 5))    
 )
 
 // Target is max remaining time

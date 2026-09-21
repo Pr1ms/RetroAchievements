@@ -1,0 +1,654 @@
+{
+  "EmulatorTargetName": "PPSSPP",
+  "ProcessId": 34184,
+  "LastScanParameters": {
+    "TargetAddress": 0,
+    "MaxLevel": 7,
+    "MaxOffset": 4095,
+    "MaxNegativeOffset": 1024,
+    "StaticBaseStart": 149946368,
+    "StaticBaseEnd": 150994943,
+    "MaxResults": 5000,
+    "ScanForStructureBase": true,
+    "Use16ByteAlignment": false,
+    "LimitCpuUsage": false,
+    "StopOnFirstPathFound": false,
+    "FindAllPathLevels": false,
+    "CandidatesPerLevel": 10,
+    "MaxCandidates": 10000000,
+    "FinalAddressTarget": 149925256,
+    "CapturedStates": [
+      {
+        "TargetAddress": 149925256
+      },
+      {
+        "TargetAddress": 149925256
+      }
+    ]
+  },
+  "Results": [
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1788,
+        96
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1936,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1440,
+        100
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1924,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1980,
+        40
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1572,
+        96
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1880,
+        24
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1832,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1496,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        2000,
+        12
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1144,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1224,
+        16
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1436,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1252,
+        24
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1400,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1332,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1216,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        2028,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        2100,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1180,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1464,
+        12
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        1988,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058740,
+      "Offsets": [
+        720,
+        2104,
+        16
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1788,
+        96
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1788,
+        96
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1936,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1936,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1440,
+        100
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1440,
+        100
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1924,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1924,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1980,
+        40
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1980,
+        40
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1572,
+        96
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1572,
+        96
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1880,
+        24
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1880,
+        24
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1832,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1832,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1496,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1496,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        2000,
+        12
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        2000,
+        12
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1144,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1144,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1224,
+        16
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1224,
+        16
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1436,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1436,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1252,
+        24
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1252,
+        24
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1400,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1400,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1332,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1332,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1216,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1216,
+        8
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        2028,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        2028,
+        20
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        2100,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        2100,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1180,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1180,
+        92
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1464,
+        12
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1464,
+        12
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        1988,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        1988,
+        104
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        240,
+        2104,
+        16
+      ],
+      "FinalAddress": 149925256
+    },
+    {
+      "BaseAddress": 150058744,
+      "Offsets": [
+        208,
+        2104,
+        16
+      ],
+      "FinalAddress": 149925256
+    }
+  ],
+  "SortedColumnName": null,
+  "SortDirection": 0
+}

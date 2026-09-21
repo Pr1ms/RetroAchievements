@@ -1,0 +1,97 @@
+{
+  "EmulatorTargetName": "Dolphin",
+  "ProcessId": 2724,
+  "LastScanParameters": {
+    "TargetAddress": 0,
+    "MaxLevel": 7,
+    "MaxOffset": 65535,
+    "MaxNegativeOffset": 1024,
+    "StaticBaseStart": 2148532224,
+    "StaticBaseEnd": 2155872255,
+    "MaxResults": 5000,
+    "ScanForStructureBase": true,
+    "Use16ByteAlignment": false,
+    "LimitCpuUsage": false,
+    "StopOnFirstPathFound": false,
+    "FindAllPathLevels": false,
+    "CandidatesPerLevel": 10,
+    "MaxCandidates": 10000000,
+    "FinalAddressTarget": 2166370720,
+    "CapturedStates": [
+      {
+        "TargetAddress": 2166380528
+      },
+      {
+        "TargetAddress": 2166370720
+      }
+    ]
+  },
+  "Results": [
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        920,
+        0
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        840,
+        4
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        820,
+        8
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        900,
+        12
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        860,
+        16
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        680,
+        84
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        760,
+        160
+      ],
+      "FinalAddress": 2166370720
+    },
+    {
+      "BaseAddress": 2150524828,
+      "Offsets": [
+        700,
+        172
+      ],
+      "FinalAddress": 2166370720
+    }
+  ],
+  "SortedColumnName": null,
+  "SortDirection": 0
+}

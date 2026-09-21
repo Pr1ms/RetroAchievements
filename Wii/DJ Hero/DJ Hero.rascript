@@ -110,7 +110,6 @@ beatName = {
 }
 
 setlist = {
-    0x00: "Quicklist/Edited Setlist/Bonus Beat",
     0x01: "Custom DJ Setlist 1",
     0x02: "Custom DJ Setlist 2",
     0x03: "Custom Guitar Setlist",
@@ -141,6 +140,10 @@ setlist = {
     0x1c: "Scratch Perverts Presents",
     0x1d: "The Vinyl Cut"
 }
+
+function currentSetlist() => dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b0)
+
+function setlistEligible() => currentSetlist() != 4 && currentSetlist() != 5 && currentSetlist() != 0xffffffff
 
 difficulty = {
     0: "Beginner",
@@ -286,7 +289,7 @@ function currentSongStars(){
 
 function currentSong6StarsThreshold(){
     index = dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b4)
-    threshold = dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x6a4 * index + 0x278)
+    threshold = float_be((dword_be(0x797d64) & 0x1fffffff) + 0x6a4 * index + 0x278)
     return threshold
 }
 
@@ -294,9 +297,21 @@ function currentBeatState(){
     return dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x35b0)
 }
 
+function currentBeatPlaytime(){
+    index = dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b4)
+    playtime = dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x6a4 * index + 0x19c)
+    return playtime
+}
+
 function currentStreak(){
     index = dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b4)
     streak = dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x6a4 * index + 0x1d4)
+    return streak
+}
+
+function longestStreak(){
+    index = dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b4)
+    streak = dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x6a4 * index + 0x1dc)
     return streak
 }
 
@@ -325,20 +340,17 @@ function euphoriasUsed(){
 }
 
 
-rich_presence_conditional_display(inGame() && inSong(), "{6} · {2} · {7} · Score: {8} · Total Stars: {0}/465 {1} => {3}{4}{5}", 
-                                  rich_presence_value("Value", totalStarCount(), "VALUE"),
+rich_presence_conditional_display(inGame() && inSong(), "{3} • {2} • {4} · Score: {5} • Total Stars: {0}/465 {1}", 
+                                  rich_presence_value("Number", totalStarCount(), "VALUE"),
                                   rich_presence_lookup("Cheats", sumOfCheats(), cheats, fallback=" - Using Cheats"),
                                   rich_presence_lookup("Beat", buildBeatId(), beatName, fallback="Unknown Beat"),
-                                  rich_presence_value("ASCIIChar", low4((dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x356c) & 0x1fffffff) + 0x09d)),
-                                  rich_presence_value("ASCIIChar", low4((dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x356c) & 0x1fffffff) + 0x09e)),
-                                  rich_presence_value("ASCIIChar", low4((dword_be((dword_be(0x797d64) & 0x1fffffff) + 0x356c) & 0x1fffffff) + 0x09f)),
-                                  rich_presence_lookup("Setlist", dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b0), setlist),
+                                  rich_presence_lookup("Setlist", currentSetlist(), setlist),
                                   rich_presence_lookup("Difficulty", currentSongDifficulty(), difficulty),
                                   rich_presence_value("Score", currentSongScore(), "SCORE")
 )
 
-rich_presence_conditional_display(inGame(), "In the Hub · Total Stars: {0}/465 {1}", 
-                                  rich_presence_value("Value", totalStarCount(), "VALUE"),
+rich_presence_conditional_display(inGame(), "In the Hub • Total Stars: {0}/465 {1}", 
+                                  rich_presence_value("Number", totalStarCount(), "VALUE"),
                                   rich_presence_lookup("CHEATS", sumOfCheats(), cheats, fallback=" - Using Cheats")
 )
 
@@ -467,22 +479,22 @@ achievement(title="A Final Treat Before You Go", points=3,
 
 achievement(title="Back and Forth with the Flow", points=10,
             description="On Expert difficulty, perform three Rewinds within the same Note Streak on any Beat",
-            trigger=isNotCheating() && inGame() && currentSongDifficulty() == 4 && currentBeatState() == 0x9 && never(currentStreak() == 0) && tally(3, prev(rewindsUsed()) < rewindsUsed())
+            trigger=isNotCheating() && inGame() && setlistEligible() && currentSongDifficulty() == 4 && currentBeatState() == 0x9 && never(currentStreak() == 0) && tally(3, prev(rewindsUsed()) < rewindsUsed())
 )
 
 achievement(title="Stoicism", points=10,
             description="On Expert difficulty, earn 5 Stars on any Beat without using Euphoria and ending with a full Euphoria Meter",
-            trigger=isNotCheating() && inGame() && currentSongDifficulty() == 4 && perfectSectionsHit() >= 3 && euphoriasUsed() == 0 && currentSongStars() == 5 && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13)
+            trigger=isNotCheating() && inGame() && setlistEligible() && currentSongDifficulty() == 4 && perfectSectionsHit() >= 3 && euphoriasUsed() == 0 && currentSongStars() == 5 && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13)
 )
 
 achievement(title="Localized Perfection", points=5,
             description="On Expert difficulty, hit all Perfect Sections on any Beat",
-            trigger=isNotCheating() && inGame() && currentSongDifficulty() == 4 && currentBeatState() == 0x9 && perfectSectionsHit() == perfectSectionsTotal() && prev(perfectSectionsHit()) < perfectSectionsHit()
+            trigger=isNotCheating() && inGame() && setlistEligible() && currentSongDifficulty() == 4 && currentBeatState() == 0x9 && perfectSectionsHit() == perfectSectionsTotal() && prev(perfectSectionsHit()) < perfectSectionsHit()
 )
 
 achievement(title="6-Stars Victory", points=10,
             description="On Expert difficulty, reach the hidden 6-Stars threshold on any Beat",
-            trigger=isNotCheating() && inGame() && currentSongDifficulty() == 4 && currentSongScore() >= currentSong6StarsThreshold() && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13)
+            trigger=isNotCheating() && inGame() && setlistEligible() && currentSongDifficulty() == 4 && currentSongScore() >= currentSong6StarsThreshold() && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13)
 )
 
 fullsetChallenges = [
@@ -494,17 +506,25 @@ fullsetChallenges = [
     ["Zach Sciacca", "DJ Z-Trip Presents", [407, 279, 405], 15, 0x1a],    
 ]
 
+achievement(title="Missed Some Notes, Got All the Stars", points=10,
+            description="Collect 465 Stars and reach 100% Completion",
+            trigger=isNotCheating() && inGame() && prev(totalStarCount()) >= 425 && prev(totalStarCount() < 465) && totalStarCount() == 465
+)
+
 function fullsetAchievement(setlistId, idList)
 {
     checkpoints = always_true()
     beat_index = dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b4)
-    for loop_index in range(0, length(idList) - 2)
+    for loop_index in range(0, length(idList) - 3)
     {        
         checkpoints = checkpoints && once(beat_index == loop_index && buildBeatId() == idList[loop_index] && currentSongDifficulty() == 4 && currentSongStars() == 5 && prev(currentBeatState()) == 0x09 && currentBeatState() == 0x0f)
     }
+    before_last_index = length(idList) - 2
+    checkpoints = checkpoints && once(beat_index == before_last_index && buildBeatId() == idList[before_last_index] && currentSongDifficulty() == 4 && currentSongStars() == 5 && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13))
+        
     final_index = length(idList) - 1
     checkpoints = checkpoints && beat_index == final_index && buildBeatId() == idList[final_index] && currentSongDifficulty() == 4 && currentSongStars() == 5 && prev(currentBeatState()) == 0x09 && currentBeatState() == 0x13
-    return isNotCheating() && inGame() && never(currentBeatState() == 0x01) && dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b0) == setlistId && checkpoints
+    return isNotCheating() && inGame() && never(!inSong()) && dword_be((dword_be(0x797ac0) & 0x1fffffff) + 0x3b0) == setlistId && checkpoints
 }
 
 for fullsetChallenge in fullsetChallenges{
@@ -517,98 +537,99 @@ for fullsetChallenge in fullsetChallenges{
 // [Id, Title, Full Combo Length, Five 5 Expert Achievement Title]
 challengeData = [
     [17, "Ain't No Love In The Heart Of The City / Fuzz And Them", 183, "Ain't No Fuzz"],
-    [38, "Insane in the Brain / The Edge", 573, "The Brain Edge"],
-    [39, "Ice Ice Baby / U Can't Touch This", 514, "Ice Touch"],
-    [64, "Zulu Nation Throwdown / Get Down", 523, "Throwdown Down"],
-    [76, "Play That Funky Music / Just to Get a Rep", 952, "Just to Get Funky Music"],
-    [149, "Jayou / Big Beat", 509, "The Big Jayou"],
-    [154, "Disco Inferno / Let's Dance", 637, "Inferno Dance"],
-    [160, "Poison / Word Up!", 523, "Poison Word"],
-    [164, "Fix Up, Look Sharp / Organ Donor (Extended Overhaul)", 475, "You Look Sharp, No Wonder the Sound Has so Much Body"],
-    [169, "Intergalactic / Rapture", 509, "Intergalactic Rapture"],
+    [317, "Another One Bites the Dust / Da Funk", 284, "Another One Bites Da Funk"],
     [170, "Born To Roll / Mr. Big Stuff", 335, "Mr. Big Roll"],
     [171, "Insane in the Brain / Spooky", 373, "Spooky Brain"],
+    [195, "Shout / Pjanoo", 428, "You Shouldn't Have to Sell Your Pjanoo"],
+    [160, "Poison / Word Up!", 523, "Poison Word"],
+    [411, "Feel Good Inc. / Atomic", 505, "Feel Atomic"],
+    [253, "I Want You Back / Semi-Charmed Life", 498, "I Want Life Back"],
+    [255, "Boom Boom Pow / Satisfaction", 701, "Gotta Get Satisfaction"],
+    [197, "Disturbia / Control", 474, "Your Mind's in Control"],
+    [403, "Ain't No Love in the Heart of the City / How Do You Want It", 542, "How Do U Want Love?"],
+    [64, "Zulu Nation Throwdown / Get Down", 523, "Throwdown Down"],
+    [149, "Jayou / Big Beat", 509, "The Big Jayou"],
+    [39, "Ice Ice Baby / U Can't Touch This", 514, "Ice Touch"],
+    [164, "Fix Up, Look Sharp / Organ Donor (Extended Overhaul)", 475, "You Look Sharp, No Wonder the Sound Has so Much Body"],
+    [218, "I Heard It Through the Grapevine / Feel Good Inc.", 671, "Grapevine Inc."],
+    [210, "Hollaback Girl / Give It to Me", 583, "Hollaback Baby"],
+    [266, "Put Your Hands Up for Detroit / I Can't Stop (DP Remix)", 565, "Detroit Can't Stop"],
+    [408, "My Name Is / Loser", 852, "My Name Is NOT Loser"],
+    [258, "Big Beat / Lapdance", 570, "Big Lapdance"],
+    [238, "I Want You Back / Semi-Charmed Life (Guitar)", 639, "I Want Life and My Guitar Back"],
+    [76, "Play That Funky Music / Just to Get a Rep", 952, "Just to Get Funky Music"],
+    [265, "Disturbia / Somebody Told Me", 673, "Somebody Disturbed Me"],
+    [251, "Beverly Hills / Fresh Rhymes and Videotape", 564, "Beverly Hills Videotape"],
+    [169, "Intergalactic / Rapture", 509, "Intergalactic Rapture"],
+    [299, "Six Days (Remix ft. Mos Def) / Where It's At", 549, "It's at Six"],
+    [154, "Disco Inferno / Let's Dance", 637, "Inferno Dance"],
+    [270, "Somebody Told Me / Pjanoo", 548, "Somebody Told Me You Play the Pjanoo"],
+    [303, "Rockit / Lapdance", 925, "Lapdance Rock"],
+    [302, "Here Comes My DJ / Cars", 631, "Here Comes My Car"],
+    [308, "Boom / Tap", 214, "Boom Tap"],
+    [328, "Izzo (H.O.V.A.) / I Want You Back", 646, "I Want Jehovah"],
+    [419, "Excuse Me Miss / Give It to Me", 831, "Give It to Me Miss"],
+    [316, "Change Clothes / All Eyez on Me", 682, "All Clothes on Me"],
+    [415, "Izzo (H.O.V.A.) / My Name Is", 785, "My Name Is Jehovah"],
+    [215, "Hollaback Girl / Feel Good Inc.", 515, "Feel Good Girl"],
+    [267, "How Ya Like Me Now / I Like to Move It", 791, "How Ya Like to Move"],
+    [208, "Disturbia / Disco Inferno", 527, "Disturbed Disco"],
     [177, "Fix Up, Look Sharp / Genesis", 589, "Hear the Bang, See the Genesis"],
     [180, "Last Night a D.J. Saved My Life / Word Up!", 662, "Last Word"],
-    [186, "Jack of Spades / Let's Dance", 592, "Jack of Spades Under the Moonlight"],
-    [195, "Shout / Pjanoo", 428, "You Shouldn't Have to Sell Your Pjanoo"],
-    [197, "Disturbia / Control", 474, "Your Mind's in Control"],
-    [200, "Bustin' Loose / Time of the Season", 559, "Bustin' the Season"],
-    [208, "Disturbia / Disco Inferno", 527, "Disturbed Disco"],
-    [210, "Hollaback Girl / Give It to Me", 583, "Hollaback Baby"],
-    [213, "Satisfaction / Elements of Life", 1161, "Satisfying Elements"],
-    [215, "Hollaback Girl / Feel Good Inc.", 515, "Feel Good Girl"],
-    [218, "I Heard It Through the Grapevine / Feel Good Inc.", 671, "Grapevine Inc."],
-    [220, "Poison / Intergalactic", 707, "Intergalactic Poison"],
-    [226, "Ice Ice Baby / Straight Up", 559, "Straight up on the Ice"],
-    [228, "Jayou / Rockit", 815, "We're Known to Rockit"],
-    [237, "Lookin' At Me / Hey Mama", 580, "Lookin' at Mama"],
-    [238, "I Want You Back / Semi-Charmed Life (Guitar)", 639, "I Want Life and My Guitar Back"],
-    [239, "Paper Planes / Lookin' At Me", 717, "Lookin' at Paper Planes"],
-    [240, "Bring the Noise 20XX", 771, "Bring the Noise 20XX on the Rocks"],
-    [251, "Beverly Hills / Fresh Rhymes and Videotape", 564, "Beverly Hills Videotape"],
-    [253, "I Want You Back / Semi-Charmed Life", 498, "I Want Life Back"],
-    [254, "Bustin' Loose / Bust a Move", 779, "Bustin' a Move"],
-    [255, "Boom Boom Pow / Satisfaction", 701, "Gotta Get Satisfaction"],
     [257, "Shut 'em Down / Where It's At", 674, "Down Where It's At"],
-    [258, "Big Beat / Lapdance", 570, "Big Lapdance"],
-    [259, "Strange Enough ft. Karen O, ODB & Fatlip / Theme from Shaft", 644, "Strange Shaft"],
-    [260, "Beats and Pieces", 1375, "Beats and Pieces on the Rocks"],
-    [261, "Paper Planes / Eric B. Is President", 940, "Presidential Papers"],
-    [262, "I Want You Back / Just to Get a Rep", 609, "I Just Want to Get a Rep"],
-    [264, "Universal Mind Control (UMC) / Jeep A** Gutter (Remix)", 919, "Universal A** Control"],
-    [265, "Disturbia / Somebody Told Me", 673, "Somebody Disturbed Me"],
-    [266, "Put Your Hands Up for Detroit / I Can't Stop (DP Remix)", 565, "Detroit Can't Stop"],
-    [267, "How Ya Like Me Now / I Like to Move It", 791, "How Ya Like to Move"],
-    [270, "Somebody Told Me / Pjanoo", 548, "Somebody Told Me You Play the Pjanoo"],
-    [273, "Ace of Spades / Groundhog", 668, "Groundhog Eyes Watching You"],
-    [275, "Disco Inferno / Last Night a D.J. Saved My Life", 632, "Last Night a DJ Saved Disco"],
     [276, "Shout / Six Days (Remix ft. Mos Def)", 677, "Shouting Days"],
-    [278, "Groundhog", 1617, "Groundhog on the Rocks"],
-    [279, "Another One Bites the Dust / Brass Monkey", 608, "Another One Bites the Brass"],
-    [280, "Monkey Wrench / Sabotage", 437, "The Right Tool to Sabotage"],
-    [283, "Rockit", 1496, "Rockit on the Rocks"],
-    [295, "Technologic / Cars", 718, "Technologic Cars"],
-    [297, "Hollaback Girl / Last Night a D.J. Saved My Life", 862, "Last Night a DJ Saved My Girl"],
-    [298, "Da Funk / Strange Enough ft. Karen O, ODB & Fatlip", 687, "Strange Funk"],
-    [299, "Six Days (Remix ft. Mos Def) / Where It's At", 549, "It's at Six"],
-    [302, "Here Comes My DJ / Cars", 631, "Here Comes My Car"],
-    [303, "Rockit / Lapdance", 925, "Lapdance Rock"],
+    [331, "Day 'n' Nite / Boom Boom Pow", 756, "Boom Boom Day"],
+    [237, "Lookin' At Me / Hey Mama", 580, "Lookin' at Mama"],
+    [226, "Ice Ice Baby / Straight Up", 559, "Straight up on the Ice"],
+    [336, "The Edge / Eric B. Is President", 467, "President on the Edge"],
+    [254, "Bustin' Loose / Bust a Move", 779, "Bustin' a Move"],
     [305, "Bittersweet Symphony / Rock the Bells", 874, "Symphonic Bells"],
     [306, "Shout / Eric B. Is President", 639, "Presidential Shout"],
-    [308, "Boom / Tap", 214, "Boom Tap"],
-    [309, "Jack of Spades / Short Circuit", 842, "Short Spades"],
-    [310, "Hella Good / Television Rules the Nation", 625, "Good Rules the Nation"],
-    [312, "Beats / Big Beat", 826, "The Big Beats"],
-    [316, "Change Clothes / All Eyez on Me", 682, "All Clothes on Me"],
-    [317, "Another One Bites the Dust / Da Funk", 284, "Another One Bites Da Funk"],
-    [319, "Six Days (Remix ft. Mos Def) / Annie's Horn", 847, "Annie's Days"],
-    [321, "Lee Majors Come Again / Da Funk", 807, "Funk Comes Again"],
-    [322, "Nothing But You / I Can't Stop (DP Remix)", 1048, "I Can't Stop You"],
-    [326, "Around the World / Bust a Move", 760, "Bust the World"],
-    [328, "Izzo (H.O.V.A.) / I Want You Back", 646, "I Want Jehovah"],
-    [331, "Day 'n' Nite / Boom Boom Pow", 756, "Boom Boom Day"],
-    [332, "We Will Rock You / Robot Rock", 540, "Robot Will Rock You"],
+    [38, "Insane in the Brain / The Edge", 573, "The Brain Edge"],
+    [262, "I Want You Back / Just to Get a Rep", 609, "I Just Want to Get a Rep"],
     [333, "Tutti Frutti / Beats", 652, "Beatsi Frutti"],
-    [336, "The Edge / Eric B. Is President", 467, "President on the Edge"],
-    [400, "Good Thang / Big Beat", 875, "The Good Beat"],
-    [402, "Poison", 391, "Poison on the Rocks"],
-    [403, "Ain't No Love in the Heart of the City / How Do You Want It", 542, "How Do U Want Love?"],
-    [404, "Just to Get a Rep / Shook Ones, Pt. 2", 680, "Got a Rep as the Infamous"],
-    [405, "Jukebox Hero / DJ Hero", 722, "Couple of Heroes"],
-    [406, "Jukebox Hero / DJ Hero (Guitar)", 722, "Couple of Heroes with a Guitar"],
-    [407, "Bring the Noise 20XX / Genesis", 719, "Bring the Genesis"],
-    [408, "My Name Is / Loser", 852, "My Name Is NOT Loser"],
-    [409, "All Eyez on Me / Bittersweet Symphony", 871, "All Eyez on the Symphony"],
-    [410, "Here's a Little Something For Ya / The Number Song (2009)", 761, "Here's the Number Song for Ya"],
-    [411, "Feel Good Inc. / Atomic", 505, "Feel Atomic"],
-    [412, "Robot Rock / Al-Naafiysh (The Soul)", 920, "The Robot Soul"],
-    [413, "Megamix 2", 1004, "Daft Punk Megamix 2"],
+    [312, "Beats / Big Beat", 826, "The Big Beats"],
+    [332, "We Will Rock You / Robot Rock", 540, "Robot Will Rock You"],
+    [298, "Da Funk / Strange Enough ft. Karen O, ODB & Fatlip", 687, "Strange Funk"],
+    [310, "Hella Good / Television Rules the Nation", 625, "Good Rules the Nation"],
+    [309, "Jack of Spades / Short Circuit", 842, "Short Spades"],
+    [326, "Around the World / Bust a Move", 760, "Bust the World"],
+    [295, "Technologic / Cars", 718, "Technologic Cars"],
     [414, "Megamix 1", 772, "Daft Punk Megamix 1"],
-    [415, "Izzo (H.O.V.A.) / My Name Is", 785, "My Name Is Jehovah"],
-    [419, "Excuse Me Miss / Give It to Me", 831, "Git It to Me Miss"],
+    [413, "Megamix 2", 1004, "Daft Punk Megamix 2"],
     [675, "Fight! Smash! Win! / Intergalactic", 505, "Intergalactic Win!"],
+    [273, "Ace of Spades / Groundhog", 668, "Groundhog Eyes Watching You"],
+    [280, "Monkey Wrench / Sabotage", 437, "The Right Tool to Sabotage"],
+    [406, "Jukebox Hero / DJ Hero (Guitar)", 722, "Couple of Heroes with a Guitar"],
+    [240, "Bring the Noise 20XX", 771, "Bring the Noise 20XX on the Rocks"],
+    [409, "All Eyez on Me / Bittersweet Symphony", 871, "All Eyez on the Symphony"],
+    [239, "Paper Planes / Lookin' At Me", 717, "Lookin' at Paper Planes"],
     [681, "I Heard It Through the Grapevine / Let's Dance", 463, "Let's Dance Through the Grapevine"],    
+    [275, "Disco Inferno / Last Night a D.J. Saved My Life", 632, "Last Night a DJ Saved Disco"],
+    [297, "Hollaback Girl / Last Night a D.J. Saved My Life", 862, "Last Night a DJ Saved My Girl"],
+    [220, "Poison / Intergalactic", 707, "Intergalactic Poison"],
+    [402, "Poison", 391, "Poison on the Rocks"],
+    [186, "Jack of Spades / Let's Dance", 592, "Jack of Spades Under the Moonlight"],
+    [200, "Bustin' Loose / Time of the Season", 559, "Bustin' the Season"],
+    [410, "Here's a Little Something For Ya / The Number Song (2009)", 761, "Here's the Number Song for Ya"],
+    [321, "Lee Majors Come Again / Da Funk", 807, "Funk Comes Again"],
+    [404, "Just to Get a Rep / Shook Ones, Pt. 2", 680, "Got a Rep as the Infamous"],
+    [400, "Good Thang / Big Beat", 875, "The Good Beat"],
+    [407, "Bring the Noise 20XX / Genesis", 719, "Bring the Genesis"],
+    [279, "Another One Bites the Dust / Brass Monkey", 608, "Another One Bites the Brass"],
+    [405, "Jukebox Hero / DJ Hero", 722, "Couple of Heroes"],
+    [259, "Strange Enough ft. Karen O, ODB & Fatlip / Theme from Shaft", 644, "Strange Shaft"],
+    [322, "Nothing But You / I Can't Stop (DP Remix)", 1048, "I Can't Stop You"],
+    [319, "Six Days (Remix ft. Mos Def) / Annie's Horn", 847, "Annie's Days"],
+    [228, "Jayou / Rockit", 815, "We're Known to Rockit"],
+    [261, "Paper Planes / Eric B. Is President", 940, "Presidential Papers"],
+    [260, "Beats and Pieces", 1375, "Beats and Pieces on the Rocks"],
+    [412, "Robot Rock / Al-Naafiysh (The Soul)", 920, "The Robot Soul"],
+    [264, "Universal Mind Control (UMC) / Jeep A** Gutter (Remix)", 919, "Universal A** Control"],
+    [278, "Groundhog", 1617, "Groundhog on the Rocks"],
+    [213, "Satisfaction / Elements of Life", 1161, "Satisfying Elements"],
+    [283, "Rockit", 1496, "Rockit on the Rocks"],
+
 ]
 
 for challengeDataLine in challengeData
@@ -626,10 +647,23 @@ for challengeDataLine in challengeData
     {
         leaderboard(title=challengeDataLine[1] + " - "+ difficulty[1],
                     description="Highest Score on " + challengeDataLine[1] + " on " + difficulty[1] + " difficulty",
-                    start=isNotCheating() && inGame() && currentSongDifficulty() == difficulty[0] && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13),
+                    start=isNotCheating() && inGame() && buildBeatId() == challengeDataLine[0] && currentSongDifficulty() == difficulty[0] && prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13),
                     cancel=always_false(),
                     submit=always_true(),
                     value=currentSongScore()
         )
     }
+}
+
+S_EXPERT_FULL_COMBOS = achievement_set("Expert Full Combos", type="BONUS", id=42857, game_id=34823)
+
+// Expert Full Combo Subset
+for challengeDataLine in challengeData
+{
+    achievement(title=challengeDataLine[1], points=25, set=S_EXPERT_FULL_COMBOS,
+                description="Get an Expert Full Combo on " + challengeDataLine[1],
+                trigger=isNotCheating() && inGame() && buildBeatId() == challengeDataLine[0] && currentSongDifficulty() == 4 && trigger_when(longestStreak() == challengeDataLine[2]) &&  
+                        trigger_when(prev(currentBeatState()) == 0x09 && (currentBeatState() == 0x0f || currentBeatState() == 0x13)) &&
+                        disable_when(prev(currentStreak()) > 0 && currentStreak() == 0x00, until=currentBeatState() >= 0x07 && currentBeatState() <= 0x08) 
+    )
 }
