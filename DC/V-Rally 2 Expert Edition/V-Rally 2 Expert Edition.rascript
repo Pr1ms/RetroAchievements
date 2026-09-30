@@ -316,11 +316,23 @@ function putAllBlocksThere()
 
 achievement(
     title = "Alpine Drift Through Primsity", points = 5,
-    description = "Complete Prims' course French Alps: PRIMSITY with the Renault Megane in less than 02'32\"00.",
+    description = "Complete a lap on Prims' track French Alps: PRIMSITY while using the Renault Megane in less than 02'32\"00.",
     set = achievementsetcustomtracks,
     trigger = byte(0x28DCB0) == 0 && byte(0x287F48) == 12 && dword(0x28E43C) == 1296650832 &&
               dword(0x28E440) == 1498696019 && byte(0x9BD520) == 4 && byte(0x9BD524) == 41 && byte(0x9BD526) == 1 &&
               byte(0x9BD527) == 10 && prev(dword(tbyte(0x9F2520) + 0xC0C)) >= 15200 &&
               dword(tbyte(0x9F2520) + 0xC0C) < 15200 &&
               (always_false() || putAllBlocksThere())
+)
+
+leaderboard(
+    title="French Alps: PRIMSITY - Renault Megane", lower_is_better=true, format="MILLISECS",
+    description="Race for the fastest lap on French Alps: PRIMSITY with the Renault Megane",
+    set = achievementsetcustomtracks,
+    start=byte(0x28DCB0) == 0 && byte(0x287F48) == 12 && dword(0x28E43C) == 1296650832 &&
+              dword(0x28E440) == 1498696019 && byte(0x9BD520) == 4 && byte(0x9BD524) == 41 && byte(0x9BD526) == 1 &&
+              byte(0x9BD527) == 10 && dword(0x28faac) < prev(dword(0x28faac))&& (always_false() || putAllBlocksThere()),
+    submit=always_true(),
+    cancel=always_false(),
+    value=dword(tbyte(0x9f2520) + 0xc0c)
 )

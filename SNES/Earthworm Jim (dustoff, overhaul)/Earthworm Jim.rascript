@@ -369,7 +369,7 @@ achievement(
     id = 27736, badge = "28231", 
     trigger = debugRoomLevelSelectOnly() && inGame() && once(word(0x00512A) == 0x0007 && word(0x5174) == 0x0070 && word(0x5176) == 0x0195) && // never(repeated(2, word(0x00512A) != 0x0007)) && // checkpoint on starting the level
               disable_when(byte(0x0069D2) == 11) &&
-              prev(word(0x512A)) == 0x0007 && trigger_when(word(0x512A) == 0x0014) // from For Pete's Sake to the correct Andy Asteroids? level    
+              prev(word(0x512A)) == 0x0007 && trigger_when(word(0x512A) == 0x0014 || word(0x512A) == 0x000f) // from For Pete's Sake to the correct Andy Asteroids? level => important, can also be the first instance with level selection   
 )
 
 achievement(

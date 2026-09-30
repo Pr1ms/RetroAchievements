@@ -37,7 +37,7 @@ function relationshipCount(offset) => (dword(dword(dword(dword(dword(0x04c05b4) 
 
 function InMainMenu() => dword(0x459b28) == 0
 
-function InGame() => dword(0x4bfb38) == 1 && // Not Loading
+function InGame() => dword(0x4c0a44) != 0 && prev(dword(0x4c0a44)) == dword(0x4c0a44) &&// Not Loading
                      !InMainMenu() // Not in Main Menu
 
 function WillIAmRep(offset) => dword(dword(dword(dword(dword(dword(dword(dword(0x04c05b4) + 0x1b0) + offset) + 0x10) + 0x4) + 0x4) + 0x0) + 0x0)
@@ -325,7 +325,8 @@ function moneyInStyleShop(offset) => dword(dword(dword(dword(0x4c05b4) + 0x1c0) 
 achievement(title="Got to Look the Part",
             description="Spend 500 Simoleons in a single visit to the style shop",
             points=5,
-            trigger= DidNotCheat() && InGame() && 
+            trigger= DidNotCheat() && prev(dword(0x4c0a44)) == dword(0x4c0a44) &&// Not Loading
+                     !InMainMenu() && 
                 dword(0x4c0530) != 0 && 
                 dword(0x4bebc8) == 0 && // This one protects us from priming in main menu after quiting a game (memory not entirely cleaned up)
                 dword(0x4bec40) == 0 && // This one protects against a flash prime during loading screens      

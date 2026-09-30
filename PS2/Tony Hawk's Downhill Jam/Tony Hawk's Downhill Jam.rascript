@@ -880,6 +880,7 @@ races = [
     // Boost Jam
     [0x2d1e286c, "Boost Jam, Special, Machu Picchu"],
     [0x454a908a, "Boost Jam, Special, Alps"],
+    [0x7adb59ab, "Boost Jam, Special, San Francisco"]
 ]
 
 // Target is max money
