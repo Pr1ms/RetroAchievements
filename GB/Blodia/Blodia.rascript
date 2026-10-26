@@ -11,7 +11,7 @@ gameModes = {
 }
 
 puzzleTiers = {
-    0: "Warm Up",
+    0: "Warm up",
     1: "Hurry",
     2: "Maze",
     3: "Hard"
@@ -30,8 +30,8 @@ function cursorY() => byte(0xffa4)
 function gamePaused() => byte(0xffdb) == 1
 
 rich_presence_conditional_display(inDemoMode(), "In Demo Mode")
-rich_presence_conditional_display(byte(0xd011) > 0, "In {0} mode", rich_presence_lookup("GameMode", low4(0xd011), gameModes))
-rich_presence_conditional_display(byte(0xd011) == 0 && byte(0xffc7) > 0, "{0} - {1} {2} - Score: {3}",
+rich_presence_conditional_display(low4(0xd011) > 0, "In {0} mode", rich_presence_lookup("GameMode", low4(0xd011), gameModes))
+rich_presence_conditional_display(low4(0xd011) == 0 && byte(0xffc7) > 0, "{0} - {1} {2} - Score: {3}",
                                   rich_presence_lookup("GameMode", low4(0xd011), gameModes),
                                   rich_presence_lookup("PuzzleTier", tier(), puzzleTiers),
                                   rich_presence_value("Unsigned", puzzleId(), "VALUE"),                                  
@@ -43,8 +43,8 @@ rich_presence_display("Playing Blodia")
 tiers = [
     [0, [["Tissue Prep", 5, 1, 5], ["Raising Body Temperature", 5, 6, 10], ["Dynamic Mobility", 5, 11, 15], ["Muscle Activation", 5, 16, 20], ["Potentiation", 4, 20, 24]]],
     [1, [["Marathon", 5, 1, 5], ["Sprint", 5, 6, 10], ["Light Speed", 5, 11, 15], ["Ridiculous Speed", 5, 16, 20], ["Ludicrous Speed", 4, 20, 24]]],
-    [2, [["Straying", 5, 1, 5], ["Going off Course", 5, 6, 10], ["Losing Bearings", 5, 11, 15], ["Total Disorientation", 5, 16, 20], ["Lost in the Woods", 4, 20, 24]]],
-    [3, [["Punishing", 5, 1, 5], ["Relentless", 5, 6, 10], ["Apocalyptic", 5, 11, 15], ["Sadistic", 5, 16, 20], ["Unforgiving", 4, 20, 24]]]
+    [2, [["Straying", 10, 1, 5], ["Going off Course", 10, 6, 10], ["Losing Bearings", 10, 11, 15], ["Total Disorientation", 10, 16, 20], ["Lost in the Woods", 10, 20, 24]]],
+    [3, [["Punishing", 10, 1, 5], ["Relentless", 10, 6, 10], ["Apocalyptic", 10, 11, 15], ["Sadistic", 10, 16, 20], ["Unforgiving", 10, 20, 24]]]
 ]    
 
 
@@ -68,7 +68,7 @@ for tier in tiers {
     {
           achievement(title=milestone[0], points=milestone[1],
                       description="Clear puzzles " + milestone[2] + " through " + milestone[3] + " of the " + puzzleTiers[tier[0]] + " Block in a single session",
-                      trigger=in1Play() && makeCheckpoints(tier[0], milestone[2], milestone[3])    
+                      trigger=in1Play() && makeCheckpoints(tier[0], milestone[2], milestone[3]) && never(byte(0xd004) < 0x0f)   
           )  
     }    
 }
@@ -100,12 +100,20 @@ achievement(title="My Brain Has Melted but at Least I Got a Nice Bouquet", point
 
 // TODO: High score per tier (reset when going back to main menu)
 
+leaderboard(title="Highscore",
+                    description="Highest possible score when going back to Main Menu",
+                    start=in1Play() && prev(score()) > 0 && score() == 0,
+                    cancel=always_false(),
+                    submit=always_true(),
+                    value=prev(score())
+)                    
+
 for tier in range(0, 3)
 {
     for puzzle in range(1, 25)
     {
-        leaderboard(title=puzzleTiers[tier] + " " + puzzle + " Efficiency Run",
-                    description="Clear " + puzzleTiers[tier] + " " + puzzle + "in as few moves as possible in 1 Play mode",
+        leaderboard(title=puzzleTiers[tier] + " " + puzzle + " Efficiency Run", lower_is_better=true,
+                    description="Clear " + puzzleTiers[tier] + " " + puzzle + " in as few moves as possible in 1 Play mode",
                     start=in1Play() && tier() == tier && puzzleId() == puzzle && prev(byte(0xffc7)) == 0 && byte(0xffc7) > 0,
                     cancel=levelLost(),
                     submit=levelWon(),
@@ -123,6 +131,11 @@ achievement(title="Mastering the Basics: Spatial Efficiency", points=1,
             description="Complete Warm Up 2 without the ball reaching the 7th active colum",
             trigger=in1Play() && once(tier() == 0 && puzzleId() == 2 && prev(byte(0xffc7)) == 0 && byte(0xffc7) > 0) && trigger_when(levelWon()) && never(byte(0xffb0) > 6)
 )  
+
+achievement(title="Greatness Knows No Break", points=10,
+            description="Complete any Hard puzzle without pausing the game",
+            trigger=in1Play() && tier() == 3 && prev(byte(0x00ffc7)) != 0 && levelWon() && disable_when(gamePaused(), until=byte(0x00ffc7)==0)
+)
 
 // IMPORTANT: don't upsync it, manual logic is fine-tuned
 /**

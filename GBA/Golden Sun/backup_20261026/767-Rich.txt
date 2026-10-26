@@ -1,0 +1,19 @@
+Lookup:CharID
+0x00=Isaac
+0x01=Garet
+0x02=Ivan
+0x03=Mia
+0x04=Felix
+0x05=Jenna
+0x06=Sheba
+
+
+Format:Level
+FormatType=VALUE
+
+Format:Time
+FormatType=FRAMES
+
+
+Display: 
+@CharID(0xh8438) Lv @Level(0xh850f), @CharID(0xh8439) Lv @Level(0xh865b), @CharID(0xh843a) Lv @Level(0xh87a7), @CharID(0xh843b) Lv @Level(0xh88f3). IGT: @Time(0x001c9e*65536_0x001c9c*1)
