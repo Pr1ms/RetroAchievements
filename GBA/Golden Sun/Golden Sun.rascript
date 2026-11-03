@@ -592,9 +592,30 @@ achievement(title="Treasures of the Sanctum", points=2, type="missable",
              trigger=saveProtection() && prev(bit0(0x8228)) == 0 && location(0x000b) && measured(bit1(0x8220) + bit2(0x8220) + bit0(0x8228) == 3, when=bit2(0x8140) == 1 && bit1(0x814f) == 0) 
 )
 
+// chestList = [[bitX(addr), location]]
+function generalCaseChestCollection(chestList){
+    sum = 0
+    delta = always_false()
+    for chest in chestList {
+        sum = sum + chest[0]
+        delta = delta || prev(chest[0]) == 0 && location(chest[1])
+    }
+    return measured(sum == length(chestList), when=word(0x8400) != 0x0001) && delta
+}
+
+achievement(title="Stealing from the Elderly", points = 5,
+            description="Open every chest in Imil and Mercury Lighthouse",
+            trigger=saveProtection() && generalCaseChestCollection([[bit6(0x8224), 0x33], [bit0(0x822c), 0x32], [bit4(0x822c), 0x36], [bit5(0x822c), 0x35], [bit6(0x822c), 0x37], [bit7(0x822c), 0x37]])
+)
+
 achievement(title="A Mayor's Reward", points=5, type="missable",
              description="Obtain a Water of Life from Vault's mayor after defeating the Bandits",
              trigger=saveProtection() && location(0x0015) && entrance(0x000a) && prev(bit7(0x814a)) == 0 && bit7(0x814a) == 1
+)
+
+achievement(title="I'll Leave the Village in Your Hands", points=1, type="missable",
+            description="Enter Imil's sanctuary after lighting Mercury's lighthouse and let Mia say goodbye to her friends",
+            trigger=saveProtection() && location(0x0033) && prev(bit6(0x8145)) < bit6(0x8145)
 )
 
 achievement(title="Whispers of the Trees", points=1, type="missable",
