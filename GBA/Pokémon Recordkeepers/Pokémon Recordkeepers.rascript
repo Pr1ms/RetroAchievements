@@ -117,6 +117,7 @@ function common_mons(){
 function inGame() => word(0x11e8) == 0x0001
 
 function battleWonAgainst(pkmnId) => word(0x8766) > 0 && prev(word(0x873c)) != 0 && prev(word(0x87a8)) == pkmnId && word(0x873c) == 0 && word(0x87a8) == 0 && word(0x87d2) == 0
+function bossBeaten() => byte(0x97a0) == 0x0a && prev(byte(tbyte(0x50f8) + 0xa0c6) == 0) && byte(tbyte(0x50f8) + 0xa0c6) == 1
 
 rich_presence_conditional_display(word(0x11e8) == 0x0000, "In Main Menu")
 
@@ -198,7 +199,8 @@ achievement(
 achievement(
     title = "Further Studies", points = 1, type = "missable",
     description = "Before beating \"Nightmare After Christmas\", read about it in the Archive",
-    trigger = inGame() && word(tbyte(0x50f8) + 0xa23c) == 0 && byte(tbyte(0x50f8) + 0x9164) == 3 && // Nightmare After Christmas intro is over and the Story has never been beaten              
+    trigger = inGame() && word(tbyte(0x50f8) + 0xa23c) == 0 && byte(tbyte(0x50f8) + 0x9164) == 3 && // Nightmare After Christmas intro is over and the Story has never been beaten     
+              !(byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) != 0x03) && // Hiding it if working on another myth
               trigger_when(byte(0x16e61) == 0xff && prev(dword(0x16e64) == 0x18) && dword(0x16e64) == 0x19)
 )
 
@@ -215,7 +217,7 @@ achievement(
 achievement(
     title = "It's Finally Done", points = 1, type = "missable",
     description = "Read the Minor Ending to \"Overflowing Abundance\" in the Archive and talk to Morgan about it",
-    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x00 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0x9168) > 5)) || // In the Myth and it has never been beaten under True conditions
+    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x00 && (word(tbyte(0x50f8) + 0xa188) == 0 || word(tbyte(0x50f8) + 0x9168) > 5)) || // In the Myth and it has never been beaten under True conditions
               byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0x9168) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
               trigger_when(prev(byte(0x16e61) != 0xff) || prev(bit6(tbyte(0x50f8) + 0x8e84) == 0)) &&
               trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x05) && bit6(tbyte(0x50f8) + 0x8e84) == 1)
@@ -224,7 +226,7 @@ achievement(
 achievement(
     title = "Missing Griseous Orb", points = 1, type = "missable",
     description = "Read the Minor Ending to \"The Original Sinner\" in the Archive and talk to Hanzo about it",
-    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x02 && (word(tbyte(0x50f8) + 0xa1c4) == 0 || word(tbyte(0x50f8) + 0x916a) > 5)) || // In the Myth and it has never been beaten under True conditions
+    trigger = never(!inGame()) && ((byte(0x97a0) != 0x0b && word(tbyte(0x50f8) + 0xa07c) == 0x02 && (word(tbyte(0x50f8) + 0xa200) == 0 || word(tbyte(0x50f8) + 0x916a) > 5)) || // In the Myth and it has never been beaten under True conditions
               byte(0x97a0) == 0x0b && word(tbyte(0x50f8) + 0x916a) > 5) &&// Or in the Library and it has been beaten, but not under True conditions yet
               trigger_when(prev(byte(0x16e61) == 0xff && dword(0x16e64) == 0x13) || prev(bit1(tbyte(0x50f8) + 0x8e86) == 0)) &&
               trigger_when(once(byte(0x16e61) == 0xff && dword(0x16e64) == 0x14) && bit1(tbyte(0x50f8) + 0x8e86) == 1)
@@ -234,28 +236,29 @@ achievement(
 achievement(
     title = "The Lost Archipelago", points = 10, type = "progression",
     description = "Complete \"The Lost Archipelago\" Myth under True Ending conditions",
-    trigger = inGame() && (prev(word(tbyte(0x50f8) + 0xa1c4) == 0) || prev(word(tbyte(0x50f8) + 0x916c) > 5)) &&
-              word(tbyte(0x50f8) + 0xa1c4) > 0 && word(tbyte(0x50f8) + 0x916c) <= 5
+    trigger = inGame() && word(tbyte(0x50f8) + 0xa07c) == 0x01 && word(tbyte(0x50f8) + 0xa0f6) <= 5 &&
+              bossBeaten() 
 )
 
 achievement(
     title = "Overflowing Abundance", points = 10, type = "progression",
     description = "Complete \"Overflowing Abundance\" Myth under True Ending conditions",
-    trigger = inGame() && (prev(word(tbyte(0x50f8) + 0xa188) == 0) || prev(word(tbyte(0x50f8) + 0x9168) > 5)) &&
-              word(tbyte(0x50f8) + 0xa188) > 0 && word(tbyte(0x50f8) + 0x9168) <= 5
+    trigger = inGame() && word(tbyte(0x50f8) + 0xa07c) == 0x00 && word(tbyte(0x50f8) + 0xa0f6) <= 5 &&
+              bossBeaten()
 )
 
 achievement(
     title = "The Original Sinner", points = 10, type = "progression",
     description = "Complete \"The Original Sinner\" Myth under True Ending conditions",
-    trigger = inGame() && (prev(word(tbyte(0x50f8) + 0xa200) == 0) || prev(word(tbyte(0x50f8) + 0x916a) > 5)) &&
-              word(tbyte(0x50f8) + 0xa200) > 0 && word(tbyte(0x50f8) + 0x916a) <= 5
+    trigger = inGame() && word(tbyte(0x50f8) + 0xa07c) == 0x02 && word(tbyte(0x50f8) + 0xa0f6) <= 5 &&
+              bossBeaten()
 )
 
 achievement(
     title = "Nightmare After Christmas", points = 10,
     description = "Complete \"Nightmare After Christmas\" Story",
-    trigger = inGame() && prev(word(tbyte(0x50f8) + 0xa23c) == 0) && word(tbyte(0x50f8) + 0xa23c) > 0
+    trigger = inGame() && word(tbyte(0x50f8) + 0xa07c) == 0x03 && 
+              byte(0x97a0) == 0x12 && prev(byte(tbyte(0x50f8) + 0xa0c6) == 0) && byte(tbyte(0x50f8) + 0xa0c6) == 1
 )
 
 // TRUE ENDINGS FOR MYTHS
@@ -291,7 +294,6 @@ achievement(
               byte(0x16e61) == 0xff && prev(dword(0x16e64) == 0x1a) && dword(0x16e64) == 0x1b
 )
 
-function bossBeaten() => byte(0x97a0) == 0x0a && prev(byte(tbyte(0x50f8) + 0xa0c6) == 0) && byte(tbyte(0x50f8) + 0xa0c6) == 1
 
 // MYTHS CHALLENGES
 achievement(
