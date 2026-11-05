@@ -124,12 +124,12 @@ for index in range(0, 9)
     collectionVerb = collectionVerbs[index]
     
     checkpoints = []
-    for levelId in collectionVerb[1] {
-        array_push(checkpoints, once(currentLevel() == levelId - 1 && oneUp()))
+    for levelId in range(progression[0], progression[1]) {
+        array_push(checkpoints, once(prev(currentLevel()) == levelId - 1 && oneUp()))
     }
     
     achievement(title="Letters " + collectionVerb[0], points=10,
-                description="Collect " + length(collectionVerb[1]) + " sets of MARIO letters between Phases " + progression[0] + " and " + progression[1] + " without going back to Main Menu",
+                description="Collect at least " + length(collectionVerb[1]) + " sets of MARIO letters between Phases " + progression[0] + " and " + progression[1] + " without going back to Main Menu",
                 trigger=inGame() && never(byte(0x37) == 1) && measured(tally(length(collectionVerb[1]), checkpoints))
     )
 }
@@ -140,12 +140,12 @@ for index in range(0, 9)
     collectionVerb = collectionVerbs[index]
     
     checkpoints = []
-    for levelId in collectionVerb[1] {
+    for levelId in range(progression[0], progression[1]) {
         array_push(checkpoints, once(currentLevel() == levelId - 1 && pickedUpHammer()))
     }
     
     achievement(title="Hammer " + collectionVerb[0], points=5,
-                description="Collect " + length(collectionVerb[2]) + " Golden Hammers between Phases " + progression[0] + " and " + progression[1] + " without going back to Main Menu",
+                description="Collect at least " + length(collectionVerb[2]) + " Golden Hammers between Phases " + progression[0] + " and " + progression[1] + " without going back to Main Menu",
                 trigger=inGame() && never(byte(0x37) == 1) && measured(tally(length(collectionVerb[2]), checkpoints))
     )
 }
