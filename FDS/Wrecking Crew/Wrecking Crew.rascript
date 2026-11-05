@@ -58,7 +58,7 @@ function paused() => byte(0x38) == 0x0b
 function levelWon() => prev(byte(0x4c)) == 0x00 && byte(0x4c) == 0x01
 function goingGameOver() => prev(byte(0x38)) == 0x07 && byte(0x38) == 0x08
 
-function oneUp() => byte(0x38) == 4 && prev(byte(0x90)) + 1 == byte(0x90)
+function oneUp() => prev(byte(0x38)) == 4 && prev(byte(0x90)) + 1 == byte(0x90)
 function pickedUpHammer() => (prev(byte(0x5c) == 0) && byte(0x5c) == 1) || (prev(score()) + 3200 == score())
 
 for progression in progressions{
@@ -125,7 +125,7 @@ for index in range(0, 9)
     
     checkpoints = []
     for levelId in range(progression[0], progression[1]) {
-        array_push(checkpoints, once(prev(currentLevel()) == levelId - 1 && oneUp()))
+        array_push(checkpoints, once(currentLevel() == levelId - 1 && oneUp()))
     }
     
     achievement(title="Letters " + collectionVerb[0], points=10,
