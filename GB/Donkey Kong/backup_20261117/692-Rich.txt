@@ -1,0 +1,20 @@
+Lookup:WorldName
+0x00=In The Construction Zone
+0x01=In The Big City
+0x02=In The Forest
+0x03=On The Ship
+0x04=In The Jungle
+0x05=In The Desert
+0x06=In The Airplane
+0x07=On The Iceberg
+0x08=In The Rocky Valley
+0x09=In The Tower
+
+Format:StageNumber
+FormatType=VALUE
+
+Format:Lives
+FormatType=VALUE
+
+Display: 
+Mario Battling Donkey Kong @WorldName(0xhc860), Stage @StageNumber(0xhc861), @Lives(0xhda43) lives
