@@ -261,98 +261,50 @@ achievement(
     title = "The King of Kong", points = 10,
     description = "Score 500,000 points",
     id = 112805, badge = "128104", published = "06/06/2020 22:42:19", 
-    trigger = prev(byte(0x00D848)) == 5 && byte(0x00D848) >= 6 && stage() != 0 &&
-              measured((word(0x00DA41) * 100) >= 500000)
+    trigger = stage() != 0 && prev(word(0x00DA41)) < 5000 && word(0x00DA41) >= 5000
 )
 
+// This one is set aside because it is different: one item per level, no bonus stage
 achievement(
     title = "Pauline's Prizes - Construction Site", points = 1,
     description = "Collect all of Pauline's items in World 0 in one session",
     id = 112796, badge = "12776", published = "06/06/2020 22:41:29", 
-    trigger = measured(tally(3, once(bit0(0x00C859) == 1), once(bit1(0x00C859) == 1), once(bit2(0x00C859) == 1)), format="percent") &&
-              unless((stage() != 0 && byte(0x00C160) == 0)) && never(world() != 0) &&
-              never(dword(0x00D848) == 0)
+    trigger = never(byte(0xd847) == 0) && measured(tally(3, 
+                       once(stage() == 2 && bit0(0x00C859) == 1 && stageComplete()),
+                       once(stage() == 3 && bit2(0x00C859) == 1 && stageComplete()), 
+                       once(stage() == 4 && bit1(0x00C859) == 1 && stageComplete())), when=world() == 0)                                           
 )
 
-achievement(
-    title = "Pauline's Prizes - Big-City", points = 4,
-    description = "Collect all of Pauline's items in World 1 in one session",
-    id = 112797, badge = "12776", published = "06/06/2020 22:41:34", 
-    trigger = measured(repeated(6,
-                  world() == 1 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
+paulineChallenges = [
+    // [title, points, stagesCount]
+    ["Big-City", 4, 8],
+    ["Forest", 10, 12],
+    ["Ship", 5, 8],
+    ["Jungle", 10, 12],
+    ["Desert", 10, 12],
+    ["Airplane", 5, 8],
+    ["Iceberg", 10, 12],
+    ["Rocky-Valley", 10, 16]
+]
 
-achievement(
-    title = "Pauline's Prizes - Forest", points = 10,
-    description = "Collect all of Pauline's items in World 2 in one session",
-    id = 112798, badge = "12776", published = "06/06/2020 22:41:38", 
-    trigger = measured(repeated(9,
-                  world() == 2 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
-
-achievement(
-    title = "Pauline's Prizes - Ship", points = 5,
-    description = "Collect all of Pauline's items in World 3 in one session",
-    id = 112799, badge = "12776", published = "06/06/2020 22:41:45", 
-    trigger = measured(repeated(6,
-                  world() == 3 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
-
-achievement(
-    title = "Pauline's Prizes - Jungle", points = 10,
-    description = "Collect all of Pauline's items in World 4 in one session",
-    id = 112800, badge = "12776", published = "06/06/2020 22:41:52", 
-    trigger = measured(repeated(9,
-                  world() == 4 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
-
-achievement(
-    title = "Pauline's Prizes - Desert", points = 10,
-    description = "Collect all of Pauline's items in World 5 in one session",
-    id = 112801, badge = "12776", published = "06/06/2020 22:41:57", 
-    trigger = measured(repeated(9,
-                  world() == 5 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
-
-achievement(
-    title = "Pauline's Prizes - Airplane", points = 5,
-    description = "Collect all of Pauline's items in World 6 in one session",
-    id = 112802, badge = "12776", published = "06/06/2020 22:42:04", 
-    trigger = measured(repeated(6,
-                  world() == 6 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
-
-achievement(
-    title = "Pauline's Prizes - Iceberg", points = 10,
-    description = "Collect all of Pauline's items in World 7 in one session",
-    id = 112803, badge = "12776", published = "06/06/2020 22:42:09",
-    trigger = measured(repeated(9,
-                  world() == 7 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
-
-achievement(
-    title = "Pauline's Prizes - Rocky-Valley", points = 10,
-    description = "Collect all of Pauline's items in World 8 in one session",
-    id = 112804, badge = "12776", published = "06/06/2020 22:42:14",
-    trigger = measured(repeated(12,
-                  world() == 8 && byte(0x00C859) == 7 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0),
-                  format="percent"
-              ) && never(dword(0x00D848) == 0)
-)
+for index in range(0, length(paulineChallenges) - 1) {
+    challenge = paulineChallenges[index]
+    
+    tallyConds = []
+    for stage in range(1, challenge[2])
+    {
+        if (stage % 4 > 0)
+        {
+            array_push(tallyConds, stage() == stage && byte(0x00C859) == 7 && stageComplete())
+        }
+    }
+    
+    achievement(
+    title = "Pauline's Prizes - " + challenge[0], points = challenge[1],
+    description = "Collect all of Pauline's items in World " + (index + 1) + " in one session",
+    trigger = never(byte(0xd847) == 0) && measured(tally((challenge[2] / 4) * 3, tallyConds), when=world() == (index + 1))
+    )
+}
 
 achievement(
     title = "One Plumber vs. the World (and an Ape)", points = 25,
@@ -361,359 +313,38 @@ achievement(
     trigger = world() == 9 &&
               trigger_when(repeated(9, world() == 9 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0)) &&
               disable_when(world() == 9 && byte(0x00DA43) < prev(byte(0x00DA43))) &&
-              (always_false() || (never((stage() == 0 && byte(0x00D848) == 0 && byte(0x00DA43) == 4))))
+              (always_false() || (never(byte(0x00c861) == 0 && byte(0x00D847) == 0)))
 )
 
-achievement(
-    title = "Make-over!", points = 5,
-    description = "Collect Daisy's Umbrella, Hat, and Handbag in a single level.",
-    id = 12869, badge = "12776", published = "11/09/2014 19:11:11",
-    trigger = byte(0x00C859) == 7
-)
 
-achievement(
-    title = "Top of the Tower", points = 10,
-    description = "Beat world 1 - Big City",
-    id = 12871, badge = "12777", published = "11/09/2014 23:28:52",
-    trigger = world() == 2 && stage() == 1
-)
+for index in range(0, length(timeAttacksData) - 1) {
+    element = timeAttacksData[index]
+    timeTarget = element[2]
+    world = element[3]
+    stage = element[4]
+    stage_string = world + "-" + stage
+    startOffset = element[5]
+    endOffset = element[5] 
 
-achievement(
-    title = "Head Not in the Clouds", points = 10,
-    description = "Beat the final level without using the three platforms",
-    id = 112806, badge = "122598", published = "06/06/2020 22:42:24", 
-    trigger = once(once(once(world() == 9 && stage() == 9 && byte(0x00C66C) == 8) &&
-                  byte(0x00C818) == 138) && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0
-              ) && never(byte(0x00C818) == 82)
-)
-
-achievement(
-    title = "Big City Make-over!", points = 4,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 1 level.",
-    id = 18172, badge = "12776", published = "03/12/2014 15:14:35", 
-    trigger = byte(0x00C859) == 7 && world() == 1
-)
-
-achievement(
-    title = "Forest Make-over!", points = 3,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 2 Level.",
-    id = 18173, badge = "12776", published = "03/12/2014 15:14:42",
-    trigger = byte(0x00C859) == 7 && world() == 2
-)
-
-achievement(
-    title = "Ship Make-over!", points = 3,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 3 level.",
-    id = 18174, badge = "12776", published = "03/12/2014 15:21:32",
-    trigger = byte(0x00C859) == 7 && world() == 3
-)
-
-achievement(
-    title = "Jungle Make-over!", points = 5,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 4 level.",
-    id = 18176, badge = "12776", published = "03/12/2014 15:46:41", 
-    trigger = byte(0x00C859) == 7 && world() == 4
-)
-
-achievement(
-    title = "Desert Make-over!", points = 5,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 5 level.",
-    id = 18179, badge = "12776", published = "03/12/2014 16:19:24", 
-    trigger = byte(0x00C859) == 7 && world() == 5
-)
-
-achievement(
-    title = "Airplane Make-over!", points = 5,
-    description = "Collect Daisy's Umbrella, Hat, and Handbag in a single World 6 level.",
-    id = 18183, badge = "12776", published = "04/12/2014 06:16:38", 
-    trigger = byte(0x00C859) == 7 && world() == 6
-)
-
-achievement(
-    title = "Iceberg Make-over!", points = 5,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 7 level.",
-    id = 18205, badge = "12776", published = "04/12/2014 06:27:58",
-    trigger = byte(0x00C859) == 7 && world() == 7
-)
-
-achievement(
-    title = "Rocky Valley Make-over!", points = 5,
-    description = "Collect Pauline's Umbrella, Hat, and Handbag in a single World 8 level.",
-    id = 18208, badge = "12776", published = "04/12/2014 07:21:55", 
-    trigger = byte(0x00C859) == 7 && world() == 8
-)
-
-achievement(
-    title = "The Big 50", points = 5,
-    description = "Obtain 50 Lives",
-    id = 4611, badge = "17589", published = "27/01/2014 13:32:39", 
-    trigger = measured(byte(0x00DA43) == 50) && prev(byte(0x00DA43)) == 49
-)
-
-achievement(
-    title = "Maxed Out!", points = 10,
-    description = "Obtain 99 Lives",
-    id = 18171, badge = "17593", published = "03/12/2014 14:57:25", 
-    trigger = measured(byte(0x00DA43) == 99) && prev(byte(0x00DA43)) == 98
-)
-
-leaderboard(
-    id = 18974, title = "Speedrun Stage 0-4",
-    description = "Beat stage 0-4 with the highest total time you can",
-    start  = never(world() != 0) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 0 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18975, title = "Speedrun Stage 1-4",
-    description = "Beat stage 1-4 with the highest total time you can",
-    start  = never(world() != 1) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 1 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18976, title = "Speedrun Stage 1-8",
-    description = "Beat stage 1-8 with the highest total time you can",
-    start  = never(world() != 1) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 1 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18977, title = "Speedrun Stage 2-4",
-    description = "Beat stage 2-4 with the highest total time you can",
-    start  = never(world() != 2) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 2 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18978, title = "Speedrun Stage 2-8",
-    description = "Beat stage 2-8 with the highest total time you can",
-    start  = never(world() != 2) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 2 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18979, title = "Speedrun Stage 2-12",
-    description = "Beat stage 2-12 with the highest total time you can",
-    start  = never(world() != 2) && never(stage() != 12) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 2 && stage() == 12 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18980, title = "Speedrun Stage 3-4",
-    description = "Beat stage 3-4 with the highest total time you can",
-    start  = never(world() != 3) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 3 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18981, title = "Speedrun Stage 3-8",
-    description = "Beat stage 3-8 with the highest total time you can",
-    start  = never(world() != 3) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 3 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18982, title = "Speedrun Stage 4-4",
-    description = "Beat stage 4-4 with the highest total time you can",
-    start  = never(world() != 4) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 4 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18983, title = "Speedrun Stage 4-8",
-    description = "Beat stage 4-8 with the highest total time you can",
-    start  = never(world() != 4) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 4 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18984, title = "Speedrun Stage 4-12",
-    description = "Beat stage 4-12 with the highest total time you can",
-    start  = never(world() != 4) && never(stage() != 12) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 4 && stage() == 12 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18985, title = "Speedrun Stage 5-4",
-    description = "Beat stage 5-4 with the highest total time you can",
-    start  = never(world() != 5) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 5 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18986, title = "Speedrun Stage 5-8",
-    description = "Beat stage 5-8 with the highest total time you can",
-    start  = never(world() != 5) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 5 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18987, title = "Speedrun Stage 5-12",
-    description = "Beat stage 5-12 with the highest total time you can",
-    start  = never(world() != 5) && never(stage() != 12) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 5 && stage() == 12 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18988, title = "Speedrun Stage 6-4",
-    description = "Beat stage 6-4 with the highest total time you can",
-    start  = never(world() != 6) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 6 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18989, title = "Speedrun Stage 6-8",
-    description = "Beat stage 6-8 with the highest total time you can",
-    start  = never(world() != 6) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 6 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18990, title = "Speedrun Stage 7-4",
-    description = "Beat stage 7-4 with the highest total time you can",
-    start  = never(world() != 7) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 7 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18991, title = "Speedrun Stage 7-8",
-    description = "Beat stage 7-8 with the highest total time you can",
-    start  = never(world() != 7) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 7 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18992, title = "Speedrun Stage 7-12",
-    description = "Beat stage 7-12 with the highest total time you can",
-    start  = never(world() != 7) && never(stage() != 12) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 7 && stage() == 12 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18993, title = "Speedrun Stage 8-4",
-    description = "Beat stage 8-4 with the highest total time you can",
-    start  = never(world() != 8) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 8 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18994, title = "Speedrun Stage 8-8",
-    description = "Beat stage 8-8 with the highest total time you can",
-    start  = never(world() != 8) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 8 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18995, title = "Speedrun Stage 8-12",
-    description = "Beat stage 8-12 with the highest total time you can",
-    start  = never(world() != 8) && never(stage() != 12) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 8 && stage() == 12 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18996, title = "Speedrun Stage 8-16",
-    description = "Beat stage 8-16 with the highest total time you can",
-    start  = never(world() != 8) && never(stage() != 16) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 8 && stage() == 16 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18997, title = "Speedrun Stage 9-4",
-    description = "Beat stage 9-4 with the highest total time you can",
-    start  = never(world() != 9) && never(stage() != 4) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 9 && stage() == 4 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
-
-leaderboard(
-    id = 18998, title = "Speedrun Stage 9-8",
-    description = "Beat stage 9-8 with the highest total time you can",
-    start  = never(world() != 9) && never(stage() != 8) && repeated(15, byte(0x00C837) == 56),
-    cancel = always_false(),
-    submit = world() == 9 && stage() == 8 && byte(0x00C837) == 56,
-    value  = word(0x00C811),
-    format = "VALUE"
-)
+    leaderboard(
+        title = "Speedrun Stage " + stage_string,
+        description = "Beat stage " + stage_string + " with the highest total time you can",
+        start  = world() == world && stage() == stage && prev(byte(0xa190 + 4 * (startOffset + 3))) == 0 && byte(0xa190 + 4 * (startOffset + 3)) > 0,
+        cancel = always_false(),
+        submit = always_true(),
+        value  = byte(0xa190 + 4 * startOffset) + byte(0xa190 + 4 * (startOffset + 1)) + byte(0xa190 + 4 * (startOffset + 2)) + byte(0xa190 + 4 * (startOffset + 3)),
+        format = "VALUE"
+    )
+}
 
 leaderboard(
     id = 9076, title = "Beat the Game",
     description = "Beat the game in one session as fast as you can (must start from 0-1 with four lives)",
-    start  = world() == 0 && stage() == 1 && byte(0x00DA43) == 4 && once(prior(byte(0x00C837)) == 43) &&
-             never(byte(0x00C837) == 42),
-    cancel = stage() == 0 && byte(0x00C837) == 42,
+    start  = world() == 0 && byte(0x00DA43) == 4 && prev(stage()) == 0 && stage() == 1,
+    cancel = stage() == 0 && byte(0x0000d847) == 0,
     submit = world() == 9 && stage() == 9 && byte(0x00C160) == 1 && prev(byte(0x00C160)) == 0,
     value  = measured(tally(0, always_true())),
     format = "FRAMES", lower_is_better = true
 )
+
+
