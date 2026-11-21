@@ -1,0 +1,29 @@
+Format:Digit
+FormatType=VALUE
+
+Lookup:Speed
+0x04=LOW
+0x03=MED
+0x02=HI
+
+Lookup:Music
+0=FEVER
+1=CHILL
+2=OFF
+
+Lookup:Paused
+1=▌▌
+
+Display:
+?0xH00ffe1=1?💊Title Screen💊
+?0xH00ffb1=1?💊Competing with another Doctor💊
+?0xH00ffe1=2?💊Watching the Demo💊
+?1=1S0xH00ffe1=4S0xH00ffe1=10?💊Curing viruses! | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=5?💊Round clear! | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=6?💊It's a draw! | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=7?💊Watching some underwater rewards | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=16?💊Press Start to move on! | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=12?💊Choose Level | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=13?💊Choose Speed | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+?0xH00ffe1=14?💊Choose Music | Level @Digit(b0xH00ffc3), Speed:@Speed(0xH00ffad) 🎼@Music(0xH00ffc1)
+💊Playing Dr. Mario💊

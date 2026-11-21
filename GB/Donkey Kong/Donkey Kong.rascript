@@ -295,7 +295,7 @@ for index in range(0, length(paulineChallenges) - 1) {
     {
         if (stage % 4 > 0)
         {
-            array_push(tallyConds, stage() == stage && byte(0x00C859) == 7 && stageComplete())
+            array_push(tallyConds, world() == index + 1 && stage() == stage && byte(0x00C859) == 7 && stageComplete())
         }
     }
     
