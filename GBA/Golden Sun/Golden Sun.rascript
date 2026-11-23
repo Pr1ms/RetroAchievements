@@ -623,29 +623,38 @@ achievement(title="Whispers of the Trees", points=1, type="missable",
             trigger=(location(0x001e) && word(0x381f4) == 9 || location(0x0023) || location(0x0024) || location(0x0025)) && bit5(0x8148) == 0 && byte(0x3817e) == 0x8d && prev(word(0x2024)) == 0x15 && word(0x2024) == 0x0001
 )
 
+achievement(
+        title = "This Better Be Worth Spending a Token", points = 5,
+        description = "Win any of the 1st place rewards at the Tolbi Spring",    
+        trigger = saveProtection() && location(0x00bd) && prev(word(0x007E30)) == 0x03 && word(0x007e2c) == 0x01 && 
+        (prev(word(0x007e2c)) == 0x17 && word(0x007E30) == 0x17 || 
+         prev(word(0x007e2c)) == 0x7c && word(0x007E30) == 0x7c || 
+         prev(word(0x007e2c)) == 0x51 && word(0x007E30) == 0x51)
+)       
+
+
 // SUBSET ACHIEVEMENTS
 
 luckyFountainItems =  [
     ["Assassin Blade", 0x17, "Mortal Danger"],
-    ["Earth Shield", 0x7c, ""],
-    ["Spirit Armor", 0x51, ""],
-    ["Adept's Helm", 0x98, ""],
-    ["Burning Axe", 0x25, ""],
-    ["Cocktail Dress", 0x91, ""],
-    ["Glittering Tiara", 0xab, ""],
-    ["Grievous Mace", 0x30, ""],
-    ["Guardian Armlet", 0x8e, ""],
-    ["Battle Gloves", 0x85, ""],
-    ["Kimono", 0x61, ""],
-    ["Ninja Hood", 0xa0, ""],
+    ["Earth Shield", 0x7c, "Healing Aegis"],
+    ["Spirit Armor", 0x51, "Flawless Resistance"],
+    ["Adept's Helm", 0x98, "Psynergy Antenna"],
+    ["Burning Axe", 0x25, "Broiler"],
+    ["Cocktail Dress", 0x6c, "Psynergy Wrapping"],
+    ["Glittering Tiara", 0xab, "Accessorized Lucidity"],
+    ["Grievous Mace", 0x30, "Terra Striker"],
+    ["Guardian Armlet", 0x8e, "Defensive Gloves"],
+    ["Battle Gloves", 0x85, "Offensive Gloves"],
+    ["Kimono", 0x61, "Fireproof Mobility"],
+    ["Ninja Hood", 0xa0, "Fast and Silent"],
 ]
 
 for luckyFountainItem in luckyFountainItems{
     achievement(
-    title = luckyFountainItem[0], points = 5, set=achievementsetluckoftheadepts,
-    description = "Win the " + luckyFountainItem[0] + " at the Lucky Fountain",    
-    trigger = dword(0x008400) == 65725 && prev(dword(0x008400)) != 65537 && byte(0x007E30) == luckyFountainItem[1] &&
-              prev(byte(0x007E30)) == 0x03
+        title = luckyFountainItem[2], points = 5, set=achievementsetluckoftheadepts,
+        description = "Win the " + luckyFountainItem[0] + " at the Tolbi Spring",    
+        trigger = saveProtection() && location(0x00bd) && prev(word(0x007E30)) == 0x03 && prev(word(0x007e2c)) == luckyFountainItem[1] && word(0x007e2c) == 0x01 && word(0x007E30) == luckyFountainItem[1]       
     )
 }
 
